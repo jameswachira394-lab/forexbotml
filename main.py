@@ -43,7 +43,7 @@ def mode_generate(args) -> None:
     n_bars = args.bars or 157_000
     path   = args.data or cfg.DATA_PATH
 
-    logger.info(f"Generating {n_bars:,} synthetic bars → {path}")
+    logger.info(f"Generating {n_bars:,} synthetic bars -> {path}")
     df = generate_ohlcv(n_bars=n_bars, timeframe_min=cfg.BASE_TF_MINUTES, seed=42)
     df.to_csv(path, index=False)
     logger.info(f"Done. {len(df):,} rows | "
@@ -266,9 +266,9 @@ def mode_walkforward(args) -> None:
         model_kwargs    = {"model_name": f"{symbol}_{cfg.MODEL_NAME}_wf"},
     )
 
-    print(f"\n{'═'*50}")
+    print(f"\n{'='*50}")
     print(f"  WALK-FORWARD: {symbol}")
-    print(f"{'═'*50}")
+    print(f"\n{'='*50}")
     for r in results:
         print(
             f"  Fold {r['fold']:<2} | "
@@ -282,9 +282,9 @@ def mode_walkforward(args) -> None:
         wrs = [r.get("win_rate", 0) for r in results if r.get("total_trades", 0) > 0]
         pfs = [r.get("profit_factor", 0) for r in results if r.get("total_trades", 0) > 0]
         if wrs:
-            print(f"{'─'*50}")
+            print(f"{'-'*50}")
             print(f"  Avg WR: {np.mean(wrs):.1%}  |  Avg PF: {np.mean(pfs):.2f}")
-    print(f"{'═'*50}\n")
+    print(f"{'='*50}\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -328,6 +328,33 @@ def mode_live(args) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Mode: sync
+# ─────────────────────────────────────────────────────────────────────────────
+
+def mode_sync(args) -> None:
+    from data.loader import MT5SyncLoader
+    import config as cfg
+
+    symbol    = (args.symbol or cfg.SYMBOL).upper()
+    timeframe = args.timeframe or cfg.BASE_TF
+    n_bars    = args.bars or 100_000
+    save_path = args.data or f"data/raw/{symbol}_{timeframe}_mt5.csv"
+
+    logger.info(f"=== SYNC MODE | {symbol} [{timeframe}] ===")
+    
+    MT5SyncLoader.sync_symbol(
+        symbol    = symbol,
+        timeframe = timeframe,
+        n_bars    = n_bars,
+        save_path = save_path,
+        login     = cfg.MT5_LOGIN,
+        password  = cfg.MT5_PASSWORD,
+        server    = cfg.MT5_SERVER,
+    )
+    logger.info("Sync complete.")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # CLI
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -338,13 +365,14 @@ def parse_args():
     )
     p.add_argument(
         "--mode", required=True,
-        choices=["generate", "train", "backtest", "walkforward", "live"],
+        choices=["generate", "train", "backtest", "walkforward", "live", "sync"],
         help=(
             "generate    → synthetic data (testing)\n"
             "train       → train from real HistData/Dukascopy CSVs\n"
             "backtest    → single-symbol historical simulation\n"
             "walkforward → expanding walk-forward validation\n"
-            "live        → multi-symbol MT5 live trading"
+            "live        → multi-symbol MT5 live trading\n"
+            "sync        → download data from MT5 terminal"
         ),
     )
     p.add_argument("--symbol",  default=None,
@@ -361,6 +389,8 @@ def parse_args():
                    help="[train] Force retrain even if model is recent")
     p.add_argument("--source", default="csv", choices=["csv", "mt5"],
                    help="[train] Data source: 'csv' (local files) or 'mt5' (live terminal)")
+    p.add_argument("--timeframe", default=None,
+                   help="[sync] Timeframe override, e.g. M1, M5, H1")
     p.add_argument("--log-level", dest="log_level", default="INFO",
                    choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     return p.parse_args()
@@ -376,6 +406,7 @@ def main():
         "backtest":    mode_backtest,
         "walkforward": mode_walkforward,
         "live":        mode_live,
+        "sync":        mode_sync,
     }
     dispatch[args.mode](args)
 

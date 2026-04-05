@@ -254,7 +254,7 @@ class ForexMLModel:
             meta_out = {k: v for k, v in self.meta.items()
                         if isinstance(v, (str, int, float, list, dict, bool))}
             json.dump(meta_out, f, indent=2)
-        logger.info(f"Model saved → {self.model_path}")
+        logger.info(f"Model saved -> {self.model_path}")
 
     def load(self) -> None:
         if not self.model_path.exists():
@@ -265,7 +265,7 @@ class ForexMLModel:
                 self.meta = json.load(f)
             self.feature_names = self.meta.get("feature_names", [])
             self.threshold     = self.meta.get("threshold", 0.60)
-        logger.info(f"Model loaded ← {self.model_path}")
+        logger.info(f"Model loaded <- {self.model_path}")
 
     # ── Utilities ─────────────────────────────────────────────────────────────
 

@@ -9,7 +9,8 @@ import pandas as pd
 import numpy as np
 import logging
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Optional, Dict, List
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -170,6 +171,76 @@ class OHLCVLoader:
             df[col] = pd.to_numeric(df[col], errors="coerce")
         df.dropna(inplace=True)
         return df
+
+
+class MT5SyncLoader:
+    """
+    Bridge between MetaTrader 5 terminal and local CSV storage.
+    Enables downloading historical data from MT5 and saving/merging it to CSV.
+    """
+
+    @staticmethod
+    def sync_symbol(
+        symbol:    str,
+        timeframe: str,
+        n_bars:    int,
+        save_path: str,
+        login:     int = 0,
+        password:  str = "",
+        server:    str = "",
+    ) -> pd.DataFrame:
+        """
+        Fetch data from MT5 and merge with existing CSV at *save_path*.
+        Ensures no duplicates by checking timestamps.
+        """
+        from execution.mt5_streamer import fetch_live_bars
+
+        logger.info(f"Syncing {symbol} [{timeframe}] from MT5 (last {n_bars} bars)...")
+        
+        # 1. Fetch from MT5
+        new_df = fetch_live_bars(
+            symbol    = symbol,
+            timeframe = timeframe,
+            n_bars    = n_bars,
+            login     = login,
+            password  = password,
+            server    = server,
+        )
+
+        if new_df.empty:
+            logger.warning(f"No data returned from MT5 for {symbol}.")
+            return pd.DataFrame()
+
+        # 2. Handle existing CSV
+        path = Path(save_path)
+        if path.exists():
+            logger.info(f"Merging with existing data at {save_path}...")
+            try:
+                # Use current loader to read and clean existing CSV
+                loader   = OHLCVLoader(save_path, timeframe)
+                exist_df = loader.load()
+                
+                # Merge and drop duplicates
+                combined = pd.concat([exist_df, new_df]).sort_index()
+                combined = combined[~combined.index.duplicated(keep="last")]
+                logger.info(f"Merged: {len(exist_df)} existing + {len(new_df)} new -> {len(combined)} total")
+                df_to_save = combined
+            except Exception as e:
+                logger.error(f"Failed to load existing CSV for merge: {e}. Overwriting instead.")
+                df_to_save = new_df
+        else:
+            logger.info(f"Creating new CSV at {save_path}")
+            # Ensure directory exists
+            path.parent.mkdir(parents=True, exist_ok=True)
+            df_to_save = new_df
+
+        # 3. Save to CSV
+        # Result needs to have 'timestamp' column for consistency with original parser
+        save_df = df_to_save.reset_index().rename(columns={"index": "timestamp", "time": "timestamp"})
+        save_df.to_csv(save_path, index=False)
+        logger.info(f"Successfully saved {len(save_df)} bars to {save_path}")
+        
+        return df_to_save
 
 
 # ---------------------------------------------------------------------------

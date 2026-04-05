@@ -78,34 +78,37 @@ def train_symbol(
             model.load()
             return model
 
-    logger.info(f"[{symbol}] ──── Training ────────────────────────────────")
+    logger.info(f"[{symbol}] ---- Training --------------------------------")
 
     # ── 1. Data Fetching ──────────────────────────────────────────────────────
     if source == "mt5":
         import config as cfg
-        logger.info(f"[{symbol}] Fetching last 50,000 bars from MT5...")
-        base_df = fetch_live_bars(
+        from data.loader import MT5SyncLoader
+        
+        # Determine sync path; try first CSV in list or default to data/raw/{symbol}_mt5.csv
+        sync_path = csv_paths[0] if csv_paths else f"data/raw/{symbol}_{base_tf}_mt5.csv"
+        
+        logger.info(f"[{symbol}] Syncing data from MT5 to {sync_path}...")
+        
+        # MT5 Sync Logic (fetches base_tf and htf)
+        MT5SyncLoader.sync_symbol(
             symbol    = symbol,
             timeframe = base_tf,
-            n_bars    = 50000,
+            n_bars    = 100_000,   # Deep fetch for training
+            save_path = sync_path,
             login     = cfg.MT5_LOGIN,
             password  = cfg.MT5_PASSWORD,
-            server    = cfg.MT5_SERVER
+            server    = cfg.MT5_SERVER,
         )
-        if base_df.empty:
-            logger.error(f"[{symbol}] Failed to fetch data from MT5. skipping.")
-            return None
-            
-        m1_df = base_df # Simplification for MT5 source
-        htf_df = fetch_live_bars(
-            symbol    = symbol,
-            timeframe = htf,
-            n_bars    = 5000, # smaller number for HTF
-            login     = cfg.MT5_LOGIN,
-            password  = cfg.MT5_PASSWORD,
-            server    = cfg.MT5_SERVER
-        )
-    else:
+        
+        # Re-fetch for HTF if it's different and not already covered by resampling
+        # (Though OHLCVLoader handles resampling better, SyncMT5Loader can be used twice)
+        # For simplicity, we just use the synced CSV as our source now
+        csv_paths = [sync_path]
+        # Fall-through to CSV loader logic below to handle parsing/resampling uniformly
+        source = "csv" 
+
+    if source == "csv":
         # ── 1. Load and merge all CSVs ────────────────────────────────────────────
         frames = []
         for p in csv_paths:
@@ -123,7 +126,7 @@ def train_symbol(
         m1_df = pd.concat(frames).sort_index()
         m1_df = m1_df[~m1_df.index.duplicated(keep="last")]
         logger.info(f"[{symbol}] Total M1 bars: {len(m1_df):,} "
-                    f"| {m1_df.index[0].date()} → {m1_df.index[-1].date()}")
+                    f"| {m1_df.index[0].date()} -> {m1_df.index[-1].date()}")
 
         # ── 2. Resample to base TF and HTF ───────────────────────────────────────
         from data.loader import OHLCVLoader, TIMEFRAME_MINUTES
@@ -189,7 +192,7 @@ def train_symbol(
 
     # ── 6. Save ───────────────────────────────────────────────────────────────
     model.save()
-    logger.info(f"[{symbol}] Model saved → {saved_path}")
+    logger.info(f"[{symbol}] Model saved -> {saved_path}")
 
     return model
 

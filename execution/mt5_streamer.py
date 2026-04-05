@@ -325,8 +325,17 @@ def fetch_live_bars(
         password  = password,
         server    = server,
     )
-    streamer._connect_with_retry()
-    df = streamer._fetch_bars(symbol, n_bars + 2)
-    if MT5_AVAILABLE:
+    # Ensure connected
+    if not streamer._connect():
+        logger.error(f"Failed to connect to MT5 for fetch_live_bars ({symbol})")
+        return pd.DataFrame()
+
+    # MT5 has a limit on requests; for very large historical data, consider 
+    # using copy_rates_from_range in chunks. For now, we use copy_rates_from_pos.
+    df = streamer._fetch_bars(symbol, n_bars)
+    
+    # We only shutdown if we are the only ones using it. 
+    # But usually this is called in a standalone script or before the main loop.
+    if MT5_AVAILABLE and streamer._connected:
         mt5.shutdown()
     return df if df is not None else pd.DataFrame()

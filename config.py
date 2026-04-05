@@ -5,20 +5,17 @@ Edit this file.  Do NOT hardcode values inside source modules.
 import os
 
 # ── Symbols ───────────────────────────────────────────────────────────────────
-SYMBOLS = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD"]
+SYMBOLS = ["EURUSD", "GBPUSD", "USDJPY","XAUUSD"]
 SYMBOL  = "EURUSD"   # default single-symbol for backtest / generate modes
 
 # ── CSV data map (HistData / Dukascopy) ───────────────────────────────────────
 # List every CSV file you have per symbol.  Multiple files are merged.
 # Leave [] if you have no CSV yet — those symbols are skipped in training.
 SYMBOL_CSV_MAP: dict = {
-    "EURUSD": [],   # e.g. ["data/raw/EURUSD_2022.csv", "data/raw/EURUSD_2023.csv"]
+    "EURUSD": ["data/raw/EURUSD_M5_mt5.csv"],
     "GBPUSD": ["data/GBPUSD5.csv"],
-    "USDJPY": [],
-    "USDCHF": [],
-    "AUDUSD": [],
-    "USDCAD": [],
-    "NZDUSD": [],
+    "USDJPY": ["data/raw/USDJPY_M5_mt5.csv"],
+    "XAUUSD": ["data/raw/XAUUSD_M5_mt5.csv"]
 }
 
 # Fallback path used by --mode generate / backtest (single symbol)
@@ -79,10 +76,10 @@ LIVE_POLL_SECONDS = 15
 LIVE_WARM_BARS    = 300
 
 # MT5 credentials  (prefer env vars for security)
-MT5_LOGIN    = int(os.environ.get("10401216",    0))
-MT5_PASSWORD = os.environ.get("M1we(dnA", "")
-MT5_SERVER   = os.environ.get("FBS-Demo",   "")
+MT5_LOGIN    = int(os.environ.get("MT5_LOGIN",    "10401216"))
+MT5_PASSWORD = os.environ.get("MT5_PASSWORD", "M1we(dnA")
+MT5_SERVER   = os.environ.get("MT5_SERVER",   "FBS-Demo")
 
 # ── Training pipeline ─────────────────────────────────────────────────────────
-FORCE_RETRAIN      = true
+FORCE_RETRAIN      = False
 MAX_MODEL_AGE_DAYS = 7

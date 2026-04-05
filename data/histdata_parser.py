@@ -37,7 +37,7 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-# ─── pip size table ──────────────────────────────────────────────────────────
+# --- pip size table ----------------------------------------------------------
 JPY_PAIRS = {"USDJPY", "EURJPY", "GBPJPY", "CADJPY", "AUDJPY", "NZDJPY",
              "CHFJPY", "ZARJPY", "MXNJPY", "SGDJPY"}
 
@@ -47,9 +47,9 @@ TIMEFRAME_MINUTES = {
 }
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Public entry point
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 def parse_histdata(
     filepath: str,
@@ -79,7 +79,7 @@ def parse_histdata(
     if not path.exists():
         raise FileNotFoundError(f"File not found: {filepath}")
 
-    logger.info(f"Parsing {path.name} → {symbol} {target_tf}")
+    logger.info(f"Parsing {path.name} -> {symbol} {target_tf}")
 
     raw_text = _read_file(path)
     fmt      = _detect_format(raw_text)
@@ -92,16 +92,15 @@ def parse_histdata(
     if target_tf != "M1":
         df = _resample(df, target_tf)
 
-    logger.info(
         f"Parsed {len(df):,} {target_tf} bars | "
-        f"{df.index[0].date()} → {df.index[-1].date()}"
+        f"{df.index[0].date()} -> {df.index[-1].date()}"
     )
     return df
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Format detection
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 def _read_file(path: Path) -> str:
     """Read file, strip BOM, handle encodings."""
@@ -149,9 +148,9 @@ def _detect_format(text: str) -> str:
     return "generic_csv"
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Format-specific parsers
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 def _parse_dispatch(text: str, fmt: str) -> pd.DataFrame:
     parsers = {
@@ -195,10 +194,8 @@ def _parse_histdata_d1(text: str) -> pd.DataFrame:
 
 def _parse_dukascopy(text: str) -> pd.DataFrame:
     """
-    Formats:
-      03.01.2022 00:00:00,1.13218,1.13221,1.13200,1.13205,120
-      Time (UTC),Open,High,Low,Close,Volume   ← header line
-      Gmt time,Open,High,Low,Close,Volume      ← header line
+      Time (UTC),Open,High,Low,Close,Volume   <- header line
+      Gmt time,Open,High,Low,Close,Volume      <- header line
     """
     # Normalise: strip Windows line endings
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -233,7 +230,7 @@ def _parse_dukascopy(text: str) -> pd.DataFrame:
     def _parse_dt(s):
         s = str(s).strip()
         # Strip trailing milliseconds: keep only first 19 chars if timestamp is longer
-        # e.g. "03.01.2022 00:00:00.000" → "03.01.2022 00:00:00"
+        # e.g. "03.01.2022 00:00:00.000" -> "03.01.2022 00:00:00"
         if len(s) > 19 and s[19:20] in (".", ","):
             s = s[:19]
         for fmt in ("%d.%m.%Y %H:%M:%S", "%Y.%m.%d %H:%M:%S",
@@ -355,9 +352,9 @@ def _parse_generic_csv(text: str) -> pd.DataFrame:
     return _finalise(df)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Shared utilities
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 def _finalise(df: pd.DataFrame) -> pd.DataFrame:
     """Set index, cast numerics, sort, de-duplicate."""
