@@ -60,7 +60,7 @@ def should_execute_trade(
     last_trade_time:  Optional[datetime],
     open_positions:   int,
     ml_threshold:     float = 0.55,
-    timeframe_secs:   int   = 300,
+    timeframe_secs:   int   = 900,
 ) -> bool:
     """
     As specified in Task 2: Standardised execution gate.

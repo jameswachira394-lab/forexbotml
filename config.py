@@ -22,10 +22,10 @@ SYMBOL_CSV_MAP: dict = {
 DATA_PATH = os.environ.get("DATA_PATH", "data/raw/EURUSD_M5_mt5.csv")
 
 # ── Timeframes ────────────────────────────────────────────────────────────────
-BASE_TF         = "M5"
-HIGHER_TFS      = ["M15", "H1"]
+BASE_TF         = "M15"
+HIGHER_TFS      = ["M45", "H1"]
 HTF_FOR_TREND   = "H1"
-BASE_TF_MINUTES = 5
+BASE_TF_MINUTES = 15
 
 # ── Feature engineering ───────────────────────────────────────────────────────
 ATR_PERIOD     = 14

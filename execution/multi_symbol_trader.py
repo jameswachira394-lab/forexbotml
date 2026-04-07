@@ -75,7 +75,7 @@ class MultiSymbolTrader:
         broker:          MT5Broker,
         strategy_config: StrategyConfig,
         risk_config:     RiskConfig,
-        timeframe:       str   = "M5",
+        timeframe:       str   = "M15",
         warm_bars:       int   = 300,
         poll_secs:       float = 15.0,
     ):
@@ -206,7 +206,7 @@ class MultiSymbolTrader:
                 last_trade_time = state.last_trade_time,
                 open_positions  = open_pos_count,
                 ml_threshold    = self.engine.cfg.ml_threshold,
-                timeframe_secs  = 300 # M5
+                timeframe_secs  = cfg.BASE_TF_MINUTES * 60
             ):
                 return
 

@@ -186,6 +186,7 @@ def mode_backtest(args) -> None:
         slippage_pips        = cfg.SLIPPAGE_PIPS,
         max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
         daily_loss_limit_pct = cfg.DAILY_LOSS_LIMIT_PCT,
+        timeframe_mins       = cfg.BASE_TF_MINUTES,
     )
     bt  = BacktestEngine(b_cfg)
     res = bt.run(base_df, signals)

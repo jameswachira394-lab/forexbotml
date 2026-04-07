@@ -31,17 +31,18 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class BacktestConfig:
-    initial_balance:  float = 10_000.0
-    risk_per_trade:   float = 1.0           # % of equity per trade
+    initial_balance:  float = 100.0
+    risk_per_trade:   float = 2.0           # % of equity per trade
     spread_pips:      float = 1.5           # spread to add on entry
     slippage_pips:    float = 0.5           # additional slippage
     pip_value:        float = 10.0          # USD per pip per standard lot
     lot_step:         float = 0.01
     min_lot:          float = 0.01
     max_lot:          float = 10.0
-    max_trades_per_day: int = 5
+    max_trades_per_day: int = 15
     daily_loss_limit_pct: float = 3.0       # halt trading if day loss > X%
     ml_threshold:     float = 0.55
+    timeframe_mins:   int   = 15
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -119,7 +120,7 @@ class BacktestEngine:
                     last_trade_time = self._last_trade_time,
                     open_positions  = open_pos_count,
                     ml_threshold    = self.cfg.ml_threshold if hasattr(self.cfg, 'ml_threshold') else 0.55,
-                    timeframe_secs  = 300 # M5
+                    timeframe_secs  = self.cfg.timeframe_mins * 60
                 ) and self._can_trade():
                     self._open_new_trade(ts, sig, row)
 

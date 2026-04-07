@@ -1,1 +1,5 @@
 ts_logged,symbol,direction,entry_price,sl_price,tp_price,lot_size,exit_price,exit_reason,pnl_usd,equity_after,ml_probability,rule_reason
+2026-04-07 08:40:12,XAUUSD,LONG,4681.43,4679.910057174695,4685.30988565061,0.01,,OPEN,,,0.481,BullSweep+BOS+PB
+2026-04-07 08:45:13,XAUUSD,LONG,4681.71,,,,4685.26,TP,3.55,103.55,0.481,
+2026-04-07 08:50:14,GBPUSD,LONG,1.3273,1.3270148409294928,1.3273903181410143,0.08,,OPEN,,,0.481,BullSweep+BOS+PB
+2026-04-07 08:50:14,XAUUSD,LONG,4681.71,,,,4680.67,SL,-1.04,102.51,0.481,
