@@ -31,7 +31,7 @@ class StrategyConfig:
     ml_threshold:       float = 0.55
     sl_atr_mult:        float = 1.5
     rr_ratio:           float = 2.0
-    require_htf_align:  bool  = False
+    require_htf_align:  bool  = True
     max_sweep_bos_gap:  int   = 30    # max bars between sweep and current bar
     pullback_atr_min:   float = 0.1
     pullback_atr_max:   float = 3.5

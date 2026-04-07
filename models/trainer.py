@@ -37,7 +37,7 @@ def train_symbol(
     model_name:  str          = "forex_xgb",
     label_config = None,
     source:      str          = "csv",    # "csv" or "mt5"
-    force_retrain: bool       = False,
+    force_retrain: bool       = True,
     max_age_days: int         = 7,
 ) -> Optional[object]:
     """
