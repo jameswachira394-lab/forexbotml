@@ -10,6 +10,7 @@ Writes:
 """
 
 import csv
+import json
 import logging
 import logging.handlers
 import os
@@ -106,6 +107,20 @@ class TradeLogger:
         }
         self._append(row)
         self._print_open(row)
+        
+        # Standardized JSON Log for Task 4
+        json_log = {
+            "timestamp":     row["ts_logged"],
+            "symbol":        symbol,
+            "type":          row["direction"],
+            "entry_price":   entry_price,
+            "sl":            sl_price,
+            "tp":            tp_price,
+            "lot":           lot_size,
+            "probability":   round(ml_prob, 4),
+            "reason":        rule_reason,
+        }
+        logger.info(f"TRADE_OPEN_JSON: {json.dumps(json_log)}")
 
     def log_close(
         self,
@@ -136,6 +151,15 @@ class TradeLogger:
         }
         self._append(row)
         self._print_close(row)
+        
+        # Standardized JSON Log for Task 4
+        json_log = {
+            "symbol":       symbol,
+            "exit_price":   exit_price,
+            "profit":       round(pnl_usd, 2),
+            "exit_reason":  exit_reason,
+        }
+        logger.info(f"TRADE_CLOSE_JSON: {json.dumps(json_log)}")
 
     # ── Console dashboard ─────────────────────────────────────────
 

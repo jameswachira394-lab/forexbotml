@@ -19,7 +19,7 @@ SYMBOL_CSV_MAP: dict = {
 }
 
 # Fallback path used by --mode generate / backtest (single symbol)
-DATA_PATH = os.environ.get("DATA_PATH", "data/raw/EURUSD_M5.csv")
+DATA_PATH = os.environ.get("DATA_PATH", "data/raw/EURUSD_M5_mt5.csv")
 
 # ── Timeframes ────────────────────────────────────────────────────────────────
 BASE_TF         = "M5"
@@ -51,7 +51,7 @@ MIN_SWEEP_STRENGTH    = 0.05
 
 # ── ML Model ──────────────────────────────────────────────────────────────────
 MODEL_NAME   = "forex_xgb"
-ML_THRESHOLD = 0.55
+ML_THRESHOLD = 0.45
 
 # ── Strategy ──────────────────────────────────────────────────────────────────
 REQUIRE_HTF_ALIGN = False
@@ -59,9 +59,9 @@ PULLBACK_ATR_MIN  = 0.1
 PULLBACK_ATR_MAX  = 3.5
 
 # ── Risk management ───────────────────────────────────────────────────────────
-INITIAL_BALANCE      = 10_000.0
+INITIAL_BALANCE      = 100.0
 RISK_PER_TRADE_PCT   = 1.0
-MAX_TRADES_PER_DAY   = 5
+MAX_TRADES_PER_DAY   = 50
 MAX_OPEN_POSITIONS   = 3
 DAILY_LOSS_LIMIT_PCT = 3.0
 MIN_RR               = 1.5
@@ -81,5 +81,5 @@ MT5_PASSWORD = os.environ.get("MT5_PASSWORD", "M1we(dnA")
 MT5_SERVER   = os.environ.get("MT5_SERVER",   "FBS-Demo")
 
 # ── Training pipeline ─────────────────────────────────────────────────────────
-FORCE_RETRAIN      = False
+FORCE_RETRAIN      = True
 MAX_MODEL_AGE_DAYS = 7

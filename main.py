@@ -248,22 +248,20 @@ def mode_walkforward(args) -> None:
         rr_ratio          = cfg.RR_MIN,
         require_htf_align = cfg.REQUIRE_HTF_ALIGN,
     )
-    b_cfg = BacktestConfig(
-        initial_balance      = cfg.INITIAL_BALANCE,
-        risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
-        spread_pips          = cfg.SPREAD_PIPS,
-        slippage_pips        = cfg.SLIPPAGE_PIPS,
-    )
-
-    wf = WalkForwardValidator(n_splits=args.folds or 4, oos_fraction=0.15)
-    results = wf.run(
+    
+    validator = WalkForwardValidator(n_splits=args.folds)
+    results = validator.run(
         feature_df      = feat_df,
         raw_df          = base_df,
         label_config    = label_cfg,
         strategy_config = s_cfg,
-        backtest_config = b_cfg,
+        backtest_config = BacktestConfig(
+            initial_balance      = cfg.INITIAL_BALANCE,
+            risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
+            max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
+            ml_threshold         = cfg.ML_THRESHOLD,
+        ),
         model_class     = ForexMLModel,
-        model_kwargs    = {"model_name": f"{symbol}_{cfg.MODEL_NAME}_wf"},
     )
 
     print(f"\n{'='*50}")
@@ -285,6 +283,110 @@ def mode_walkforward(args) -> None:
             print(f"{'-'*50}")
             print(f"  Avg WR: {np.mean(wrs):.1%}  |  Avg PF: {np.mean(pfs):.2f}")
     print(f"{'='*50}\n")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Mode: verify
+# ─────────────────────────────────────────────────────────────────────────────
+
+def mode_verify(args) -> None:
+    """
+    Task 7: Run backtest and live sim on the same data and compare.
+    """
+    import pandas as pd
+    from data.loader import load_multi_timeframe
+    from features.engineer import engineer_features
+    from strategy.engine import StrategyEngine, StrategyConfig
+    from backtest.engine import BacktestEngine, BacktestConfig
+    from models.ml_model import ForexMLModel
+    from execution.multi_symbol_trader import MultiSymbolTrader
+    from execution.mt5_broker import MT5Broker
+    from risk.manager import RiskConfig
+
+    symbol = (args.symbol or cfg.SYMBOL).upper()
+    data_path = args.data or cfg.DATA_PATH
+    logger.info(f"=== VERIFY MODE | {symbol} ===")
+
+    tfs = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
+    base_df = tfs[cfg.BASE_TF]
+    htf_df = tfs.get(cfg.HTF_FOR_TREND)
+    feat_df = engineer_features(base_df, htf_df=htf_df)
+
+    model = ForexMLModel(model_name=f"{symbol}_{cfg.MODEL_NAME}")
+    try:
+        model.load()
+    except Exception:
+        logger.warning("Using generic model for verify.")
+        model = ForexMLModel(model_name=cfg.MODEL_NAME)
+        model.load()
+
+    s_cfg = StrategyConfig(
+        ml_threshold=cfg.ML_THRESHOLD,
+        sl_atr_mult=cfg.SL_BUFFER_ATR,
+        rr_ratio=cfg.RR_MIN,
+        require_htf_align=cfg.REQUIRE_HTF_ALIGN,
+    )
+
+    # 1. Run Backtest
+    b_cfg = BacktestConfig(
+        initial_balance=cfg.INITIAL_BALANCE,
+        risk_per_trade=cfg.RISK_PER_TRADE_PCT,
+        max_trades_per_day=cfg.MAX_TRADES_PER_DAY,
+        pip_value=cfg.PIP_VALUE,
+        ml_threshold=cfg.ML_THRESHOLD,
+    )
+    bt_engine = BacktestEngine(b_cfg)
+    strat = StrategyEngine(s_cfg, model=model)
+    signals = strat.scan_all(feat_df)
+    bt_res = bt_engine.run(base_df, signals, symbol=symbol)
+    bt_trades = bt_res.trades
+
+    # 2. Run Live simulation
+    # Clear previous logs/live_trades.csv to ensure clean comparison
+    live_log_path = Path("logs/live_trades.csv")
+    if live_log_path.exists():
+        live_log_path.unlink()
+
+    broker = MT5Broker() # Simulation mode
+    r_cfg = RiskConfig(
+        account_balance=cfg.INITIAL_BALANCE,
+        max_trades_per_day=cfg.MAX_TRADES_PER_DAY,
+        risk_per_trade_pct=cfg.RISK_PER_TRADE_PCT,
+        pip_value=cfg.PIP_VALUE,
+    )
+    trader = MultiSymbolTrader(
+        symbols=[symbol], model=model, broker=broker,
+        strategy_config=s_cfg, risk_config=r_cfg, poll_secs=0
+    )
+    
+    logger.info("Running parallel live simulation...")
+    warm_up = getattr(cfg, "LIVE_WARM_BARS", 300)
+    for i in range(warm_up, len(base_df)):
+        window = base_df.iloc[max(0, i-warm_up):i+1]
+        trader._on_new_bar(symbol, window)
+
+    # Read results
+    if live_log_path.exists():
+        live_df = pd.read_csv(live_log_path)
+        live_df = live_df[live_df['symbol'] == symbol]
+        # Filter for closed trades to match backtest list usually
+        live_trades_count = len(live_df[live_df['exit_reason'] != 'OPEN'])
+    else:
+        live_trades_count = 0
+
+    # 3. Compare
+    logger.info("\n" + "="*40)
+    logger.info("  VERIFICATION RESULTS")
+    logger.info("="*40)
+    logger.info(f"  Backtest Trades: {len(bt_trades)}")
+    logger.info(f"  Live Sim Trades: {live_trades_count}")
+    
+    if len(bt_trades) == live_trades_count:
+        logger.info("  [SUCCESS] Trade counts match perfectly.")
+    else:
+        logger.warning(f"  [DIVERGENCE] Difference: {abs(len(bt_trades) - live_trades_count)} trades.")
+        logger.warning("  Check logs/live_trades.csv and system logs for comparison.")
+    logger.info("="*40 + "\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -328,6 +430,31 @@ def mode_live(args) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Mode: report
+# ─────────────────────────────────────────────────────────────────────────────
+
+def mode_report(args) -> None:
+    from reporting.dashboard_generator import DashboardGenerator
+    symbol = (args.symbol or cfg.SYMBOL).upper()
+    
+    logger.info(f"=== REPORT MODE | {symbol} ===")
+    
+    try:
+        gen = DashboardGenerator(symbol=symbol)
+        output_path = gen.generate()
+        print(f"\n{'='*55}")
+        print(f"  DASHBOARD GENERATED SUCCESSFULLY")
+        print(f"  Symbol: {symbol}")
+        print(f"  Path:   {output_path}")
+        print(f"  (Open this file in your browser to view results)")
+        print(f"{'='*55}\n")
+    except Exception as e:
+        logger.error(f"Failed to generate dashboard: {e}")
+        if "template" in str(e).lower():
+            logger.error("Ensure reporting/template.html exists.")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Mode: sync
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -365,14 +492,16 @@ def parse_args():
     )
     p.add_argument(
         "--mode", required=True,
-        choices=["generate", "train", "backtest", "walkforward", "live", "sync"],
+        choices=["generate", "train", "backtest", "walkforward", "live", "sync", "report", "verify"],
         help=(
             "generate    → synthetic data (testing)\n"
             "train       → train from real HistData/Dukascopy CSVs\n"
             "backtest    → single-symbol historical simulation\n"
             "walkforward → expanding walk-forward validation\n"
             "live        → multi-symbol MT5 live trading\n"
-            "sync        → download data from MT5 terminal"
+            "sync        → download data from MT5 terminal\n"
+            "report      → generate HTML dashboard\n"
+            "verify      → Task 7: parity check backtest vs live"
         ),
     )
     p.add_argument("--symbol",  default=None,
@@ -407,6 +536,8 @@ def main():
         "walkforward": mode_walkforward,
         "live":        mode_live,
         "sync":        mode_sync,
+        "report":      mode_report,
+        "verify":      mode_verify,
     }
     dispatch[args.mode](args)
 

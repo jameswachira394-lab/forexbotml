@@ -92,6 +92,7 @@ def parse_histdata(
     if target_tf != "M1":
         df = _resample(df, target_tf)
 
+    logger.info(
         f"Parsed {len(df):,} {target_tf} bars | "
         f"{df.index[0].date()} -> {df.index[-1].date()}"
     )

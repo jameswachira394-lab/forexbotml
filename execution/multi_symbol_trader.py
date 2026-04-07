@@ -38,6 +38,7 @@ from features.engineer      import engineer_features
 from models.ml_model        import ForexMLModel
 from strategy.engine        import StrategyEngine, StrategyConfig, SignalResult
 from risk.manager           import RiskManager, RiskConfig
+from utils.trading          import calculate_profit, should_execute_trade
 import config as cfg
 
 logger = logging.getLogger(__name__)
@@ -54,6 +55,7 @@ class SymbolState:
         self.open_ticket:    Optional[int]         = None
         self.open_signal:    Optional[SignalResult] = None
         self.bars_since_entry: int                 = 0
+        self.last_trade_time:  Optional[pd.Timestamp] = None
 
 
 # -----------------------------------------------------------------------------
@@ -196,12 +198,19 @@ class MultiSymbolTrader:
             if sig is None:
                 return
 
-            logger.info(
-                f"[{symbol}] Signal: {'LONG' if sig.direction==1 else 'SHORT'} "
-                f"| p={sig.ml_probability:.2f} | {sig.rule_reason}"
-            )
+            # Step 4: standardised execution gate (Task 2)
+            open_pos_count = 1 if state.open_ticket is not None else 0
+            if not should_execute_trade(
+                signal_prob     = sig.ml_probability,
+                current_time    = df.index[idx],
+                last_trade_time = state.last_trade_time,
+                open_positions  = open_pos_count,
+                ml_threshold    = self.engine.cfg.ml_threshold,
+                timeframe_secs  = 300 # M5
+            ):
+                return
 
-            # Step 4: risk gate
+            # Step 5: risk gate
             if not self.risk.approve_trade(
                 entry_price = sig.entry_price,
                 sl_price    = sig.sl_price,
@@ -229,6 +238,7 @@ class MultiSymbolTrader:
                 state.open_ticket = result.ticket
                 state.open_signal = sig
                 state.bars_since_entry = 0
+                state.last_trade_time = df.index[idx]
                 self.risk.record_trade_open()
 
                 self.trade_log.log_open(
@@ -262,13 +272,20 @@ class MultiSymbolTrader:
             else:
                 exit_px = df.iloc[-1]["close"]
 
-            pip_size = 0.01 if "JPY" in state.symbol else 0.0001
-            pnl_pips = (exit_px - sig.entry_price) * sig.direction / pip_size
-            pnl_usd  = pnl_pips * cfg.PIP_VALUE * self.risk.calculate_lot_size(
+            # Accurate profit calculation (Task 1)
+            lot_size = self.risk.calculate_lot_size(
                 sig.entry_price, sig.sl_price, state.symbol
             )
+            pnl_usd = calculate_profit(
+                symbol      = state.symbol,
+                open_price  = sig.entry_price,
+                exit_price  = exit_px,
+                direction   = sig.direction,
+                lot_size    = lot_size,
+                pip_value   = cfg.PIP_VALUE
+            )
+            
             won = pnl_usd > 0
-
             self.risk.record_trade_close(pnl_usd, won)
             self.trade_log.log_close(
                 symbol       = state.symbol,

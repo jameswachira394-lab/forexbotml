@@ -212,6 +212,19 @@ class ForexMLModel:
         top10 = fi.head(10).to_string()
         logger.info(f"\nTop-10 Feature Importances:\n{top10}")
 
+        # ── Calibration data ──────────────────────────────────────
+        try:
+            calib_df = pd.DataFrame({'prob': proba_test, 'actual': y_test.values})
+            calib_df['bucket'] = (calib_df['prob'] * 10).astype(int).clip(0, 9)
+            prob_buckets = []
+            for b in range(10):
+                mask = calib_df['bucket'] == b
+                wr   = float(calib_df[mask]['actual'].mean()) if mask.any() else 0.0
+                cnt  = int(mask.sum())
+                prob_buckets.append([f"{b*10}-{(b+1)*10}%", wr, cnt])
+        except Exception:
+            prob_buckets = []
+
         self.meta = {
             "model_name":   self.model_name,
             "feature_names": self.feature_names,
@@ -222,6 +235,8 @@ class ForexMLModel:
             "test_brier":   float(test_brier),
             "n_train":      int(len(X_train)),
             "n_test":       int(len(X_test)),
+            "feature_importance": fi.to_dict(),
+            "prob_buckets": prob_buckets,
         }
 
         return {
