@@ -54,6 +54,7 @@ class SymbolState:
         self.symbol          = symbol
         self.open_ticket:    Optional[int]         = None
         self.open_signal:    Optional[SignalResult] = None
+        self.lot_size:       float                 = 0.0
         self.bars_since_entry: int                 = 0
         self.last_trade_time:  Optional[pd.Timestamp] = None
 
@@ -168,91 +169,96 @@ class MultiSymbolTrader:
 
     # ─── Bar callback (called from streamer thread) ───────────────────────────
 
-    def _on_new_bar(self, symbol: str, df: pd.DataFrame) -> None:
+    def _on_new_bar(self, symbol: str, df: pd.DataFrame, feat_df: Optional[pd.DataFrame] = None) -> None:
         """
         Called by MT5Streamer each time a new bar closes for *symbol*.
-        df: rolling window of completed bars (warm_bars deep).
+        Wrapped in a try-except block for production resiliency.
         """
-        with self._lock:
-            state = self._states[symbol]
+        try:
+            with self._lock:
+                state = self._states[symbol]
 
-            # Step 1: monitor any open position for this symbol
-            if state.open_ticket is not None:
-                self._monitor_position(state, df)
+                # Step 1: monitor any open position for this symbol
                 if state.open_ticket is not None:
-                    return   # still in trade; skip new entry check
+                    self._monitor_position(state, df)
+                    if state.open_ticket is not None:
+                        return   # still in trade; skip new entry check
 
-            # Step 2: feature engineering
-            try:
-                feat_df = engineer_features(df)
-            except Exception as exc:
-                logger.error(f"[{symbol}] Feature engineering failed: {exc}")
-                return
+                # Step 2: feature engineering (Skip if provided - Task 7 optimization)
+                if feat_df is None:
+                    try:
+                        feat_df = engineer_features(df)
+                    except Exception as exc:
+                        logger.error(f"[{symbol}] Feature engineering failed: {exc}")
+                        return
 
-            if len(feat_df) < 50:
-                return  # not enough warm-up data yet
+                if len(feat_df) < 50:
+                    return  # not enough warm-up data yet
 
-            # Step 3: strategy evaluation on the last bar
-            idx = len(feat_df) - 1
-            sig = self.engine.evaluate_bar(feat_df, idx)
-            if sig is None:
-                return
+                # Step 3: strategy evaluation on the last bar
+                idx = len(feat_df) - 1
+                sig = self.engine.evaluate_bar(feat_df, idx)
+                if sig is None:
+                    return
 
-            # Step 4: standardised execution gate (Task 2)
-            open_pos_count = 1 if state.open_ticket is not None else 0
-            if not should_execute_trade(
-                signal_prob     = sig.ml_probability,
-                current_time    = df.index[idx],
-                last_trade_time = state.last_trade_time,
-                open_positions  = open_pos_count,
-                ml_threshold    = self.engine.cfg.ml_threshold,
-                timeframe_secs  = cfg.BASE_TF_MINUTES * 60
-            ):
-                return
+                # Step 4: standardised execution gate (Task 2)
+                open_pos_count = 1 if state.open_ticket is not None else 0
+                if not should_execute_trade(
+                    signal_prob     = sig.ml_probability,
+                    current_time    = df.index[idx],
+                    last_trade_time = state.last_trade_time,
+                    open_positions  = open_pos_count,
+                    ml_threshold    = self.engine.cfg.ml_threshold,
+                    timeframe_secs  = cfg.BASE_TF_MINUTES * 60
+                ):
+                    return
 
-            # Step 5: risk gate
-            if not self.risk.approve_trade(
-                entry_price = sig.entry_price,
-                sl_price    = sig.sl_price,
-                tp_price    = sig.tp_price,
-                direction   = sig.direction,
-                symbol      = symbol,
-            ):
-                return
-
-            lot_size = self.risk.calculate_lot_size(
-                sig.entry_price, sig.sl_price, symbol
-            )
-
-            # Step 5: execute
-            result = self.broker.place_market_order(
-                symbol    = symbol,
-                direction = sig.direction,
-                volume    = lot_size,
-                sl        = sig.sl_price,
-                tp        = sig.tp_price,
-                comment   = f"MST p={sig.ml_probability:.2f}",
-            )
-
-            if result.success:
-                state.open_ticket = result.ticket
-                state.open_signal = sig
-                state.bars_since_entry = 0
-                state.last_trade_time = df.index[idx]
-                self.risk.record_trade_open()
-
-                self.trade_log.log_open(
-                    symbol      = symbol,
-                    direction   = sig.direction,
-                    entry_price = result.price,
+                # Step 5: risk gate
+                if not self.risk.approve_trade(
+                    entry_price = sig.entry_price,
                     sl_price    = sig.sl_price,
                     tp_price    = sig.tp_price,
-                    lot_size    = lot_size,
-                    ml_prob     = sig.ml_probability,
-                    rule_reason = sig.rule_reason,
+                    direction   = sig.direction,
+                    symbol      = symbol,
+                ):
+                    return
+
+                lot_size = self.risk.calculate_lot_size(
+                    sig.entry_price, sig.sl_price, symbol
                 )
-            else:
-                logger.error(f"[{symbol}] Order failed: {result.error_msg}")
+
+                # Step 5: execute
+                result = self.broker.place_market_order(
+                    symbol    = symbol,
+                    direction = sig.direction,
+                    volume    = lot_size,
+                    sl        = sig.sl_price,
+                    tp        = sig.tp_price,
+                    comment   = f"MST p={sig.ml_probability:.2f}",
+                )
+
+                if result.success:
+                    state.open_ticket = result.ticket
+                    state.open_signal = sig
+                    state.lot_size    = lot_size
+                    state.bars_since_entry = 0
+                    state.last_trade_time = df.index[idx]
+                    self.risk.record_trade_open()
+
+                    self.trade_log.log_open(
+                        symbol      = symbol,
+                        direction   = sig.direction,
+                        entry_price = result.price,
+                        sl_price    = sig.sl_price,
+                        tp_price    = sig.tp_price,
+                        lot_size    = lot_size,
+                        ml_prob     = sig.ml_probability,
+                        rule_reason = sig.rule_reason,
+                    )
+                else:
+                    logger.error(f"[{symbol}] Order failed: {result.error_msg}")
+        except Exception as e:
+            logger.exception(f"CRITICAL ERROR in _on_new_bar for {symbol}: {e}")
 
     # ─── Position monitor ─────────────────────────────────────────────────────
 
@@ -272,10 +278,8 @@ class MultiSymbolTrader:
             else:
                 exit_px = df.iloc[-1]["close"]
 
-            # Accurate profit calculation (Task 1)
-            lot_size = self.risk.calculate_lot_size(
-                sig.entry_price, sig.sl_price, state.symbol
-            )
+            # Accurate profit calculation (Fix: use stored lot_size)
+            lot_size = state.lot_size
             pnl_usd = calculate_profit(
                 symbol      = state.symbol,
                 open_price  = sig.entry_price,

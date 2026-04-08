@@ -85,6 +85,7 @@ class MT5Broker:
         self._connected = False
         self._sim_ticket_counter = 1000
         self._sim_positions: Dict[int, PositionInfo] = {}
+        self._sim_prices:    Dict[str, Dict[str, float]] = {} # symbol -> {bid, ask}
 
     # ──────────────────────────────────────────────────────────────
     # Connection
@@ -178,7 +179,7 @@ class MT5Broker:
             "magic":        self.MAGIC_NUMBER,
             "comment":      comment,
             "type_time":    mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": self._get_filling_mode(symbol),
         }
 
         result = mt5.order_send(request)
@@ -280,7 +281,7 @@ class MT5Broker:
             "magic":        self.MAGIC_NUMBER,
             "comment":      "ForexBot close",
             "type_time":    mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": self._get_filling_mode(symbol),
         }
         result = mt5.order_send(request)
         ok = (result is not None and result.retcode == mt5.TRADE_RETCODE_DONE)
@@ -289,6 +290,24 @@ class MT5Broker:
         else:
             logger.error(f"Failed to close position {ticket}: retcode={getattr(result,'retcode',None)}")
         return ok
+
+    def _get_filling_mode(self, symbol: str) -> int:
+        """Dynamically detect and map valid filling mode for the symbol."""
+        if not MT5_AVAILABLE:
+            return 0  # placeholder for simulation
+
+        sym_info = mt5.symbol_info(symbol)
+        if sym_info is None:
+            return 1 # Fallback to ORDER_FILLING_IOC equivalent value
+
+        mode = sym_info.filling_mode
+        # Use bitwise checks for SYMBOL_FILLING_* flags as per MT5 docs
+        if mode & 1: # SYMBOL_FILLING_FOK
+            return 0 # ORDER_FILLING_FOK
+        elif mode & 2: # SYMBOL_FILLING_IOC
+            return 1 # ORDER_FILLING_IOC
+        else:
+            return 2 # ORDER_FILLING_RETURN
 
     # ──────────────────────────────────────────────────────────────
     # Account info
@@ -302,7 +321,7 @@ class MT5Broker:
 
     def get_current_price(self, symbol: str) -> Optional[Dict[str, float]]:
         if not MT5_AVAILABLE:
-            return {"bid": 1.10000, "ask": 1.10015}
+            return self._sim_prices.get(symbol.upper(), {"bid": 1.10000, "ask": 1.10015})
         tick = mt5.symbol_info_tick(symbol)
         if tick is None:
             return None
@@ -312,10 +331,18 @@ class MT5Broker:
     # Simulation stubs (used when MT5 not available)
     # ──────────────────────────────────────────────────────────────
 
+    def update_sim_price(self, symbol: str, bid: float, ask: float):
+        """Task 7: Allow verification runner to inject prices."""
+        self._sim_prices[symbol.upper()] = {"bid": bid, "ask": ask}
+
     def _sim_place_order(self, symbol, direction, volume, sl, tp, comment) -> OrderResult:
         ticket = self._sim_ticket_counter
         self._sim_ticket_counter += 1
-        price  = 1.10000   # dummy price
+        
+        # Use injected price if available
+        prices = self.get_current_price(symbol)
+        price  = prices["ask"] if direction == 1 else prices["bid"]
+
         pos = PositionInfo(
             ticket=ticket, symbol=symbol, direction=direction,
             volume=volume, open_price=price, sl=sl, tp=tp, profit=0.0

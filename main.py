@@ -311,6 +311,8 @@ def mode_verify(args) -> None:
     tfs = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
     base_df = tfs[cfg.BASE_TF]
     htf_df = tfs.get(cfg.HTF_FOR_TREND)
+    
+    logger.info("Pre-calculating features for verification...")
     feat_df = engineer_features(base_df, htf_df=htf_df)
 
     model = ForexMLModel(model_name=f"{symbol}_{cfg.MODEL_NAME}")
@@ -343,7 +345,6 @@ def mode_verify(args) -> None:
     bt_trades = bt_res.trades
 
     # 2. Run Live simulation
-    # Clear previous logs/live_trades.csv to ensure clean comparison
     live_log_path = Path("logs/live_trades.csv")
     if live_log_path.exists():
         live_log_path.unlink()
@@ -360,17 +361,28 @@ def mode_verify(args) -> None:
         strategy_config=s_cfg, risk_config=r_cfg, poll_secs=0
     )
     
-    logger.info("Running parallel live simulation...")
-    warm_up = getattr(cfg, "LIVE_WARM_BARS", 300)
-    for i in range(warm_up, len(base_df)):
-        window = base_df.iloc[max(0, i-warm_up):i+1]
-        trader._on_new_bar(symbol, window)
+    logger.info("Running parallel live simulation (optimized)...")
+    # Align feat_df and base_df (feat_df has fewer rows due to NaN drop)
+    common_idx = feat_df.index.intersection(base_df.index)
+    
+    for i, ts in enumerate(common_idx):
+        row = base_df.loc[ts]
+        # Update sim broker with the current price to avoid retcode 10016
+        trader.broker.update_sim_price(symbol, bid=row["close"], ask=row["close"])
+        
+        # Feed the "current" rolling window and pre-calculated features
+        # Note: In verify mode, the window is just used for position monitoring (TP/SL)
+        # while the feat_row is used for signaling.
+        trader._on_new_bar(
+            symbol  = symbol, 
+            df      = base_df.loc[:ts].tail(300), 
+            feat_df = feat_df.loc[:ts].tail(50)
+        )
 
     # Read results
     if live_log_path.exists():
         live_df = pd.read_csv(live_log_path)
         live_df = live_df[live_df['symbol'] == symbol]
-        # Filter for closed trades to match backtest list usually
         live_trades_count = len(live_df[live_df['exit_reason'] != 'OPEN'])
     else:
         live_trades_count = 0
