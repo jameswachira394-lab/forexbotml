@@ -137,6 +137,13 @@ def _atr(df: pd.DataFrame, period: int = 14) -> pd.DataFrame:
         axis=1,
     ).max(axis=1)
     df["atr"] = tr.ewm(alpha=1 / period, min_periods=period, adjust=False).mean()
+    
+    # Volatility regime (normalized rolling 100-bar position)
+    atr_min = df["atr"].rolling(100, min_periods=20).min()
+    atr_max = df["atr"].rolling(100, min_periods=20).max()
+    df["atr_percentile"] = (df["atr"] - atr_min) / (atr_max - atr_min).replace(0, np.nan)
+    df["atr_percentile"] = df["atr_percentile"].fillna(0.5)
+
     return df
 
 
@@ -155,6 +162,9 @@ def _candle_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # Range expansion vs recent average
     df["range_expansion"] = df["bar_range"] / df["bar_range"].rolling(20, min_periods=5).mean()
+    
+    # Momentum persistence
+    df["momentum_persistence"] = df["candle_dir"].ewm(span=5, min_periods=1).mean()
     return df
 
 
@@ -681,7 +691,8 @@ def _fill_warmup_nans(df: pd.DataFrame) -> None:
         "london_high_dist", "london_low_dist",
         "ny_high_dist", "ny_low_dist",
         "fvg_size", "ob_size",
-        "body_pct", "body_avg", "range_expansion", "body_ratio"
+        "body_pct", "body_avg", "range_expansion", "body_ratio",
+        "atr_percentile", "momentum_persistence"
     ]
     for col in zero_cols:
         if col in df.columns:

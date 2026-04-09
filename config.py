@@ -31,27 +31,14 @@ BASE_TF_MINUTES = 15
 ATR_PERIOD     = 14
 SWING_LOOKBACK = 5
 
-# ── Labeling (SMC/ICT) ────────────────────────────────────────────────────────
-# Step 2: displacement candle must have body >= this multiple of ATR
-DISPLACEMENT_ATR_MULT = 1.5
-# Bars to search for displacement after sweep
-DISPLACEMENT_BARS     = 5
-# Bars to search for CHoCH/BOS after displacement
-CHOCH_BARS            = 15
-# Bars to search for FVG/OB entry fill after CHoCH
-ENTRY_BARS            = 20
-# Minimum risk/reward ratio — setups below this are skipped
-RR_MIN                = 2.0
-# ATR buffer added beyond sweep extreme for SL placement
-SL_BUFFER_ATR         = 0.2
-# Maximum SL width in ATR units (wider = discard setup)
-MAX_SL_ATR            = 3.0
-# Minimum sweep strength (ATR units price moved past the level)
-MIN_SWEEP_STRENGTH    = 0.05
+# ── Target Placement & Labeling ───────────────────────────────────────────────
+TP_ATR_MULT = 2.0
+SL_ATR_MULT = 1.0
+MAX_HOLD_BARS = 60
 
 # ── ML Model ──────────────────────────────────────────────────────────────────
 MODEL_NAME   = "forex_xgb"
-ML_THRESHOLD = 0.45
+ML_THRESHOLD = 0.55
 
 # ── Strategy ──────────────────────────────────────────────────────────────────
 REQUIRE_HTF_ALIGN = False
@@ -60,11 +47,11 @@ PULLBACK_ATR_MAX  = 3.5
 
 # ── Risk management ───────────────────────────────────────────────────────────
 INITIAL_BALANCE      = 100.0
-RISK_PER_TRADE_PCT   = 1.0
+BASE_RISK_PCT        = 1.0    # Base risk to be multiplied by win probability (fractional Kelly)
 MAX_TRADES_PER_DAY   = 50
 MAX_OPEN_POSITIONS   = 3
 DAILY_LOSS_LIMIT_PCT = 3.0
-MIN_RR               = 1.5
+MAX_DRAWDOWN_PCT     = 10.0   # Halve risk if DD exceeds this
 PIP_VALUE            = 10.0   # USD/pip/standard-lot for XXXUSD pairs
 
 # ── Backtest ──────────────────────────────────────────────────────────────────

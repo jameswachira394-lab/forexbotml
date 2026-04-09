@@ -112,16 +112,18 @@ class BacktestEngine:
             # ── Check for new signal ─────────────────────────────
             if ts in sig_map:
                 sig = sig_map[ts]
-                open_pos_count = 1 if self._open_trade is not None else 0
                 
-                if should_execute_trade(
-                    signal_prob     = sig.ml_probability,
-                    current_time    = ts,
-                    last_trade_time = self._last_trade_time,
-                    open_positions  = open_pos_count,
-                    ml_threshold    = self.cfg.ml_threshold if hasattr(self.cfg, 'ml_threshold') else 0.55,
-                    timeframe_secs  = self.cfg.timeframe_mins * 60
-                ) and self._can_trade():
+                # Temporal gap (cooldown) and max open positions check
+                can_execute = True
+                if self._last_trade_time is not None:
+                    time_diff = (ts - self._last_trade_time).total_seconds()
+                    if time_diff < (self.cfg.timeframe_mins * 60):
+                        can_execute = False
+                        
+                if self._open_trade is not None:
+                    can_execute = False
+
+                if can_execute and self._can_trade():
                     self._open_new_trade(ts, sig, row)
 
         # Force-close any remaining open trade at last bar
@@ -154,9 +156,9 @@ class BacktestEngine:
         else:
             entry = sig.entry_price - friction   # short sells at bid
 
-        # Lot size
+        # Lot size using probability-scaled sizing
         sl_dist_pips = abs(entry - sig.sl_price) / self._pip_size(self.symbol)
-        lot_size     = self._calc_lots(sl_dist_pips)
+        lot_size     = self._calc_lots(sl_dist_pips, sig.ml_probability)
 
         t = TradeRecord(
             entry_ts    = ts,
@@ -250,12 +252,29 @@ class BacktestEngine:
             self._day_trades  = 0
             self._day_pnl     = 0.0
 
-    def _calc_lots(self, sl_pips: float) -> float:
-        cfg = self.cfg
-        risk = self.equity * cfg.risk_per_trade / 100
-        raw  = risk / max(sl_pips * cfg.pip_value, 1e-9)
-        lots = round(raw / cfg.lot_step) * cfg.lot_step
-        return float(np.clip(lots, cfg.min_lot, cfg.max_lot))
+    def _calc_lots(self, sl_pips: float, win_prob: float) -> float:
+        import config as cfg
+        base_risk = getattr(cfg, "BASE_RISK_PCT", 1.0)
+        max_dd    = getattr(cfg, "MAX_DRAWDOWN_PCT", 10.0)
+
+        # Track Drawdown
+        peak = self.cfg.initial_balance
+        if self.equity_curve:
+            peak = max(peak, max(x["equity"] for x in self.equity_curve))
+        peak = max(peak, self.equity)
+        current_dd_pct = (peak - self.equity) / peak * 100.0 if peak > 0 else 0
+
+        # Drawdown Control & Kelly Style Fraction (Win Prob)
+        actual_risk_pct = base_risk
+        if current_dd_pct > max_dd:
+            actual_risk_pct *= 0.5
+        
+        actual_risk_pct *= win_prob
+
+        risk_amount = self.equity * (actual_risk_pct / 100.0)
+        raw_lots = risk_amount / max(sl_pips * self.cfg.pip_value, 1e-9)
+        lots = round(raw_lots / self.cfg.lot_step) * self.cfg.lot_step
+        return float(np.clip(lots, self.cfg.min_lot, self.cfg.max_lot))
 
     @staticmethod
     def _pip_size(symbol: str) -> float:

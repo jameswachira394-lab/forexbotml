@@ -201,30 +201,26 @@ class MultiSymbolTrader:
                 if sig is None:
                     return
 
-                # Step 4: standardised execution gate (Task 2)
-                open_pos_count = 1 if state.open_ticket is not None else 0
-                if not should_execute_trade(
-                    signal_prob     = sig.ml_probability,
-                    current_time    = df.index[idx],
-                    last_trade_time = state.last_trade_time,
-                    open_positions  = open_pos_count,
-                    ml_threshold    = self.engine.cfg.ml_threshold,
-                    timeframe_secs  = cfg.BASE_TF_MINUTES * 60
-                ):
-                    return
+                # Step 4: Cooldown gate
+                if state.last_trade_time is not None:
+                    time_diff = (df.index[idx] - state.last_trade_time).total_seconds()
+                    if time_diff < (getattr(cfg, "BASE_TF_MINUTES", 15) * 60):
+                        return
 
                 # Step 5: risk gate
                 if not self.risk.approve_trade(
                     entry_price = sig.entry_price,
                     sl_price    = sig.sl_price,
-                    tp_price    = sig.tp_price,
                     direction   = sig.direction,
                     symbol      = symbol,
                 ):
                     return
 
                 lot_size = self.risk.calculate_lot_size(
-                    sig.entry_price, sig.sl_price, symbol
+                    entry_price = sig.entry_price, 
+                    sl_price    = sig.sl_price, 
+                    win_prob    = sig.ml_probability,
+                    symbol      = symbol
                 )
 
                 # Step 5: execute

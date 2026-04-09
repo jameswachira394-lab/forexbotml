@@ -1,13 +1,14 @@
 """
 strategy/engine.py
 ------------------
-Optimized O(n) rule-based strategy engine using rolling-state scan.
-Detects: HTF trend alignment → liquidity sweep → BOS → pullback → ML gate.
+Probabilistic strategy engine.
+Replaces deterministic SMC boolean logic with pure Expected Value (EV) evaluation
+driven by the ML model's probabilities.
 """
 
 import logging
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, List
 
 import numpy as np
 import pandas as pd
@@ -23,184 +24,153 @@ class SignalResult:
     sl_price:        float
     tp_price:        float
     ml_probability:  float
+    expected_value:  float
     rule_reason:     str
-
-
-@dataclass
-class StrategyConfig:
-    ml_threshold:       float = 0.55
-    sl_atr_mult:        float = 1.5
-    rr_ratio:           float = 2.0
-    require_htf_align:  bool  = True
-    max_sweep_bos_gap:  int   = 30    # max bars between sweep and current bar
-    pullback_atr_min:   float = 0.1
-    pullback_atr_max:   float = 3.5
 
 
 class StrategyEngine:
     """
-    O(n) scanner: maintains rolling state for last seen sweep and BOS,
-    fires a signal when pullback conditions are met.
+    Evaluates every bar. Uses batch ML prediction to get P(win) for longs and shorts.
+    Calculates Expected Value (EV). Triggers tradeoff if EV > 0.
     """
 
-    def __init__(self, config: Optional[StrategyConfig] = None, model=None):
-        self.cfg   = config or StrategyConfig()
-        self.model = model
+    def __init__(self, config=None, model=None):
+        import config as cfg
+        self.tp_mult = getattr(cfg, "TP_ATR_MULT", 2.0)
+        self.sl_mult = getattr(cfg, "SL_ATR_MULT", 1.0)
+        # Add slight buffer above 0 EV to overcome spread/fees
+        self.min_ev  = getattr(cfg, "MIN_EV", 0.05) 
+        self.model   = model
 
-    # ── Batch scan (backtest) ─────────────────────────────────────────────────
+    # ── Batch scan (backtest/walkforward) ─────────────────────────────────────────────────
 
-    def scan_all(self, df: pd.DataFrame) -> list:
-        """O(n) scan. Returns list[SignalResult]."""
+    def scan_all(self, df: pd.DataFrame) -> List[SignalResult]:
+        """O(n) scan using batched ML probabilities for speed."""
         signals = []
         size    = len(df)
-        cfg     = self.cfg
+        
+        if size == 0:
+            return signals
 
-        close   = df["close"].values
-        atr     = df["atr"].values
-        bos_arr = df["bos"].values
-        bull_sw = df["bull_sweep"].values
-        bear_sw = df["bear_sweep"].values
-        htf_tr  = df["htf_trend"].values if "htf_trend" in df.columns else np.zeros(size)
+        close = df["close"].values
+        atr   = df["atr"].values
+        htf_tr = df["htf_trend"].values if "htf_trend" in df.columns else np.zeros(size)
 
-        last_bull_sweep_i = -1
-        last_bear_sweep_i = -1
-        last_bull_bos_i   = -1
-        last_bear_bos_i   = -1
+        # Batch predict Longs
+        df_long = df.copy()
+        df_long["direction"] = 1
+        probs_long = self._batch_ml_prob(df_long)
+
+        # Batch predict Shorts
+        df_short = df.copy()
+        df_short["direction"] = -1
+        probs_short = self._batch_ml_prob(df_short)
 
         for i in range(1, size):
-            prev = i - 1
+            if atr[i] < 1e-9:
+                continue
 
-            # Update sweep / BOS memory from previous bar
-            if bull_sw[prev]:  last_bull_sweep_i = prev
-            if bear_sw[prev]:  last_bear_sweep_i = prev
-            if bos_arr[prev] == 1:  last_bull_bos_i = prev
-            if bos_arr[prev] == -1: last_bear_bos_i = prev
+            bar_atr = float(atr[i])
+            ep      = float(close[i])
 
-            bar_atr = max(float(atr[i]), 1e-9)
+            # ── LONG Evaluation ──
+            prob_L = probs_long[i]
+            ev_L   = (prob_L * self.tp_mult) - ((1.0 - prob_L) * self.sl_mult)
 
-            # ── LONG setup ────────────────────────────────────────
-            if (
-                last_bull_sweep_i >= 0
-                and last_bull_bos_i > last_bull_sweep_i
-                and (i - last_bull_sweep_i) <= cfg.max_sweep_bos_gap
-                and (not cfg.require_htf_align or htf_tr[i] >= 0)
-            ):
-                bos_close = close[last_bull_bos_i]
-                pb_dist   = (bos_close - close[i]) / bar_atr
+            # Trend filter (optional: rely entirely on ML or keep light structural guidance)
+            if ev_L > self.min_ev and htf_tr[i] >= 0:
+                sl = ep - self.sl_mult * bar_atr
+                tp = ep + self.tp_mult * bar_atr
+                signals.append(SignalResult(
+                    timestamp=df.index[i], direction=1,
+                    entry_price=ep, sl_price=sl, tp_price=tp,
+                    ml_probability=prob_L, expected_value=ev_L,
+                    rule_reason="+EV Long"
+                ))
 
-                if cfg.pullback_atr_min <= pb_dist <= cfg.pullback_atr_max:
-                    ep   = float(close[i])
-                    sl   = ep - cfg.sl_atr_mult * bar_atr
-                    tp   = ep + abs(ep - sl) * cfg.rr_ratio
-                    prob = self._ml_prob(df, i, direction=1)
+            # ── SHORT Evaluation ──
+            prob_S = probs_short[i]
+            ev_S   = (prob_S * self.tp_mult) - ((1.0 - prob_S) * self.sl_mult)
 
-                    if prob >= cfg.ml_threshold:
-                        signals.append(SignalResult(
-                            timestamp=df.index[i], direction=1,
-                            entry_price=ep, sl_price=sl, tp_price=tp,
-                            ml_probability=prob, rule_reason="BullSweep+BOS+PB",
-                        ))
-                    # Reset regardless of ML filter to avoid duplicate signals
-                    last_bull_sweep_i = -1
-                    last_bull_bos_i   = -1
+            if ev_S > self.min_ev and htf_tr[i] <= 0:
+                sl = ep + self.sl_mult * bar_atr
+                tp = ep - self.tp_mult * bar_atr
+                signals.append(SignalResult(
+                    timestamp=df.index[i], direction=-1,
+                    entry_price=ep, sl_price=sl, tp_price=tp,
+                    ml_probability=prob_S, expected_value=ev_S,
+                    rule_reason="+EV Short"
+                ))
 
-            # ── SHORT setup ───────────────────────────────────────
-            if (
-                last_bear_sweep_i >= 0
-                and last_bear_bos_i > last_bear_sweep_i
-                and (i - last_bear_sweep_i) <= cfg.max_sweep_bos_gap
-                and (not cfg.require_htf_align or htf_tr[i] <= 0)
-            ):
-                bos_close = close[last_bear_bos_i]
-                pb_dist   = (close[i] - bos_close) / bar_atr
-
-                if cfg.pullback_atr_min <= pb_dist <= cfg.pullback_atr_max:
-                    ep   = float(close[i])
-                    sl   = ep + cfg.sl_atr_mult * bar_atr
-                    tp   = ep - abs(sl - ep) * cfg.rr_ratio
-                    prob = self._ml_prob(df, i, direction=-1)
-
-                    if prob >= cfg.ml_threshold:
-                        signals.append(SignalResult(
-                            timestamp=df.index[i], direction=-1,
-                            entry_price=ep, sl_price=sl, tp_price=tp,
-                            ml_probability=prob, rule_reason="BearSweep+BOS+PB",
-                        ))
-                    last_bear_sweep_i = -1
-                    last_bear_bos_i   = -1
-
-        logger.info(f"Strategy scan: {len(signals)} signals on {size:,} bars")
+        logger.info(f"Strategy scan: {len(signals)} +EV signals generated over {size:,} bars")
         return signals
 
     # ── Single bar (live) ─────────────────────────────────────────────────────
 
     def evaluate_bar(self, df: pd.DataFrame, idx: int) -> Optional[SignalResult]:
-        """Evaluate only the last bar. Maintains no state — caller manages window."""
-        cfg  = self.cfg
-        size = len(df)
-        if idx < 2:
+        """Evaluate only the last bar (used in live execution)."""
+        if idx < 0 or idx >= len(df):
             return None
 
-        close   = df["close"].values
-        atr_v   = df["atr"].values
-        bos_arr = df["bos"].values
-        bull_sw = df["bull_sweep"].values
-        bear_sw = df["bear_sweep"].values
-        htf_tr  = df["htf_trend"].values if "htf_trend" in df.columns else np.zeros(size)
+        # Require a valid ATR
+        bar_atr = df["atr"].iloc[idx]
+        if bar_atr < 1e-9:
+            return None
+            
+        ep = float(df["close"].iloc[idx])
+        htf_tr = df["htf_trend"].iloc[idx] if "htf_trend" in df.columns else 0
 
-        lookback = min(idx, cfg.max_sweep_bos_gap)
+        # Evaluate Long
+        prob_L = self._single_ml_prob(df, idx, direction=1)
+        ev_L   = (prob_L * self.tp_mult) - ((1.0 - prob_L) * self.sl_mult)
 
-        def _last_idx_where(arr, val, end):
-            for j in range(end - 1, end - lookback - 1, -1):
-                if j >= 0 and arr[j] == val:
-                    return j
-            return -1
+        # Evaluate Short
+        prob_S = self._single_ml_prob(df, idx, direction=-1)
+        ev_S   = (prob_S * self.tp_mult) - ((1.0 - prob_S) * self.sl_mult)
 
-        bull_sw_i = _last_idx_where(bull_sw, 1, idx)
-        bear_sw_i = _last_idx_where(bear_sw, 1, idx)
+        # Return the best option if it meets criteria
+        if ev_L > self.min_ev and ev_L > ev_S and htf_tr >= 0:
+            sl = ep - self.sl_mult * bar_atr
+            tp = ep + self.tp_mult * bar_atr
+            return SignalResult(
+                timestamp=df.index[idx], direction=1,
+                entry_price=ep, sl_price=sl, tp_price=tp,
+                ml_probability=prob_L, expected_value=ev_L,
+                rule_reason="+EV Long"
+            )
 
-        bar_atr = max(float(atr_v[idx]), 1e-9)
-
-        # LONG
-        if bull_sw_i >= 0 and (not cfg.require_htf_align or htf_tr[idx] >= 0):
-            bull_bos_i = _last_idx_where(bos_arr, 1, idx)
-            if bull_bos_i > bull_sw_i:
-                pb = (close[bull_bos_i] - close[idx]) / bar_atr
-                if cfg.pullback_atr_min <= pb <= cfg.pullback_atr_max:
-                    ep   = float(close[idx])
-                    sl   = ep - cfg.sl_atr_mult * bar_atr
-                    tp   = ep + abs(ep - sl) * cfg.rr_ratio
-                    prob = self._ml_prob(df, idx, direction=1)
-                    if prob >= cfg.ml_threshold:
-                        return SignalResult(df.index[idx], 1, ep, sl, tp, prob, "BullSweep+BOS+PB")
-
-        # SHORT
-        if bear_sw_i >= 0 and (not cfg.require_htf_align or htf_tr[idx] <= 0):
-            bear_bos_i = _last_idx_where(bos_arr, -1, idx)
-            if bear_bos_i > bear_sw_i:
-                pb = (close[idx] - close[bear_bos_i]) / bar_atr
-                if cfg.pullback_atr_min <= pb <= cfg.pullback_atr_max:
-                    ep   = float(close[idx])
-                    sl   = ep + cfg.sl_atr_mult * bar_atr
-                    tp   = ep - abs(sl - ep) * cfg.rr_ratio
-                    prob = self._ml_prob(df, idx, direction=-1)
-                    if prob >= cfg.ml_threshold:
-                        return SignalResult(df.index[idx], -1, ep, sl, tp, prob, "BearSweep+BOS+PB")
+        if ev_S > self.min_ev and ev_S > ev_L and htf_tr <= 0:
+            sl = ep + self.sl_mult * bar_atr
+            tp = ep - self.tp_mult * bar_atr
+            return SignalResult(
+                timestamp=df.index[idx], direction=-1,
+                entry_price=ep, sl_price=sl, tp_price=tp,
+                ml_probability=prob_S, expected_value=ev_S,
+                rule_reason="+EV Short"
+            )
 
         return None
 
-    # ── ML helper ─────────────────────────────────────────────────────────────
+    # ── ML helpers ────────────────────────────────────────────────────────────
 
-    def _ml_prob(self, df: pd.DataFrame, i: int, direction: int) -> float:
-        """Get model probability for the bar at index i, with a given direction."""
-        if self.model is None:
-            return 1.0
+    def _batch_ml_prob(self, df: pd.DataFrame) -> np.ndarray:
+        """Batch predict array of probabilities."""
+        if self.model is None or not hasattr(self.model, "predict_proba"):
+            return np.zeros(len(df))
         try:
-            # Create a 1-row DataFrame copy and inject metadata features known at entry-time
+            return self.model.predict_proba(df)
+        except Exception as exc:
+            logger.warning(f"ML batch predict failed: {exc}")
+            return np.zeros(len(df))
+
+    def _single_ml_prob(self, df: pd.DataFrame, i: int, direction: int) -> float:
+        """Get model probability for the bar at index i, with a given direction."""
+        if self.model is None or not hasattr(self.model, "predict_proba"):
+            return 0.0
+        try:
             row = df.iloc[[i]].copy()
             row["direction"] = direction
-            
             return float(self.model.predict_proba(row)[0])
         except Exception as exc:
-            logger.warning(f"ML predict failed at bar {i}: {exc}")
+            logger.warning(f"ML single predict failed at bar {i}: {exc}")
             return 0.0

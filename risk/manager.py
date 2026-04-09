@@ -64,7 +64,6 @@ class RiskManager:
         self,
         entry_price:  float,
         sl_price:     float,
-        tp_price:     float,
         direction:    int,     # +1 long, -1 short
         symbol:       str = "EURUSD",
     ) -> bool:
@@ -118,24 +117,37 @@ class RiskManager:
         self,
         entry_price: float,
         sl_price:    float,
+        win_prob:    float = 0.55,
         symbol:      str = "EURUSD",
         lot_step:    float = 0.01,
         min_lot:     float = 0.01,
         max_lot:     float = 10.0,
     ) -> float:
-        """
-        Position size in lots so that a 1-SL loss equals exactly
-        risk_per_trade_pct % of current equity.
+        import config as cfg
+        base_risk = getattr(cfg, "BASE_RISK_PCT", 1.0)
+        max_dd    = getattr(cfg, "MAX_DRAWDOWN_PCT", 10.0)
 
-        Formula:
-            lots = (equity * risk_pct/100) / (sl_pips * pip_value_per_lot)
-        """
-        risk_amount = self.equity * (self.cfg.risk_per_trade_pct / 100.0)
+        # Track Drawdown
+        if not hasattr(self, "peak_equity"):
+            self.peak_equity = self.cfg.account_balance
+        self.peak_equity = max(self.peak_equity, self.equity)
+        
+        current_dd_pct = 0.0
+        if self.peak_equity > 0:
+            current_dd_pct = (self.peak_equity - self.equity) / self.peak_equity * 100.0
+
+        # Drawdown Control: halve risk if in deep drawdown
+        actual_risk_pct = base_risk
+        if current_dd_pct > max_dd:
+            actual_risk_pct *= 0.5
+
+        # Probability-weighted fractional scaling
+        # (risk less on lower probability trades, more on high probability)
+        actual_risk_pct *= win_prob
+
+        risk_amount = self.equity * (actual_risk_pct / 100.0)
         
         if "XAUUSD" in symbol.upper():
-            # Profit = (p2 - p1) * lot * 100
-            # risk_amount = abs(entry - sl) * lot * 100
-            # lot = risk_amount / (abs(entry - sl) * 100)
             sl_dist = abs(entry_price - sl_price)
             raw_lots = risk_amount / (max(sl_dist, 0.01) * 100.0)
         else:

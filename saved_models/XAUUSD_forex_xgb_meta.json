@@ -13,7 +13,9 @@
     "lower_wick",
     "candle_dir",
     "range_expansion",
+    "momentum_persistence",
     "atr",
+    "atr_percentile",
     "hh",
     "hl",
     "lh",
@@ -47,110 +49,112 @@
     "htf_trend",
     "direction"
   ],
-  "threshold": 0.4880550503730774,
-  "cv_auc_mean": 0.75,
-  "cv_auc_std": 0.25,
-  "test_auc": 1.0,
-  "test_brier": 0.21945390105247498,
-  "n_train": 25,
-  "n_test": 7,
+  "threshold": 0.47271162271499634,
+  "cv_auc_mean": 0.7896866900769157,
+  "cv_auc_std": 0.030373529649922456,
+  "test_auc": 0.8202457272163408,
+  "test_brier": 0.17499293386936188,
+  "n_train": 132518,
+  "n_test": 41412,
   "feature_importance": {
-    "fvg_bull": 0.3549022972583771,
-    "direction": 0.2767559885978699,
-    "dist_prev_50_high": 0.21285521984100342,
-    "candle_dir": 0.15049949288368225,
-    "upper_wick": 0.004987036809325218,
-    "is_ny_open": 0.0,
-    "is_london_open": 0.0,
-    "body_pct": 0.0,
-    "mins_since_session_open": 0.0,
-    "body_ratio": 0.0,
-    "session": 0.0,
-    "weekday": 0.0,
-    "hour": 0.0,
-    "atr": 0.0,
-    "range_expansion": 0.0,
-    "lower_wick": 0.0,
+    "hour": 0.11137357354164124,
+    "session": 0.08405047655105591,
+    "bos": 0.07041597366333008,
+    "direction": 0.06509368121623993,
+    "mins_since_session_open": 0.05592254921793938,
+    "ny_high_dist": 0.0507819838821888,
+    "ny_low_dist": 0.03834063932299614,
+    "is_london_open": 0.03719460219144821,
+    "bull_sweep": 0.03706426918506622,
+    "london_low_dist": 0.03648695349693298,
+    "atr_percentile": 0.03430985286831856,
+    "is_ny_open": 0.034172650426626205,
+    "dist_to_last_sl": 0.033499184995889664,
+    "london_high_dist": 0.03292100504040718,
+    "asia_high_dist": 0.03246019780635834,
+    "dist_to_last_sh": 0.030902577564120293,
+    "entry_in_discount": 0.029600033536553383,
+    "asia_low_dist": 0.021685825660824776,
+    "trend": 0.021006010472774506,
+    "dist_prev_50_high": 0.02051309496164322,
+    "bear_sweep": 0.020117001608014107,
+    "dist_prev_50_low": 0.016874507069587708,
+    "htf_trend": 0.010513952933251858,
+    "sweep_strength": 0.007979626767337322,
+    "upper_wick": 0.007146256510168314,
+    "atr": 0.00707325991243124,
+    "lower_wick": 0.006373319774866104,
+    "weekday": 0.00575596559792757,
+    "momentum_persistence": 0.005475920159369707,
+    "dist_prev_day_low": 0.004764605779200792,
+    "dist_prev_day_high": 0.0045555755496025085,
+    "range_expansion": 0.0036820450332015753,
+    "fvg_size": 0.003472774289548397,
+    "hl": 0.003448351053521037,
+    "lh": 0.0029034239705652,
+    "eq_low": 0.002889110939577222,
+    "ll": 0.0027023465372622013,
+    "body_ratio": 0.002382672857493162,
+    "body_pct": 0.002308622235432267,
+    "eq_high": 0.0017855498008430004,
+    "candle_dir": 0.0,
     "hh": 0.0,
-    "bos": 0.0,
-    "trend": 0.0,
-    "lh": 0.0,
-    "hl": 0.0,
-    "dist_to_last_sh": 0.0,
-    "dist_to_last_sl": 0.0,
-    "eq_high": 0.0,
-    "eq_low": 0.0,
-    "dist_prev_50_low": 0.0,
-    "dist_prev_day_high": 0.0,
     "choch": 0.0,
-    "ll": 0.0,
-    "bull_sweep": 0.0,
-    "dist_prev_day_low": 0.0,
-    "bear_sweep": 0.0,
-    "sweep_strength": 0.0,
-    "london_high_dist": 0.0,
-    "london_low_dist": 0.0,
-    "asia_high_dist": 0.0,
-    "asia_low_dist": 0.0,
-    "ny_low_dist": 0.0,
-    "ny_high_dist": 0.0,
-    "fvg_size": 0.0,
-    "fvg_bear": 0.0,
     "ob_size": 0.0,
-    "entry_in_discount": 0.0,
-    "impulse": 0.0,
-    "htf_trend": 0.0
+    "fvg_bear": 0.0,
+    "fvg_bull": 0.0,
+    "impulse": 0.0
   },
   "prob_buckets": [
     [
       "0-10%",
-      0.0,
-      0
+      0.0012738853503184713,
+      1570
     ],
     [
       "10-20%",
-      0.0,
-      0
+      0.025879230258792303,
+      4521
     ],
     [
       "20-30%",
-      0.0,
-      0
+      0.08895078922934076,
+      5385
     ],
     [
       "30-40%",
-      0.0,
-      0
+      0.20096525096525097,
+      5180
     ],
     [
       "40-50%",
-      0.25,
-      4
+      0.3151958542905045,
+      6561
     ],
     [
       "50-60%",
-      1.0,
-      3
+      0.38634333120612635,
+      7835
     ],
     [
       "60-70%",
-      0.0,
-      0
+      0.5080091533180778,
+      3496
     ],
     [
       "70-80%",
-      0.0,
-      0
+      0.6676036542515812,
+      2846
     ],
     [
       "80-90%",
-      0.0,
-      0
+      0.8593392214589467,
+      3057
     ],
     [
       "90-100%",
-      0.0,
-      0
+      0.9906347554630593,
+      961
     ]
   ]
 }

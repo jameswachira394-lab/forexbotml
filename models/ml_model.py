@@ -120,10 +120,11 @@ class ForexMLModel:
         """
         self.feature_names = list(X.columns)
         n = len(X)
-        split_idx = int(n * (1 - test_size))
+        test_idx = int(n * (1 - test_size))
+        val_idx  = int(test_idx * 0.8)  # Reserve 20% of the non-test data for validation
 
-        X_train, X_test = X.iloc[:split_idx], X.iloc[split_idx:]
-        y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:]
+        X_train, X_val, X_test = X.iloc[:val_idx], X.iloc[val_idx:test_idx], X.iloc[test_idx:]
+        y_train, y_val, y_test = y.iloc[:val_idx], y.iloc[val_idx:test_idx], y.iloc[test_idx:]
 
         logger.info(f"Train: {len(X_train):,} | Test: {len(X_test):,}")
         logger.info(f"Label balance (train) – 1: {y_train.mean():.1%}")
@@ -178,24 +179,25 @@ class ForexMLModel:
         else:
             estimator.fit(X_train, y_train)
 
-        # Probability calibration using cross-validated approach
-        # CalibratedClassifierCV with cv=None uses cross-validation internally
+        # Probability calibration using cross-validated approach with No-Leakage prefit on Validation Set
         try:
-            calibrated = CalibratedClassifierCV(estimator, method="sigmoid", cv=None)
-            calibrated.fit(X_train, y_train)
+            calibrated = CalibratedClassifierCV(estimator, method="sigmoid", cv="prefit")
+            calibrated.fit(X_val, y_val)
             self.pipeline = calibrated
-        except Exception:
+        except Exception as e:
             # If calibration fails (tiny dataset), use the raw estimator
-            logger.warning("Calibration failed, using raw estimator.")
+            logger.warning(f"Calibration failed ({e}), using raw estimator.")
             self.pipeline = estimator
 
         # ── Test-set evaluation ───────────────────────────────────
+        # Find optimal threshold using Validation set (prevents leakage into Test set)
+        proba_val = self.pipeline.predict_proba(X_val)[:, 1]
+        self.threshold = self._find_optimal_threshold(y_val, proba_val)
+        
+        # Evaluate on strictly unseen Test set
         proba_test  = self.pipeline.predict_proba(X_test)[:, 1]
         test_auc    = roc_auc_score(y_test, proba_test)
         test_brier  = brier_score_loss(y_test, proba_test)
-
-        # Find optimal threshold (maximise F1)
-        self.threshold = self._find_optimal_threshold(y_test, proba_test)
 
         y_pred = (proba_test >= self.threshold).astype(int)
         report = classification_report(y_test, y_pred, output_dict=True)

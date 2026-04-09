@@ -60,16 +60,7 @@ def mode_train(args) -> None:
 
     logger.info("=== TRAINING MODE ===")
 
-    label_cfg = LabelConfig(
-        displacement_atr_mult = cfg.DISPLACEMENT_ATR_MULT,
-        displacement_bars     = cfg.DISPLACEMENT_BARS,
-        choch_bars            = cfg.CHOCH_BARS,
-        entry_bars            = cfg.ENTRY_BARS,
-        rr_min                = cfg.RR_MIN,
-        sl_buffer_atr         = cfg.SL_BUFFER_ATR,
-        max_sl_atr            = cfg.MAX_SL_ATR,
-        min_sweep_strength    = cfg.MIN_SWEEP_STRENGTH,
-    )
+    label_cfg = LabelConfig()
 
     # Build the CSV map: CLI overrides config
     sym_csv_map = dict(cfg.SYMBOL_CSV_MAP)
@@ -233,16 +224,7 @@ def mode_walkforward(args) -> None:
 
     feat_df = engineer_features(base_df, htf_df=htf_df)
 
-    label_cfg = LabelConfig(
-        displacement_atr_mult = cfg.DISPLACEMENT_ATR_MULT,
-        displacement_bars     = cfg.DISPLACEMENT_BARS,
-        choch_bars            = cfg.CHOCH_BARS,
-        entry_bars            = cfg.ENTRY_BARS,
-        rr_min                = cfg.RR_MIN,
-        sl_buffer_atr         = cfg.SL_BUFFER_ATR,
-        max_sl_atr            = cfg.MAX_SL_ATR,
-        min_sweep_strength    = cfg.MIN_SWEEP_STRENGTH,
-    )
+    label_cfg = LabelConfig()
     s_cfg = StrategyConfig(
         ml_threshold      = cfg.ML_THRESHOLD,
         sl_atr_mult       = getattr(cfg, 'SL_BUFFER_ATR', 0.2),

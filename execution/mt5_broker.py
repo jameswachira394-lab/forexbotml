@@ -164,17 +164,25 @@ class MT5Broker:
         if tick is None:
             return OrderResult(success=False, error_msg="Could not fetch tick data")
 
+        digits = sym_info.digits
+        vol_step = sym_info.volume_step if sym_info.volume_step > 0 else 0.01
+
         order_type = mt5.ORDER_TYPE_BUY if direction == 1 else mt5.ORDER_TYPE_SELL
         price      = tick.ask if direction == 1 else tick.bid
+
+        # Round values to symbol specifications to prevent 10016 / 10014 errors
+        vol_rounded = round(float(volume) / vol_step) * vol_step
+        sl_rounded = round(float(sl), digits)
+        tp_rounded = round(float(tp), digits)
 
         request = {
             "action":       mt5.TRADE_ACTION_DEAL,
             "symbol":       symbol,
-            "volume":       float(volume),
+            "volume":       float(vol_rounded),
             "type":         order_type,
             "price":        price,
-            "sl":           float(sl),
-            "tp":           float(tp),
+            "sl":           sl_rounded,
+            "tp":           tp_rounded,
             "deviation":    10,          # max price deviation in points
             "magic":        self.MAGIC_NUMBER,
             "comment":      comment,
