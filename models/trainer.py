@@ -84,32 +84,26 @@ def train_symbol(
     if source == "mt5":
         import config as cfg
         from data.loader import MT5SyncLoader
-        
-        # Determine sync path; try first CSV in list or default to data/raw/{symbol}_mt5.csv
+
         sync_path = csv_paths[0] if csv_paths else f"data/raw/{symbol}_{base_tf}_mt5.csv"
-        
+
         logger.info(f"[{symbol}] Syncing data from MT5 to {sync_path}...")
-        
-        # MT5 Sync Logic (fetches base_tf and htf)
+
         MT5SyncLoader.sync_symbol(
             symbol    = symbol,
             timeframe = base_tf,
-            n_bars    = 100_000,   # Deep fetch for training
+            n_bars    = 100_000,
             save_path = sync_path,
             login     = cfg.MT5_LOGIN,
             password  = cfg.MT5_PASSWORD,
             server    = cfg.MT5_SERVER,
         )
-        
-        # Re-fetch for HTF if it's different and not already covered by resampling
-        # (Though OHLCVLoader handles resampling better, SyncMT5Loader can be used twice)
-        # For simplicity, we just use the synced CSV as our source now
+
         csv_paths = [sync_path]
-        # Fall-through to CSV loader logic below to handle parsing/resampling uniformly
-        source = "csv" 
+        source    = "csv"
 
     if source == "csv":
-        # ── 1. Load and merge all CSVs ────────────────────────────────────────────
+        # ── 1. Load and merge all CSVs ────────────────────────────────────────
         frames = []
         for p in csv_paths:
             try:
@@ -125,21 +119,23 @@ def train_symbol(
 
         m1_df = pd.concat(frames).sort_index()
         m1_df = m1_df[~m1_df.index.duplicated(keep="last")]
-        logger.info(f"[{symbol}] Total M1 bars: {len(m1_df):,} "
-                    f"| {m1_df.index[0].date()} -> {m1_df.index[-1].date()}")
+        logger.info(
+            f"[{symbol}] Total M1 bars: {len(m1_df):,} "
+            f"| {m1_df.index[0].date()} -> {m1_df.index[-1].date()}"
+        )
 
-        # ── 2. Resample to base TF and HTF ───────────────────────────────────────
+        # ── 2. Resample to base TF and HTF ───────────────────────────────────
         from data.loader import OHLCVLoader, TIMEFRAME_MINUTES
         loader = OHLCVLoader.__new__(OHLCVLoader)
         loader.timeframe = "M1"
 
         base_df = loader.resample(m1_df, base_tf)
         htf_df  = loader.resample(m1_df, htf)
-    
+
     logger.info(f"[{symbol}] {base_tf}: {len(base_df):,} bars | {htf}: {len(htf_df):,} bars")
 
     # ── 3. Feature engineering ────────────────────────────────────────────────
-    logger.info(f"[{symbol}] Engineering features…")
+    logger.info(f"[{symbol}] Engineering features...")
     try:
         feat_df = engineer_features(base_df, htf_df=htf_df)
     except Exception as exc:
@@ -151,9 +147,9 @@ def train_symbol(
         return None
 
     # ── 4. Labeling ───────────────────────────────────────────────────────────
-    lc = label_config or LabelConfig()
+    lc      = label_config or LabelConfig()
     labeler = SetupLabeler(lc)
-    logger.info(f"[{symbol}] Labeling setups…")
+    logger.info(f"[{symbol}] Labeling setups...")
     labeled = labeler.label(feat_df)
 
     if labeled.empty or len(labeled) < 30:
@@ -163,7 +159,7 @@ def train_symbol(
         )
         return None
 
-    pos_rate = labeled["label"].mean()
+    pos_rate  = labeled["label"].mean()
     logger.info(f"[{symbol}] Setups: {len(labeled):,} | Win rate: {pos_rate:.1%}")
 
     feat_cols = get_feature_columns(labeled)
@@ -173,7 +169,17 @@ def train_symbol(
     # ── 5. Train model ────────────────────────────────────────────────────────
     model = ForexMLModel(model_name=f"{symbol}_{model_name}")
     try:
-        metrics = model.train(X, y, test_size=0.20, n_cv_splits=5)
+        # [1.2][1.3][4.2] Updated signature:
+        #   val_size  → separate validation split for threshold tuning (not test set)
+        #   rr_ratio  → stored in model for EV calculation at inference time
+        metrics = model.train(
+            X            = X,
+            y            = y,
+            test_size    = 0.15,   # [1.3] smaller test slice; val_size fills the gap
+            val_size     = 0.15,   # [1.3] new: threshold tuned here, never on test
+            n_cv_splits  = 5,
+            rr_ratio     = lc.rr_ratio,   # [4.1] passed so model.expected_value() works
+        )
     except Exception as exc:
         logger.error(f"[{symbol}] Training failed: {exc}")
         return None
@@ -184,7 +190,6 @@ def train_symbol(
         f"| Threshold={metrics['threshold']:.2f}"
     )
 
-    # Feature importance summary
     fi = metrics.get("feature_importance")
     if fi is not None and not fi.empty:
         top5 = ", ".join(f"{k}({v:.3f})" for k, v in fi.head(5).items())
@@ -216,7 +221,7 @@ def train_all_symbols(
 
     Returns
     -------
-    dict mapping symbol → trained ForexMLModel (or None if failed)
+    dict mapping symbol -> trained ForexMLModel (or None if failed)
     """
     results = {}
     total   = len(symbol_csv_map)
@@ -239,7 +244,6 @@ def train_all_symbols(
         )
         results[symbol] = model
 
-    # Summary
     ok     = [s for s, m in results.items() if m is not None]
     failed = [s for s, m in results.items() if m is None]
     logger.info(f"\nTraining complete: {len(ok)} OK | {len(failed)} failed")
@@ -255,7 +259,7 @@ def load_all_models(
 ) -> Dict[str, object]:
     """
     Load pre-trained models for all symbols.
-    Returns a dict symbol → ForexMLModel (skips missing models with a warning).
+    Returns a dict symbol -> ForexMLModel (skips missing models with a warning).
     """
     from models.ml_model import ForexMLModel
 
