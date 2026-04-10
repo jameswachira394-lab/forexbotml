@@ -5,7 +5,7 @@ Edit this file.  Do NOT hardcode values inside source modules.
 import os
 
 # ── Symbols ───────────────────────────────────────────────────────────────────
-SYMBOLS = ["EURUSD", "GBPUSD", "USDJPY","XAUUSD"]
+SYMBOLS = ["EURUSD", "GBPUSD", "USDJPY", "XAUUSD"]
 SYMBOL  = "EURUSD"   # default single-symbol for backtest / generate modes
 
 # ── CSV data map (HistData / Dukascopy) ───────────────────────────────────────
@@ -15,7 +15,7 @@ SYMBOL_CSV_MAP: dict = {
     "EURUSD": ["data/raw/EURUSD_M5_mt5.csv"],
     "GBPUSD": ["data/GBPUSD5.csv"],
     "USDJPY": ["data/raw/USDJPY_M5_mt5.csv"],
-    "XAUUSD": ["data/raw/XAUUSD_M5_mt5.csv"]
+    "XAUUSD": ["data/raw/XAUUSD_M5_mt5.csv"],
 }
 
 # Fallback path used by --mode generate / backtest (single symbol)
@@ -32,8 +32,8 @@ ATR_PERIOD     = 14
 SWING_LOOKBACK = 5
 
 # ── Target Placement & Labeling ───────────────────────────────────────────────
-TP_ATR_MULT = 2.0
-SL_ATR_MULT = 1.0
+TP_ATR_MULT   = 2.0
+SL_ATR_MULT   = 1.0
 MAX_HOLD_BARS = 60
 
 # ── ML Model ──────────────────────────────────────────────────────────────────
@@ -45,17 +45,31 @@ REQUIRE_HTF_ALIGN = False
 PULLBACK_ATR_MIN  = 0.1
 PULLBACK_ATR_MAX  = 3.5
 
+# [5.3] SL placed at sweep extreme ± buffer — NOT naked ATR from entry
+SL_BUFFER_ATR     = 0.5     # ATR units beyond sweep extreme for SL
+
+# [4.1] Minimum expected value gate: EV = P(win)*RR - P(loss) must exceed this
+MIN_EV            = 0.05
+
+# [5.4] Base R:R — engine scales dynamically for deep pullbacks
+RR_MIN            = TP_ATR_MULT / SL_ATR_MULT   # = 2.0, stays in sync with ATR mults
+
 # ── Risk management ───────────────────────────────────────────────────────────
 INITIAL_BALANCE      = 100.0
-BASE_RISK_PCT        = 1.0    # Base risk to be multiplied by win probability (fractional Kelly)
+BASE_RISK_PCT        = 1.0    # Base risk multiplied by win probability (fractional Kelly)
+RISK_PER_TRADE_PCT   = BASE_RISK_PCT   # alias used by backtest engine
 MAX_TRADES_PER_DAY   = 50
 MAX_OPEN_POSITIONS   = 3
 DAILY_LOSS_LIMIT_PCT = 3.0
 MAX_DRAWDOWN_PCT     = 10.0   # Halve risk if DD exceeds this
 PIP_VALUE            = 10.0   # USD/pip/standard-lot for XXXUSD pairs
 
+# [7.3] Drawdown thresholds derived from your MAX_DRAWDOWN_PCT
+DD_REDUCE_THRESHOLD  = MAX_DRAWDOWN_PCT / 100        # 0.10 — halve size here
+DD_HALT_THRESHOLD    = (MAX_DRAWDOWN_PCT * 2) / 100  # 0.20 — stop trading here
+
 # ── Backtest ──────────────────────────────────────────────────────────────────
-SPREAD_PIPS   = 1.
+SPREAD_PIPS   = 1.5
 SLIPPAGE_PIPS = 0.5
 
 # ── Live trading ──────────────────────────────────────────────────────────────

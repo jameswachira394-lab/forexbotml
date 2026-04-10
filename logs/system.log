@@ -14363,3 +14363,41 @@ london_low_dist            0.036225
 2026-04-10 12:27:57 | INFO     | models.trainer | [XAUUSD] Model saved -> saved_models\XAUUSD_forex_xgb.joblib
 2026-04-10 12:27:57 | INFO     | models.trainer | 
 Training complete: 4 OK | 0 failed
+2026-04-10 12:54:08 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 12:54:12 | INFO     | __main__ | === LIVE TRADING MODE (Multi-Symbol) ===
+2026-04-10 12:54:12 | INFO     | __main__ | Symbols: ['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD']
+2026-04-10 12:54:13 | INFO     | models.trainer | Loaded model: EURUSD
+2026-04-10 12:54:13 | INFO     | models.trainer | Loaded model: GBPUSD
+2026-04-10 12:54:13 | INFO     | models.trainer | Loaded model: USDJPY
+2026-04-10 12:54:13 | INFO     | models.trainer | Loaded model: XAUUSD
+2026-04-10 12:59:20 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 12:59:23 | INFO     | __main__ | === LIVE TRADING MODE (Multi-Symbol) ===
+2026-04-10 12:59:23 | INFO     | __main__ | Symbols: ['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD']
+2026-04-10 12:59:23 | INFO     | models.trainer | Loaded model: EURUSD
+2026-04-10 12:59:23 | INFO     | models.trainer | Loaded model: GBPUSD
+2026-04-10 12:59:23 | INFO     | models.trainer | Loaded model: USDJPY
+2026-04-10 12:59:23 | INFO     | models.trainer | Loaded model: XAUUSD
+2026-04-10 12:59:23 | INFO     | execution.multi_symbol_trader | MultiSymbolTrader starting | symbols=['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD'] | TF=M15
+2026-04-10 12:59:23 | WARNING  | execution.multi_symbol_trader | LIVE MODE – real orders will be placed if MT5 is connected.
+2026-04-10 12:59:30 | INFO     | execution.mt5_broker | MT5 connected | Account: 10401216 | Balance: 100.00 | Server: FBS-Demo
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer | MT5Streamer starting | symbols=['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD'] | TF=M15 | warm=300 bars
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer | MT5 connected | Account 10401216 | Balance 100.00 USD | Server FBS-Demo
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer |   EURUSD: loaded 302 warm-up bars (last: 2026-04-09 11:45:00+00:00)
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer |   GBPUSD: loaded 302 warm-up bars (last: 2026-04-09 11:45:00+00:00)
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer |   USDJPY: loaded 302 warm-up bars (last: 2026-04-09 11:45:00+00:00)
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer |   XAUUSD: loaded 301 warm-up bars (last: 2026-04-10 12:30:00+00:00)
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer | Entering poll loop…
+2026-04-10 12:59:30 | INFO     | execution.mt5_streamer | New bar: EURUSD @ 2026-04-10 12:30:00+00:00
+2026-04-10 12:59:31 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 12:59:46 | INFO     | execution.mt5_streamer | New bar: GBPUSD @ 2026-04-10 12:30:00+00:00
+2026-04-10 12:59:46 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 12:59:46 | INFO     | execution.mt5_streamer | New bar: USDJPY @ 2026-04-10 12:30:00+00:00
+2026-04-10 12:59:46 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:00:01 | INFO     | execution.mt5_streamer | New bar: EURUSD @ 2026-04-10 12:45:00+00:00
+2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:00:01 | INFO     | execution.mt5_streamer | New bar: GBPUSD @ 2026-04-10 12:45:00+00:00
+2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:00:01 | INFO     | execution.mt5_streamer | New bar: USDJPY @ 2026-04-10 12:45:00+00:00
+2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:00:01 | INFO     | execution.mt5_streamer | New bar: XAUUSD @ 2026-04-10 12:45:00+00:00
+2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
