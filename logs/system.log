@@ -14547,3 +14547,252 @@ Training complete: 4 OK | 0 failed
 2026-04-10 13:26:41 | INFO     | models.ml_model | Model loaded ← saved_models\XAUUSD_forex_xgb.joblib
 2026-04-10 13:26:41 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
 2026-04-10 13:26:43 | INFO     | strategy.engine | Strategy scan: 22 signals on 4,987 bars
+2026-04-10 13:29:55 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:30:08 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/EURUSD_M5_mt5.csv ===
+2026-04-10 13:30:08 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-10 13:30:08 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-10 13:30:09 | INFO     | data.histdata_parser | Parsed 5,000 M15 bars | 2022-01-03 -> 2022-02-24
+2026-04-10 13:30:09 | INFO     | data.loader | Resampled to H1: 1,250 bars
+2026-04-10 13:30:09 | INFO     | __main__ | Bars: 5,000 [M15]
+2026-04-10 13:30:12 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-10 13:30:12 | INFO     | models.ml_model | Model loaded ← saved_models\XAUUSD_forex_xgb.joblib
+2026-04-10 13:30:12 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-10 13:30:15 | INFO     | strategy.engine | Strategy scan: 22 signals on 4,987 bars
+2026-04-10 13:32:13 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:32:15 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/EURUSD_M5_mt5.csv ===
+2026-04-10 13:32:15 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-10 13:32:15 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-10 13:32:15 | INFO     | data.histdata_parser | Parsed 5,000 M15 bars | 2022-01-03 -> 2022-02-24
+2026-04-10 13:32:15 | INFO     | data.loader | Resampled to H1: 1,250 bars
+2026-04-10 13:32:15 | INFO     | __main__ | Bars: 5,000 [M15]
+2026-04-10 13:32:16 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-10 13:32:16 | INFO     | models.ml_model | Model loaded ← saved_models\XAUUSD_forex_xgb.joblib
+2026-04-10 13:32:16 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-10 13:32:17 | INFO     | strategy.engine | Strategy scan: 22 signals on 4,987 bars
+2026-04-10 13:32:17 | INFO     | backtest.engine | Starting backtest | 5,000 bars | 22 signals
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.09297 | SL=1.09581 | TP=1.08789 | lots=0.01 | EV=1.015
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09581 | P&L=-2.84
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 1.10052 | SL=1.09035 | TP=1.12026 | lots=0.01 | EV=0.681
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09035 | P&L=-10.17
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.08784 | SL=1.09295 | TP=1.07823 | lots=0.01 | EV=1.619
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09295 | P&L=-5.11
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.05865 | SL=1.06155 | TP=1.05345 | lots=0.01 | EV=0.780
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.06155 | P&L=-2.90
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.05359 | SL=1.06305 | TP=1.03528 | lots=0.01 | EV=1.571
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.06305 | P&L=-9.46
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.04351 | SL=1.05122 | TP=1.02869 | lots=0.01 | EV=0.984
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.05122 | P&L=-7.71
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.02885 | SL=1.03531 | TP=1.01652 | lots=0.01 | EV=1.437
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 1.01652 | P&L=+12.33
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.94837 | SL=0.94685 | TP=0.95081 | lots=0.01 | EV=1.329
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95081 | P&L=+2.44
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.94805 | SL=0.94565 | TP=0.95225 | lots=0.01 | EV=0.743
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95225 | P&L=+4.20
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.95066 | SL=0.94848 | TP=0.95442 | lots=0.01 | EV=0.868
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95442 | P&L=+3.76
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.97684 | SL=0.96933 | TP=0.99126 | lots=0.01 | EV=0.785
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.99126 | P&L=+14.42
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.99516 | SL=0.99034 | TP=1.00421 | lots=0.01 | EV=0.790
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 1.00421 | P&L=+9.05
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.00044 | SL=1.00334 | TP=0.99525 | lots=0.01 | EV=0.711
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.99525 | P&L=+5.19
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.00530 | SL=1.00726 | TP=1.00199 | lots=0.01 | EV=1.748
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 1.00199 | P&L=+3.31
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN - @ 1.01741 | SL=1.02068 | TP=1.01147 | lots=0.01 | EV=1.116
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.02068 | P&L=-3.27
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 1.01214 | SL=1.00867 | TP=1.01849 | lots=0.01 | EV=0.842
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE SL @ 1.00867 | P&L=-3.47
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   OPEN + @ 0.97492 | SL=0.96993 | TP=0.98430 | lots=0.01 | EV=0.657
+2026-04-10 13:32:17 | DEBUG    | backtest.engine |   CLOSE TP @ 0.98430 | P&L=+9.38
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   OPEN + @ 0.96680 | SL=0.96370 | TP=0.97241 | lots=0.01 | EV=0.984
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   CLOSE TP @ 0.97241 | P&L=+5.61
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   OPEN - @ 0.96786 | SL=0.97396 | TP=0.95627 | lots=0.01 | EV=1.409
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95627 | P&L=+11.59
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   OPEN - @ 0.95210 | SL=0.95468 | TP=0.94754 | lots=0.01 | EV=0.911
+2026-04-10 13:32:18 | DEBUG    | backtest.engine |   CLOSE SL @ 0.95468 | P&L=-2.58
+2026-04-10 13:32:18 | INFO     | backtest.engine | Trade log saved -> logs/XAUUSD_backtest_trades.csv
+2026-04-10 13:32:18 | INFO     | backtest.engine | Equity curve saved -> logs/XAUUSD_equity_curve.csv
+2026-04-10 13:33:38 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:33:41 | INFO     | __main__ | === WALK-FORWARD | XAUUSD ===
+2026-04-10 13:33:41 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-10 13:33:41 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-10 13:33:41 | INFO     | data.histdata_parser | Parsed 5,000 M15 bars | 2022-01-03 -> 2022-02-24
+2026-04-10 13:33:41 | INFO     | data.loader | Resampled to H1: 1,250 bars
+2026-04-10 13:33:42 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-10 13:33:42 | INFO     | backtest.engine | Fold 1/4 | Train: 1,995 | OOS: 748
+2026-04-10 13:33:42 | INFO     | features.labeler | SMC Labeler: 37 setups | Win rate: 18.9% | Long: 14 | Short: 23
+2026-04-10 13:33:42 | INFO     | models.ml_model | Train: 24 | Val: 5 | Test: 8
+2026-04-10 13:33:42 | INFO     | models.ml_model | Label balance (train) – 1: 16.7%
+2026-04-10 13:33:42 | INFO     | models.ml_model |   CV Fold 1: skipped (single class in validation)
+2026-04-10 13:33:42 | INFO     | models.ml_model |   CV Fold 2: skipped (single class in validation)
+2026-04-10 13:33:42 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 1.0000
+2026-04-10 13:33:42 | INFO     | models.ml_model | CV AUC: 1.0000 ± 0.0000
+2026-04-10 13:33:42 | WARNING  | models.ml_model | Calibration failed (Must have at least 1 validation dataset for early stopping.), using raw estimator.
+2026-04-10 13:33:42 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.00      0.00      0.00         7
+           1       0.12      1.00      0.22         1
+
+    accuracy                           0.12         8
+   macro avg       0.06      0.50      0.11         8
+weighted avg       0.02      0.12      0.03         8
+
+2026-04-10 13:33:42 | INFO     | models.ml_model | Test AUC: 0.2857 | Brier: 0.2504 | Threshold (from val): 0.48
+2026-04-10 13:33:42 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+dist_to_last_sh     0.205485
+eq_low              0.136987
+body_pct            0.120650
+london_high_dist    0.119463
+weekday             0.098751
+asia_low_dist       0.085067
+ll                  0.071348
+lower_wick          0.071127
+body_ratio          0.039696
+impulse             0.025356
+2026-04-10 13:33:43 | INFO     | strategy.engine | Strategy scan: 11 signals on 748 bars
+2026-04-10 13:33:43 | INFO     | backtest.engine | Starting backtest | 748 bars | 11 signals
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN - @ 0.95031 | SL=0.95421 | TP=0.94310 | lots=0.01 | EV=0.442
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE SL @ 0.95421 | P&L=-3.90
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN + @ 0.94837 | SL=0.94685 | TP=0.95081 | lots=0.01 | EV=0.442
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95081 | P&L=+2.44
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN + @ 0.94805 | SL=0.94565 | TP=0.95225 | lots=0.01 | EV=0.442
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95225 | P&L=+4.20
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN - @ 0.94964 | SL=0.95954 | TP=0.93044 | lots=0.01 | EV=0.442
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE SL @ 0.95954 | P&L=-9.90
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN + @ 0.97044 | SL=0.96740 | TP=0.97592 | lots=0.01 | EV=0.442
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE SL @ 0.96740 | P&L=-3.04
+2026-04-10 13:33:43 | INFO     | backtest.engine |   Fold 1 | Trades=5 | WR=40.0% | PF=0.39 | DD=-14.2%
+2026-04-10 13:33:43 | INFO     | backtest.engine | Fold 2/4 | Train: 2,743 | OOS: 748
+2026-04-10 13:33:43 | INFO     | features.labeler | SMC Labeler: 54 setups | Win rate: 27.8% | Long: 26 | Short: 28
+2026-04-10 13:33:43 | INFO     | models.ml_model | Train: 35 | Val: 8 | Test: 11
+2026-04-10 13:33:43 | INFO     | models.ml_model | Label balance (train) – 1: 20.0%
+2026-04-10 13:33:43 | INFO     | models.ml_model |   CV Fold 1: skipped (single class in validation)
+2026-04-10 13:33:43 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 1.0000
+2026-04-10 13:33:43 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.4000
+2026-04-10 13:33:43 | INFO     | models.ml_model | CV AUC: 0.7000 ± 0.3000
+2026-04-10 13:33:43 | WARNING  | models.ml_model | Calibration failed (Must have at least 1 validation dataset for early stopping.), using raw estimator.
+2026-04-10 13:33:43 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.40      0.80      0.53         5
+           1       0.00      0.00      0.00         6
+
+    accuracy                           0.36        11
+   macro avg       0.20      0.40      0.27        11
+weighted avg       0.18      0.36      0.24        11
+
+2026-04-10 13:33:43 | INFO     | models.ml_model | Test AUC: 0.4000 | Brier: 0.2540 | Threshold (from val): 0.50
+2026-04-10 13:33:43 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+london_high_dist    0.094424
+session             0.077196
+candle_dir          0.075198
+ny_low_dist         0.071274
+trend               0.062024
+eq_high             0.060680
+asia_low_dist       0.059191
+dist_prev_50_low    0.057719
+asia_high_dist      0.056484
+lower_wick          0.048888
+2026-04-10 13:33:43 | INFO     | strategy.engine | Strategy scan: 4 signals on 748 bars
+2026-04-10 13:33:43 | INFO     | backtest.engine | Starting backtest | 748 bars | 4 signals
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN - @ 0.96630 | SL=0.97256 | TP=0.95438 | lots=0.01 | EV=0.559
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE SL @ 0.97256 | P&L=-6.26
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   OPEN - @ 0.97514 | SL=0.98143 | TP=0.96317 | lots=0.01 | EV=0.513
+2026-04-10 13:33:43 | DEBUG    | backtest.engine |   CLOSE SL @ 0.98143 | P&L=-6.29
+2026-04-10 13:33:44 | DEBUG    | backtest.engine |   OPEN - @ 1.00044 | SL=1.00334 | TP=0.99525 | lots=0.01 | EV=0.559
+2026-04-10 13:33:44 | DEBUG    | backtest.engine |   CLOSE TP @ 0.99525 | P&L=+5.19
+2026-04-10 13:33:44 | INFO     | backtest.engine |   Fold 2 | Trades=3 | WR=33.3% | PF=0.41 | DD=-13.2%
+2026-04-10 13:33:44 | INFO     | backtest.engine | Fold 3/4 | Train: 3,491 | OOS: 748
+2026-04-10 13:33:44 | INFO     | features.labeler | SMC Labeler: 67 setups | Win rate: 31.3% | Long: 32 | Short: 35
+2026-04-10 13:33:44 | INFO     | models.ml_model | Train: 43 | Val: 10 | Test: 14
+2026-04-10 13:33:44 | INFO     | models.ml_model | Label balance (train) – 1: 20.9%
+2026-04-10 13:33:44 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 0.5000
+2026-04-10 13:33:44 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.5000
+2026-04-10 13:33:44 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.8750
+2026-04-10 13:33:44 | INFO     | models.ml_model | CV AUC: 0.6250 ± 0.1768
+2026-04-10 13:33:44 | WARNING  | models.ml_model | Calibration failed (Must have at least 1 validation dataset for early stopping.), using raw estimator.
+2026-04-10 13:33:44 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.57      1.00      0.73         8
+           1       0.00      0.00      0.00         6
+
+    accuracy                           0.57        14
+   macro avg       0.29      0.50      0.36        14
+weighted avg       0.33      0.57      0.42        14
+
+2026-04-10 13:33:44 | INFO     | models.ml_model | Test AUC: 0.1667 | Brier: 0.2679 | Threshold (from val): 0.61
+2026-04-10 13:33:44 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+london_low_dist     0.152094
+body_ratio          0.091493
+ny_low_dist         0.089079
+asia_low_dist       0.070805
+lower_wick          0.070284
+asia_high_dist      0.049004
+session             0.047567
+hour                0.046498
+london_high_dist    0.043980
+dist_to_last_sh     0.042869
+2026-04-10 13:33:44 | INFO     | strategy.engine | Strategy scan: 0 signals on 748 bars
+2026-04-10 13:33:44 | INFO     | backtest.engine |   Fold 3: no OOS signals generated.
+2026-04-10 13:33:44 | INFO     | backtest.engine | Fold 4/4 | Train: 4,239 | OOS: 748
+2026-04-10 13:33:44 | INFO     | features.labeler | SMC Labeler: 79 setups | Win rate: 30.4% | Long: 39 | Short: 40
+2026-04-10 13:33:44 | INFO     | models.ml_model | Train: 51 | Val: 12 | Test: 16
+2026-04-10 13:33:44 | INFO     | models.ml_model | Label balance (train) – 1: 29.4%
+2026-04-10 13:33:44 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 1.0000
+2026-04-10 13:33:45 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.3333
+2026-04-10 13:33:45 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.7500
+2026-04-10 13:33:45 | INFO     | models.ml_model | CV AUC: 0.6944 ± 0.2750
+2026-04-10 13:33:45 | WARNING  | models.ml_model | Calibration failed (Must have at least 1 validation dataset for early stopping.), using raw estimator.
+2026-04-10 13:33:45 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.40      0.22      0.29         9
+           1       0.36      0.57      0.44         7
+
+    accuracy                           0.38        16
+   macro avg       0.38      0.40      0.37        16
+weighted avg       0.38      0.38      0.36        16
+
+2026-04-10 13:33:45 | INFO     | models.ml_model | Test AUC: 0.2540 | Brier: 0.2687 | Threshold (from val): 0.43
+2026-04-10 13:33:45 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+london_low_dist      0.175144
+body_ratio           0.102778
+asia_low_dist        0.100679
+lower_wick           0.089061
+london_high_dist     0.080933
+ny_low_dist          0.064482
+dist_prev_50_high    0.055911
+dist_to_last_sh      0.046491
+asia_high_dist       0.043957
+weekday              0.042356
+2026-04-10 13:33:45 | INFO     | strategy.engine | Strategy scan: 2 signals on 748 bars
+2026-04-10 13:33:45 | INFO     | backtest.engine | Starting backtest | 748 bars | 2 signals
+2026-04-10 13:33:45 | DEBUG    | backtest.engine |   OPEN + @ 0.96680 | SL=0.96370 | TP=0.97241 | lots=0.01 | EV=0.373
+2026-04-10 13:33:45 | DEBUG    | backtest.engine |   CLOSE TP @ 0.97241 | P&L=+5.61
+2026-04-10 13:33:45 | DEBUG    | backtest.engine |   OPEN - @ 0.96786 | SL=0.97396 | TP=0.95627 | lots=0.01 | EV=0.302
+2026-04-10 13:33:45 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95627 | P&L=+11.59
+2026-04-10 13:33:45 | INFO     | backtest.engine |   Fold 4 | Trades=2 | WR=100.0% | PF=inf | DD=-2.4%
+2026-04-10 13:33:45 | INFO     | backtest.engine | 
+── Walk-Forward Summary ──
+2026-04-10 13:33:45 | INFO     | backtest.engine |   Fold 1: WR=40.0% PF=0.39 DD=-14.2%
+2026-04-10 13:33:45 | INFO     | backtest.engine |   Fold 2: WR=33.3% PF=0.41 DD=-13.2%
+2026-04-10 13:33:45 | INFO     | backtest.engine |   Fold 3: WR=0.0% PF=0.00 DD=0.0%
+2026-04-10 13:33:45 | INFO     | backtest.engine |   Fold 4: WR=100.0% PF=inf DD=-2.4%
+2026-04-10 13:35:04 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:35:08 | INFO     | __main__ | === LIVE TRADING MODE (Multi-Symbol) ===
+2026-04-10 13:35:08 | INFO     | __main__ | Symbols: ['XAUUSD']
+2026-04-10 13:35:08 | INFO     | models.ml_model | Model loaded ← saved_models\XAUUSD_forex_xgb.joblib
+2026-04-10 13:35:08 | INFO     | models.trainer | Loaded model: XAUUSD
+2026-04-10 13:35:08 | INFO     | execution.multi_symbol_trader | MultiSymbolTrader starting | symbols=['XAUUSD'] | TF=M15
+2026-04-10 13:35:08 | WARNING  | execution.multi_symbol_trader | LIVE MODE – real orders will be placed if MT5 is connected.
+2026-04-10 13:35:08 | INFO     | execution.mt5_broker | MT5 connected | Account: 10401216 | Balance: 100.00 | Server: FBS-Demo
+2026-04-10 13:35:08 | INFO     | execution.mt5_streamer | MT5Streamer starting | symbols=['XAUUSD'] | TF=M15 | warm=300 bars
+2026-04-10 13:35:08 | INFO     | execution.mt5_streamer | MT5 connected | Account 10401216 | Balance 100.00 USD | Server FBS-Demo
+2026-04-10 13:35:08 | INFO     | execution.mt5_streamer |   XAUUSD: loaded 301 warm-up bars (last: 2026-04-10 13:15:00+00:00)
+2026-04-10 13:35:08 | INFO     | execution.mt5_streamer | Entering poll loop…

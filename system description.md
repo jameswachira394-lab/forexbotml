@@ -320,7 +320,7 @@ python main.py --mode walkforward --symbol XAUUSD --folds 4
 
 ### 4. Start live trading
 ```bash
-python main.py --mode live --symbols EURUSD,GBPUSD,USDJPY
+python main.py --mode live --symbols XAUUSD
 ```
 
 ### 5. Sync fresh data from MT5
