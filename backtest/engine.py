@@ -20,8 +20,6 @@ from typing import List, Optional, Dict, Any
 import numpy as np
 import pandas as pd
 
-from utils.trading import calculate_profit, should_execute_trade
-
 logger = logging.getLogger(__name__)
 
 
@@ -31,18 +29,16 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class BacktestConfig:
-    initial_balance:  float = 100.0
-    risk_per_trade:   float = 2.0           # % of equity per trade
+    initial_balance:  float = 10_000.0
+    risk_per_trade:   float = 1.0           # % of equity per trade
     spread_pips:      float = 1.5           # spread to add on entry
     slippage_pips:    float = 0.5           # additional slippage
     pip_value:        float = 10.0          # USD per pip per standard lot
     lot_step:         float = 0.01
     min_lot:          float = 0.01
     max_lot:          float = 10.0
-    max_trades_per_day: int = 15
+    max_trades_per_day: int = 5
     daily_loss_limit_pct: float = 3.0       # halt trading if day loss > X%
-    ml_threshold:     float = 0.55
-    timeframe_mins:   int   = 15
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -81,19 +77,16 @@ class BacktestEngine:
         self._day_trades: int  = 0
         self._day_pnl:    float = 0.0
         self._current_day: Optional[pd.Timestamp] = None
-        self._last_trade_time: Optional[pd.Timestamp] = None
-        self.symbol: str = "EURUSD"
 
     # ──────────────────────────────────────────────────────────────
     # Main simulation loop
     # ──────────────────────────────────────────────────────────────
 
-    def run(self, df: pd.DataFrame, signals: list, symbol: str = "EURUSD") -> "BacktestResults":
+    def run(self, df: pd.DataFrame, signals: list) -> "BacktestResults":
         """
         Simulate all signals against the OHLCV data in *df*.
         *signals* is a list of SignalResult objects from the strategy engine.
         """
-        self.symbol = symbol.upper()
         # Index signals by timestamp for fast lookup
         sig_map: Dict[pd.Timestamp, Any] = {s.timestamp: s for s in signals}
 
@@ -110,21 +103,9 @@ class BacktestEngine:
                     continue   # still open, skip new entry
 
             # ── Check for new signal ─────────────────────────────
-            if ts in sig_map:
+            if ts in sig_map and self._can_trade():
                 sig = sig_map[ts]
-                
-                # Temporal gap (cooldown) and max open positions check
-                can_execute = True
-                if self._last_trade_time is not None:
-                    time_diff = (ts - self._last_trade_time).total_seconds()
-                    if time_diff < (self.cfg.timeframe_mins * 60):
-                        can_execute = False
-                        
-                if self._open_trade is not None:
-                    can_execute = False
-
-                if can_execute and self._can_trade():
-                    self._open_new_trade(ts, sig, row)
+                self._open_new_trade(ts, sig, row)
 
         # Force-close any remaining open trade at last bar
         if self._open_trade is not None:
@@ -147,18 +128,20 @@ class BacktestEngine:
         return True
 
     def _open_new_trade(self, ts, sig, row) -> None:
-        # Apply spread + slippage to entry
+        # [3.2] Spread + slippage applied to entry
         friction_pips = self.cfg.spread_pips + self.cfg.slippage_pips
-        friction      = friction_pips * self._pip_size(self.symbol)
+        friction      = friction_pips * self._pip_size("EURUSD")
 
-        if sig.direction == 1:
-            entry = sig.entry_price + friction   # long pays spread
-        else:
-            entry = sig.entry_price - friction   # short sells at bid
+        entry = sig.entry_price + friction if sig.direction == 1 else sig.entry_price - friction
 
-        # Lot size using probability-scaled sizing
-        sl_dist_pips = abs(entry - sig.sl_price) / self._pip_size(self.symbol)
-        lot_size     = self._calc_lots(sl_dist_pips, sig.ml_probability)
+        # [7.1] EV-scaled lot size
+        rr       = getattr(sig, "rr_ratio", self.cfg.risk_per_trade)
+        ml_prob  = sig.ml_probability
+        ev       = ml_prob * rr - (1 - ml_prob)
+        ev_scale = max(0.25, min(1.5, ev / max(rr - 1, 0.5)))
+
+        sl_dist_pips = abs(entry - sig.sl_price) / self._pip_size("EURUSD")
+        lot_size     = self._calc_lots(sl_dist_pips, ev_scale=ev_scale)
 
         t = TradeRecord(
             entry_ts    = ts,
@@ -168,25 +151,28 @@ class BacktestEngine:
             sl_price    = sig.sl_price,
             tp_price    = sig.tp_price,
             lot_size    = lot_size,
-            ml_prob     = sig.ml_probability,
+            ml_prob     = ml_prob,
         )
         self._open_trade  = t
         self._day_trades += 1
-        self._last_trade_time = ts
-        logger.debug(f"  OPEN {'+' if sig.direction==1 else '-'} @ {entry:.5f} | "
-                     f"SL={sig.sl_price:.5f} | TP={sig.tp_price:.5f} | lots={lot_size}")
+        logger.debug(
+            f"  OPEN {'+' if sig.direction==1 else '-'} @ {entry:.5f} | "
+            f"SL={sig.sl_price:.5f} | TP={sig.tp_price:.5f} | "
+            f"lots={lot_size} | EV={ev:.3f}"
+        )
 
     def _check_trade_exit(self, ts: pd.Timestamp, row) -> None:
-        t   = self._open_trade
-        h   = row["high"]
-        lo  = row["low"]
+        t  = self._open_trade
+        h  = row["high"]
+        lo = row["low"]
 
         exit_price  = None
         exit_reason = None
 
+        # [3.1] Worst-case: check SL before TP on same candle
         if t.direction == 1:
             if lo <= t.sl_price:
-                exit_price, exit_reason = t.sl_price, "SL"
+                exit_price, exit_reason = t.sl_price, "SL"   # SL checked first
             elif h >= t.tp_price:
                 exit_price, exit_reason = t.tp_price, "TP"
         else:
@@ -200,19 +186,9 @@ class BacktestEngine:
 
     def _close_trade(self, ts: pd.Timestamp, exit_price: float, reason: str) -> None:
         t = self._open_trade
-        
-        # Use shared accurate profit calculator
-        pnl_usd = calculate_profit(
-            symbol      = self.symbol,
-            open_price  = t.entry_price,
-            exit_price  = exit_price,
-            direction   = t.direction,
-            lot_size    = t.lot_size,
-            pip_value   = self.cfg.pip_value
-        )
-        
-        pip_size = self._pip_size(self.symbol)
-        pnl_pips = (exit_price - t.entry_price) * t.direction / pip_size
+        pip_size  = self._pip_size("EURUSD")
+        pnl_pips  = (exit_price - t.entry_price) * t.direction / pip_size
+        pnl_usd   = pnl_pips * self.cfg.pip_value * t.lot_size
 
         t.exit_ts      = ts
         t.exit_price   = exit_price
@@ -234,15 +210,10 @@ class BacktestEngine:
     def _record_equity(self, ts: pd.Timestamp, price: float) -> None:
         mark = 0.0
         if self._open_trade is not None:
-            t = self._open_trade
-            mark = calculate_profit(
-                symbol      = self.symbol,
-                open_price  = t.entry_price,
-                exit_price  = price,
-                direction   = t.direction,
-                lot_size    = t.lot_size,
-                pip_value   = self.cfg.pip_value
-            )
+            t        = self._open_trade
+            pip_size = self._pip_size("EURUSD")
+            pips     = (price - t.entry_price) * t.direction / pip_size
+            mark     = pips * self.cfg.pip_value * t.lot_size
         self.equity_curve.append({"timestamp": ts, "equity": self.equity + mark})
 
     def _refresh_day(self, ts: pd.Timestamp) -> None:
@@ -252,29 +223,12 @@ class BacktestEngine:
             self._day_trades  = 0
             self._day_pnl     = 0.0
 
-    def _calc_lots(self, sl_pips: float, win_prob: float) -> float:
-        import config as cfg
-        base_risk = getattr(cfg, "BASE_RISK_PCT", 1.0)
-        max_dd    = getattr(cfg, "MAX_DRAWDOWN_PCT", 10.0)
-
-        # Track Drawdown
-        peak = self.cfg.initial_balance
-        if self.equity_curve:
-            peak = max(peak, max(x["equity"] for x in self.equity_curve))
-        peak = max(peak, self.equity)
-        current_dd_pct = (peak - self.equity) / peak * 100.0 if peak > 0 else 0
-
-        # Drawdown Control & Kelly Style Fraction (Win Prob)
-        actual_risk_pct = base_risk
-        if current_dd_pct > max_dd:
-            actual_risk_pct *= 0.5
-        
-        actual_risk_pct *= win_prob
-
-        risk_amount = self.equity * (actual_risk_pct / 100.0)
-        raw_lots = risk_amount / max(sl_pips * self.cfg.pip_value, 1e-9)
-        lots = round(raw_lots / self.cfg.lot_step) * self.cfg.lot_step
-        return float(np.clip(lots, self.cfg.min_lot, self.cfg.max_lot))
+    def _calc_lots(self, sl_pips: float, ev_scale: float = 1.0) -> float:
+        cfg  = self.cfg
+        risk = self.equity * cfg.risk_per_trade / 100 * ev_scale   # [7.1] EV scaling
+        raw  = risk / max(sl_pips * cfg.pip_value, 1e-9)
+        lots = round(raw / cfg.lot_step) * cfg.lot_step
+        return float(np.clip(lots, cfg.min_lot, cfg.max_lot))
 
     @staticmethod
     def _pip_size(symbol: str) -> float:
@@ -366,7 +320,7 @@ class BacktestResults:
     def save_trades(self, path: str = "logs/backtest_trades.csv") -> None:
         df = self._trades_df()
         df.to_csv(path)
-        logger.info(f"Trade log saved → {path}")
+        logger.info(f"Trade log saved -> {path}")
 
     def save_equity_curve(self, path: str = "logs/equity_curve.csv") -> None:
         self.equity_curve.to_csv(path)
@@ -489,7 +443,7 @@ class WalkForwardValidator:
             m["fold"] = fold + 1
             results.append(m)
             logger.info(
-                f"  Fold {fold+1} → Trades={m.get('total_trades',0)} | "
+                f"  Fold {fold+1} | Trades={m.get('total_trades',0)} | "
                 f"WR={m.get('win_rate',0):.1%} | "
                 f"PF={m.get('profit_factor',0):.2f} | "
                 f"DD={m.get('max_drawdown',0):.1%}"

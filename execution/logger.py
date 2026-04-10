@@ -10,7 +10,6 @@ Writes:
 """
 
 import csv
-import json
 import logging
 import logging.handlers
 import os
@@ -39,15 +38,21 @@ def setup_logging(level: str = "INFO", log_file: str = "logs/system.log") -> Non
     root = logging.getLogger()
     root.setLevel(logging.DEBUG)
 
-    # Console
-    ch = logging.StreamHandler()
+    # Console — force UTF-8 on Windows to prevent cp1252 UnicodeEncodeError
+    import sys
+    if sys.platform == "win32":
+        import io
+        stream = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    else:
+        stream = sys.stdout
+    ch = logging.StreamHandler(stream)
     ch.setLevel(getattr(logging, level.upper(), logging.INFO))
     ch.setFormatter(fmt)
     root.addHandler(ch)
 
-    # File (rotating)
+    # File (rotating) — always UTF-8 regardless of OS locale
     fh = logging.handlers.RotatingFileHandler(
-        log_file, maxBytes=5 * 1024 * 1024, backupCount=5
+        log_file, maxBytes=5 * 1024 * 1024, backupCount=5, encoding="utf-8"
     )
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(fmt)
@@ -107,20 +112,6 @@ class TradeLogger:
         }
         self._append(row)
         self._print_open(row)
-        
-        # Standardized JSON Log for Task 4
-        json_log = {
-            "timestamp":     row["ts_logged"],
-            "symbol":        symbol,
-            "type":          row["direction"],
-            "entry_price":   entry_price,
-            "sl":            sl_price,
-            "tp":            tp_price,
-            "lot":           lot_size,
-            "probability":   round(ml_prob, 4),
-            "reason":        rule_reason,
-        }
-        logger.info(f"TRADE_OPEN_JSON: {json.dumps(json_log)}")
 
     def log_close(
         self,
@@ -151,15 +142,6 @@ class TradeLogger:
         }
         self._append(row)
         self._print_close(row)
-        
-        # Standardized JSON Log for Task 4
-        json_log = {
-            "symbol":       symbol,
-            "exit_price":   exit_price,
-            "profit":       round(pnl_usd, 2),
-            "exit_reason":  exit_reason,
-        }
-        logger.info(f"TRADE_CLOSE_JSON: {json.dumps(json_log)}")
 
     # ── Console dashboard ─────────────────────────────────────────
 
@@ -180,7 +162,7 @@ class TradeLogger:
     @staticmethod
     def _print_close(row: dict) -> None:
         pnl  = row["pnl_usd"]
-        icon = "✓" if pnl > 0 else "✗"
+        icon = "WIN" if pnl > 0 else "LOSS"
         print(
             f"\n  ┌─ CLOSE {row['exit_reason']} {'─'*33}\n"
             f"  │  {icon}  {row['direction']:<6}  {row['symbol']}  "

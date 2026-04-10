@@ -14401,3 +14401,149 @@ Training complete: 4 OK | 0 failed
 2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
 2026-04-10 13:00:01 | INFO     | execution.mt5_streamer | New bar: XAUUSD @ 2026-04-10 12:45:00+00:00
 2026-04-10 13:00:01 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:15:03 | INFO     | execution.mt5_streamer | New bar: EURUSD @ 2026-04-10 13:00:00+00:00
+2026-04-10 13:15:03 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:15:03 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:15:03 | INFO     | execution.mt5_streamer | New bar: GBPUSD @ 2026-04-10 13:00:00+00:00
+2026-04-10 13:15:04 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:15:04 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:15:04 | INFO     | execution.mt5_streamer | New bar: USDJPY @ 2026-04-10 13:00:00+00:00
+2026-04-10 13:15:04 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:15:04 | INFO     | execution.mt5_streamer | New bar: XAUUSD @ 2026-04-10 13:00:00+00:00
+2026-04-10 13:15:04 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
+2026-04-10 13:20:32 | INFO     | execution.multi_symbol_trader | Stopped by user.
+2026-04-10 13:20:32 | INFO     | execution.mt5_streamer | MT5Streamer stopped.
+2026-04-10 13:20:32 | INFO     | execution.mt5_broker | MT5 disconnected.
+2026-04-10 13:20:36 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:20:39 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/EURUSD_M5_mt5.csv ===
+2026-04-10 13:20:39 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-10 13:20:39 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-10 13:20:39 | INFO     | data.histdata_parser | Parsed 5,000 M15 bars | 2022-01-03 -> 2022-02-24
+2026-04-10 13:20:39 | INFO     | data.loader | Resampled to H1: 1,250 bars
+2026-04-10 13:20:39 | INFO     | __main__ | Bars: 5,000 [M15]
+2026-04-10 13:20:39 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-10 13:20:39 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-10 13:20:39 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:39 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:40 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:41 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | WARNING  | models.ml_model | Zero-filling missing features: ['direction']
+2026-04-10 13:20:42 | INFO     | strategy.engine | Strategy scan: 25 signals on 4,987 bars
+2026-04-10 13:20:42 | INFO     | backtest.engine | Starting backtest | 5,000 bars | 25 signals
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 1.10009 | SL=1.09499 | TP=1.10969 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09499 | P&L=-5.10
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.09297 | SL=1.09581 | TP=1.08789 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09581 | P&L=-2.84
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.08784 | SL=1.09295 | TP=1.07823 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.09295 | P&L=-5.11
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.05865 | SL=1.06155 | TP=1.05345 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.06155 | P&L=-2.90
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.05359 | SL=1.06305 | TP=1.03528 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.06305 | P&L=-9.46
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.04351 | SL=1.05122 | TP=1.02869 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.05122 | P&L=-7.71
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.02885 | SL=1.03531 | TP=1.01652 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 1.01652 | P&L=+12.33
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.99470 | SL=0.99119 | TP=1.00112 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.99119 | P&L=-3.51
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.95405 | SL=0.94995 | TP=0.96164 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.94995 | P&L=-4.10
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.97044 | SL=0.96740 | TP=0.97592 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.96740 | P&L=-3.04
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.97857 | SL=0.97241 | TP=0.99030 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 0.99030 | P&L=+11.73
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.00044 | SL=1.00334 | TP=0.99525 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 0.99525 | P&L=+5.19
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.00530 | SL=1.00726 | TP=1.00199 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 1.00199 | P&L=+3.31
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 1.01741 | SL=1.02068 | TP=1.01147 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.02068 | P&L=-3.27
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 1.00976 | SL=1.00850 | TP=1.01172 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 1.00850 | P&L=-1.26
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.98611 | SL=0.98518 | TP=0.98737 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 0.98737 | P&L=+1.26
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.96857 | SL=0.96615 | TP=0.97335 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.96615 | P&L=-2.42
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 0.96786 | SL=0.97396 | TP=0.95627 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE TP @ 0.95627 | P&L=+11.59
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN - @ 0.95210 | SL=0.95468 | TP=0.94754 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.95468 | P&L=-2.58
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.95539 | SL=0.94703 | TP=0.97151 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.94703 | P&L=-8.36
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   OPEN + @ 0.92755 | SL=0.92516 | TP=0.93172 | lots=0.01
+2026-04-10 13:20:42 | DEBUG    | backtest.engine |   CLOSE SL @ 0.92516 | P&L=-2.39
+2026-04-10 13:20:43 | INFO     | backtest.engine | Equity curve saved -> logs/XAUUSD_equity_curve.csv
+2026-04-10 13:26:37 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-10 13:26:40 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/EURUSD_M5_mt5.csv ===
+2026-04-10 13:26:40 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-10 13:26:40 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-10 13:26:40 | INFO     | data.histdata_parser | Parsed 5,000 M15 bars | 2022-01-03 -> 2022-02-24
+2026-04-10 13:26:41 | INFO     | data.loader | Resampled to H1: 1,250 bars
+2026-04-10 13:26:41 | INFO     | __main__ | Bars: 5,000 [M15]
+2026-04-10 13:26:41 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-10 13:26:41 | INFO     | models.ml_model | Model loaded ← saved_models\XAUUSD_forex_xgb.joblib
+2026-04-10 13:26:41 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-10 13:26:43 | INFO     | strategy.engine | Strategy scan: 22 signals on 4,987 bars

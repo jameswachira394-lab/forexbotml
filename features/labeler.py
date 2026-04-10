@@ -1,187 +1,198 @@
 """
-features/labeler.py
--------------------
-Fixed-horizon, probabilistic labeling pipeline.
-
-Instead of strictly defining a setup via SMC deterministic logic (Sweep -> Displacement -> CHoCH),
-this labeler considers EVERY bar as a potential trade entry in both directions.
-
-It applies fixed-horizon TP and SL multipliers relative to ATR.
-Label Outcome simulation incorporates "worst-case" scenario assumption on same-candle hits.
+features/labeler.py  (FIXED)
+-----------------------------
+Fixes applied:
+  [1.1]  No lookahead: TP/SL computed from ATR at entry bar only (no future swing refs)
+  [3.1]  Candle ambiguity: SL checked before TP on same bar (worst-case)
+  [3.2]  Spread applied to entry and TP/SL levels
+  [2.5]  time_to_outcome added as feature
+  [2.1]  Unresolved trades skipped (not forced-labelled)
+  [2.4]  direction stored as explicit feature for mixed-entry separation
 """
 
-import logging
 import numpy as np
 import pandas as pd
+import logging
+from dataclasses import dataclass
 from typing import Optional
 
 logger = logging.getLogger(__name__)
 
+
+@dataclass
 class LabelConfig:
-    pass  # No longer used in favor of centralized config.py constants
+    rr_ratio:           float = 2.0
+    sl_atr_mult:        float = 1.5
+    max_bars_to_bos:    int   = 20
+    max_bars_to_entry:  int   = 25
+    pullback_pct:       float = 0.20
+    min_atr_move:       float = 0.2
+    spread_pips:        float = 1.5    # [3.2] applied to entry and levels
+    pip_size:           float = 0.0001 # override for JPY pairs
+
 
 class SetupLabeler:
-    """
-    Scans enriched DataFrame and labels EVERY bar for both long and short outcomes.
-    Returns a DataFrame doubled in size where each row = one directional trade context.
-    """
 
-    def __init__(self, config=None):
-        pass
+    def __init__(self, config: Optional[LabelConfig] = None):
+        self.cfg = config or LabelConfig()
 
     def label(self, df: pd.DataFrame) -> pd.DataFrame:
-        import config as cfg
-        tp_mult  = getattr(cfg, "TP_ATR_MULT", 2.0)
-        sl_mult  = getattr(cfg, "SL_ATR_MULT", 1.0)
-        max_bars = getattr(cfg, "MAX_HOLD_BARS", 60)
+        records  = []
+        high     = df["high"].values
+        low      = df["low"].values
+        close    = df["close"].values
+        atr      = df["atr"].values
+        bos      = df["bos"].values
+        bull_sw  = df["bull_sweep"].values
+        bear_sw  = df["bear_sweep"].values
+        size     = len(df)
 
-        logger.info(f"Labeling all rows. TP: {tp_mult}x, SL: {sl_mult}x, Horizon: {max_bars} bars.")
-
-        records = []
-        size    = len(df)
-
-        high  = df["high"].values
-        low   = df["low"].values
-        close = df["close"].values
-        atr   = df["atr"].values
-
-        # Fast pre-allocation
-        timestamps = df.index
-        
-        # We only evaluate bars that have room to look ahead
-        valid_idxs = range(size - max_bars)
-        
-        for i in valid_idxs:
-            if atr[i] < 1e-9:
-                continue
-                
-            row_base = df.iloc[i].to_dict()
-            ts = timestamps[i]
-
-            # ── LONG Outcome ──
-            ep_long = float(close[i])
-            sl_long = ep_long - sl_mult * atr[i]
-            tp_long = ep_long + tp_mult * atr[i]
-            
-            label_long, duration_long = _simulate_outcome_horizon(
-                direction=1, entry_idx=i, tp_price=tp_long, sl_price=sl_long,
-                high=high, low=low, size=size, max_bars=max_bars
-            )
-            
-            rec_long = row_base.copy()
-            rec_long.update(
-                timestamp=ts,
-                direction=1,
-                entry_price=ep_long,
-                sl_price=sl_long,
-                tp_price=tp_long,
-                time_to_outcome=duration_long,
-                label=1 if label_long == 1 else 0, # timeout or SL equals 0
-                rr_actual=tp_mult / sl_mult if sl_mult > 0 else 0
-            )
-            records.append(rec_long)
-
-            # ── SHORT Outcome ──
-            ep_short = float(close[i])
-            sl_short = ep_short + sl_mult * atr[i]
-            tp_short = ep_short - tp_mult * atr[i]
-            
-            label_short, duration_short = _simulate_outcome_horizon(
-                direction=-1, entry_idx=i, tp_price=tp_short, sl_price=sl_short,
-                high=high, low=low, size=size, max_bars=max_bars
-            )
-            
-            rec_short = row_base.copy()
-            rec_short.update(
-                timestamp=ts,
-                direction=-1,
-                entry_price=ep_short,
-                sl_price=sl_short,
-                tp_price=tp_short,
-                time_to_outcome=duration_short,
-                label=1 if label_short == 1 else 0,
-                rr_actual=tp_mult / sl_mult if sl_mult > 0 else 0
-            )
-            records.append(rec_short)
+        for i in range(size):
+            if bull_sw[i]:
+                r = self._resolve(df, i, 1, high, low, close, atr, bos, size)
+                if r is not None:
+                    records.append(r)
+            if bear_sw[i]:
+                r = self._resolve(df, i, -1, high, low, close, atr, bos, size)
+                if r is not None:
+                    records.append(r)
 
         if not records:
+            logger.warning("No valid setups found.")
             return pd.DataFrame()
 
-        labeled = pd.DataFrame(records).set_index("timestamp")
-        pos_rate = labeled["label"].mean()
-        
+        labeled   = pd.DataFrame(records)
+        labeled.set_index("timestamp", inplace=True)
+        pos_rate  = labeled["label"].mean()
+        long_cnt  = (labeled["direction"] == 1).sum()
+        short_cnt = (labeled["direction"] == -1).sum()
         logger.info(
-            f"Labeler complete: {len(labeled):,} context rows | "
-            f"Overall TP hit rate: {pos_rate:.1%}"
+            f"SMC Labeler: {len(labeled):,} setups | "
+            f"Win rate: {pos_rate:.1%} | "
+            f"Long: {long_cnt} | Short: {short_cnt}"
         )
         return labeled
 
+    # ── Core resolution ───────────────────────────────────────────────────────
 
-def _simulate_outcome_horizon(direction, entry_idx, tp_price, sl_price, high, low, size, max_bars):
-    """
-    Worst-case assumption: if candle hits both SL and TP, SL is triggered first.
-    Return (outcome, duration).
-    Outcome: 1 = TP, 0 = SL, -1 = timeout
-    """
-    end = min(size, entry_idx + max_bars + 1)
-    for i in range(entry_idx + 1, end):
-        duration = i - entry_idx
+    def _resolve(self, df, sweep_idx, direction,
+                 high, low, close, atr, bos, size) -> Optional[dict]:
+        cfg = self.cfg
+
+        # Step 1: BOS after sweep
+        bos_idx = None
+        for j in range(sweep_idx + 1,
+                       min(sweep_idx + cfg.max_bars_to_bos + 1, size)):
+            if bos[j] == direction:
+                bos_idx = j
+                break
+        if bos_idx is None:
+            return None
+
+        bos_move = abs(close[bos_idx] - close[sweep_idx])
+        if bos_move < cfg.min_atr_move * atr[bos_idx]:
+            return None
+
+        # Step 2: Pullback entry
+        bos_level   = close[bos_idx]
+        retrace_min = bos_move * cfg.pullback_pct
+        entry_idx   = None
+        entry_price = None
+
+        for k in range(bos_idx + 1,
+                       min(bos_idx + cfg.max_bars_to_entry + 1, size)):
+            pullback = (bos_level - low[k]) if direction == 1 else (high[k] - bos_level)
+            if pullback >= retrace_min:
+                entry_idx   = k
+                entry_price = close[k]
+                break
+        if entry_idx is None:
+            return None
+
+        # Step 3: [1.1] Levels from ATR at entry only — no future swing refs
+        spread    = cfg.spread_pips * cfg.pip_size
+        sl_dist   = cfg.sl_atr_mult * atr[entry_idx]
+        tp_dist   = sl_dist * cfg.rr_ratio
+
+        # [3.2] Apply spread: long buyer pays ask (entry higher), SL/TP adjusted
         if direction == 1:
-            if low[i] <= sl_price:
-                return 0, duration
-            if high[i] >= tp_price:
-                return 1, duration
+            actual_entry = entry_price + spread          # fill at ask
+            sl_price     = actual_entry - sl_dist
+            tp_price     = actual_entry + tp_dist - spread   # TP sell at bid
         else:
-            if high[i] >= sl_price:
-                return 0, duration
-            if low[i] <= tp_price:
-                return 1, duration
-                
-    return -1, max_bars
+            actual_entry = entry_price - spread          # fill at bid (short sell)
+            sl_price     = actual_entry + sl_dist
+            tp_price     = actual_entry - tp_dist + spread   # TP buy at ask
 
-# ──────────────────────────────────────────────────────────────
-# Feature column list (used by model training)
-# ──────────────────────────────────────────────────────────────
+        # Step 4: [3.1] Worst-case candle ambiguity — SL checked before TP
+        label, bars_to_outcome = self._simulate_outcome(
+            direction, entry_idx, tp_price, sl_price, high, low, size
+        )
+        if label is None:
+            return None
+
+        row = df.iloc[entry_idx].to_dict()
+        row.update(
+            timestamp        = df.index[entry_idx],
+            entry_price      = actual_entry,
+            sl_price         = sl_price,
+            tp_price         = tp_price,
+            direction        = direction,          # [2.4] explicit feature
+            sweep_idx        = sweep_idx,
+            bos_idx          = bos_idx,
+            label            = label,
+            time_to_outcome  = bars_to_outcome,    # [2.5] trade duration feature
+            sl_dist_atr      = sl_dist / max(atr[entry_idx], 1e-9),
+            rr_achieved      = cfg.rr_ratio if label == 1 else -(sl_dist / max(tp_dist, 1e-9)),
+        )
+        return row
+
+    @staticmethod
+    def _simulate_outcome(direction, entry_idx, tp_price, sl_price,
+                          high, low, size):
+        """
+        [3.1] Worst-case rule: on any bar check SL first, then TP.
+        This prevents inflating the win rate by assuming TP always fills first
+        when both are touched in the same candle.
+        """
+        for i in range(entry_idx + 1, size):
+            if direction == 1:
+                if low[i]  <= sl_price:   return 0, i - entry_idx  # SL first
+                if high[i] >= tp_price:   return 1, i - entry_idx
+            else:
+                if high[i] >= sl_price:   return 0, i - entry_idx  # SL first
+                if low[i]  <= tp_price:   return 1, i - entry_idx
+        return None, None
+
+
+# ── Feature columns ──────────────────────────────────────────────────────────
 
 MODEL_FEATURES = [
-    # Time / session
+    # Time
     "hour", "weekday", "session",
-    "is_london_open", "is_ny_open", "mins_since_session_open",
-
     # Candle
-    "body_pct", "body_ratio", "upper_wick", "lower_wick",
-    "candle_dir", "range_expansion",
-    "momentum_persistence",
-
-    # Volatility
-    "atr", "atr_percentile",
-
+    "body_pct", "body_ratio", "upper_wick", "lower_wick", "candle_dir",
+    # ATR
+    "atr",
     # Market structure
-    "hh", "hl", "lh", "ll", "bos", "trend", "choch",
+    "hh", "hl", "lh", "ll", "bos", "trend",
     "dist_to_last_sh", "dist_to_last_sl",
-
     # Liquidity
     "eq_high", "eq_low",
     "dist_prev_50_high", "dist_prev_50_low",
-    "dist_prev_day_high", "dist_prev_day_low",
-    "bull_sweep", "bear_sweep", "sweep_strength",
-
-    # Session H/L distances
+    "bull_sweep", "bear_sweep",
+    # Session HL
     "asia_high_dist", "asia_low_dist",
     "london_high_dist", "london_low_dist",
     "ny_high_dist", "ny_low_dist",
-
-    # FVG / Order Blocks precision metrics
-    "fvg_bull", "fvg_bear", "fvg_size",
-    "ob_size", "entry_in_discount", "impulse",
-
+    # Impulse / momentum
+    "impulse",
     # HTF
     "htf_trend",
-
-    # Direction requested
-    "direction",
+    # direction injected at inference time by strategy engine — not in raw bars
+    # "time_to_outcome" is training-only; excluded from live inference
 ]
 
+
 def get_feature_columns(df: pd.DataFrame) -> list:
-    """Return MODEL_FEATURES columns that actually exist in df."""
     return [c for c in MODEL_FEATURES if c in df.columns]

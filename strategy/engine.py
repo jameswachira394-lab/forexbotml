@@ -114,7 +114,7 @@ class StrategyEngine:
                     # [5.4] Dynamic RR: scale with pullback quality
                     rr   = cfg.rr_ratio + max(0, pb_dist - 1.0) * 0.25
                     tp   = ep + sl_dist * rr
-                    prob = self._ml_prob(df, i)
+                    prob = self._ml_prob(df, i, direction=1)
                     ev   = prob * rr - (1 - prob)   # [4.1]
 
                     if prob >= cfg.ml_threshold and ev >= cfg.min_ev:
@@ -153,7 +153,7 @@ class StrategyEngine:
 
                     rr   = cfg.rr_ratio + max(0, pb_dist - 1.0) * 0.25
                     tp   = ep - sl_dist * rr
-                    prob = self._ml_prob(df, i)
+                    prob = self._ml_prob(df, i, direction=-1)
                     ev   = prob * rr - (1 - prob)
 
                     if prob >= cfg.ml_threshold and ev >= cfg.min_ev:
@@ -210,7 +210,7 @@ class StrategyEngine:
                     if sl_dist > 0:
                         rr   = cfg.rr_ratio + max(0, pb - 1.0) * 0.25
                         tp   = ep + sl_dist * rr
-                        prob = self._ml_prob(df, idx)
+                        prob = self._ml_prob(df, idx, direction=1)
                         ev   = prob * rr - (1 - prob)
                         if prob >= cfg.ml_threshold and ev >= cfg.min_ev:
                             return SignalResult(
@@ -230,7 +230,7 @@ class StrategyEngine:
                     if sl_dist > 0:
                         rr   = cfg.rr_ratio + max(0, pb - 1.0) * 0.25
                         tp   = ep - sl_dist * rr
-                        prob = self._ml_prob(df, idx)
+                        prob = self._ml_prob(df, idx, direction=-1)
                         ev   = prob * rr - (1 - prob)
                         if prob >= cfg.ml_threshold and ev >= cfg.min_ev:
                             return SignalResult(
@@ -241,11 +241,14 @@ class StrategyEngine:
 
     # ── ML helper ─────────────────────────────────────────────────────────────
 
-    def _ml_prob(self, df: pd.DataFrame, i: int) -> float:
+    def _ml_prob(self, df: pd.DataFrame, i: int, direction: int = 0) -> float:
         if self.model is None:
             return 1.0
         try:
-            return float(self.model.predict_proba(df.iloc[[i]])[0])
+            row = df.iloc[[i]].copy()
+            # [2.4] inject direction at inference time — not present in raw bar df
+            row["direction"] = direction
+            return float(self.model.predict_proba(row)[0])
         except Exception as exc:
             logger.warning(f"ML predict failed at bar {i}: {exc}")
             return 0.0
