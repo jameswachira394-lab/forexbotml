@@ -325,7 +325,7 @@ python main.py --mode live --symbols XAUUSD
 
 ### 5. Sync fresh data from MT5
 ```bash
-python main.py --mode sync --symbol EURUSD --bars 100000
+python main.py --mode sync --symbol USDJPY   --bars 100000
 ```
 
 ### 6. Generate results dashboard

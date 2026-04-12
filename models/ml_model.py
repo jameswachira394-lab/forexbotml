@@ -163,10 +163,31 @@ class ForexMLModel:
             estimator.fit(X_train, y_train)
 
         # [1.2] Calibration with TimeSeriesSplit — preserves time order
+        # Build a clone WITHOUT early_stopping_rounds so CalibratedClassifierCV
+        # can refit internally without needing an eval_set each fold.
         try:
+            if XGB_AVAILABLE:
+                cal_estimator = xgb.XGBClassifier(
+                    n_estimators     = estimator.best_iteration + 1 if hasattr(estimator, "best_iteration") and estimator.best_iteration else 200,
+                    max_depth        = 4,
+                    learning_rate    = 0.05,
+                    subsample        = 0.8,
+                    colsample_bytree = 0.7,
+                    min_child_weight = max(1, int(len(X_train) * 0.005)),
+                    scale_pos_weight = cw,
+                    reg_alpha        = 0.1,
+                    reg_lambda       = 1.0,
+                    eval_metric      = "auc",
+                    random_state     = 42,
+                    verbosity        = 0,
+                    # NO early_stopping_rounds — calibration refits without eval_set
+                )
+            else:
+                cal_estimator = estimator
+
             cal_cv = TimeSeriesSplit(n_splits=min(3, max(2, len(X_train) // 4)))
             calibrated = CalibratedClassifierCV(
-                estimator, method="sigmoid", cv=cal_cv
+                cal_estimator, method="sigmoid", cv=cal_cv
             )
             calibrated.fit(X_train, y_train)
             self.pipeline = calibrated
@@ -191,7 +212,7 @@ class ForexMLModel:
 
         y_pred = (proba_test >= self.threshold).astype(int)
         try:
-            report = classification_report(y_test, y_pred, output_dict=True)
+            report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)
             logger.info(f"\n{classification_report(y_test, y_pred)}")
         except Exception:
             report = {}
@@ -233,7 +254,7 @@ class ForexMLModel:
         """
         [4.1] Expected value per unit risked:
           EV = P(win)*RR - P(loss)*1
-        Positive EV → trade has edge. Use this for position sizing.
+        Positive EV -> trade has edge. Use this for position sizing.
         """
         p   = self.predict_proba(X)
         rr  = self.rr_ratio
@@ -253,7 +274,7 @@ class ForexMLModel:
             safe = {k: v for k, v in self.meta.items()
                     if isinstance(v, (str, int, float, list, dict, bool))}
             json.dump(safe, f, indent=2)
-        logger.info(f"Model saved → {self.model_path}")
+        logger.info(f"Model saved -> {self.model_path}")
 
     def load(self) -> None:
         if not self.model_path.exists():
@@ -265,7 +286,7 @@ class ForexMLModel:
             self.feature_names = self.meta.get("feature_names", [])
             self.threshold     = self.meta.get("threshold", 0.55)
             self.rr_ratio      = self.meta.get("rr_ratio", 2.0)
-        logger.info(f"Model loaded ← {self.model_path}")
+        logger.info(f"Model loaded <- {self.model_path}")
 
     # ── Utilities ─────────────────────────────────────────────────────────────
 
