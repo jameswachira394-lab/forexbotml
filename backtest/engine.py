@@ -31,14 +31,14 @@ logger = logging.getLogger(__name__)
 class BacktestConfig:
     initial_balance:  float = 10_000.0
     risk_per_trade:   float = 1.0           # % of equity per trade
-    spread_pips:      float = 1.5           # spread to add on entry
-    slippage_pips:    float = 0.5           # additional slippage
-    pip_value:        float = 10.0          # USD per pip per standard lot
+    spread_pips:      float = 1.5           # spread in pips
+    slippage_pips:    float = 0.5           # slippage in pips
+    symbol:           str   = "EURUSD"      # used to derive pip_size for friction
     lot_step:         float = 0.01
     min_lot:          float = 0.01
-    max_lot:          float = 10.0
+    max_lot:          float = 500.0         # raised for gold (position_units can be large)
     max_trades_per_day: int = 5
-    daily_loss_limit_pct: float = 3.0       # halt trading if day loss > X%
+    daily_loss_limit_pct: float = 3.0       # halt if day loss > X%
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -47,19 +47,19 @@ class BacktestConfig:
 
 @dataclass
 class TradeRecord:
-    entry_ts:     pd.Timestamp
-    exit_ts:      Optional[pd.Timestamp]
-    direction:    int           # +1 long, -1 short
-    entry_price:  float
-    exit_price:   float = 0.0
-    sl_price:     float = 0.0
-    tp_price:     float = 0.0
-    lot_size:     float = 0.0
-    pnl_pips:     float = 0.0
-    pnl_usd:      float = 0.0
-    exit_reason:  str   = ""
-    ml_prob:      float = 0.0
-    equity_after: float = 0.0
+    entry_ts:       pd.Timestamp
+    exit_ts:        Optional[pd.Timestamp]
+    direction:      int           # +1 long, -1 short
+    entry_price:    float
+    exit_price:     float = 0.0
+    sl_price:       float = 0.0
+    tp_price:       float = 0.0
+    position_units: float = 0.0   # price-units of exposure (oz for gold, units for forex)
+    pnl_price:      float = 0.0   # price-unit P&L (same units as position_units × price move)
+    pnl_usd:        float = 0.0
+    exit_reason:    str   = ""
+    ml_prob:        float = 0.0
+    equity_after:   float = 0.0
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -128,37 +128,46 @@ class BacktestEngine:
         return True
 
     def _open_new_trade(self, ts, sig, row) -> None:
-        # [3.2] Spread + slippage applied to entry
-        friction_pips = self.cfg.spread_pips + self.cfg.slippage_pips
-        friction      = friction_pips * self._pip_size("EURUSD")
+        # Friction: convert pips to price units using the symbol's pip size
+        pip_sz    = self._pip_size(self.cfg.symbol)
+        friction  = (self.cfg.spread_pips + self.cfg.slippage_pips) * pip_sz
+        entry     = sig.entry_price + friction if sig.direction == 1 \
+                    else sig.entry_price - friction
 
-        entry = sig.entry_price + friction if sig.direction == 1 else sig.entry_price - friction
+        sl_dist = abs(entry - sig.sl_price)
+        if sl_dist < 1e-9:
+            logger.warning(f"SL distance near-zero at {ts}, skipping.")
+            return
 
-        # [7.1] EV-scaled lot size
-        rr       = getattr(sig, "rr_ratio", self.cfg.risk_per_trade)
+        # EV-scaled risk
+        rr       = getattr(sig, "rr_ratio", 2.0)
         ml_prob  = sig.ml_probability
         ev       = ml_prob * rr - (1 - ml_prob)
         ev_scale = max(0.25, min(1.5, ev / max(rr - 1, 0.5)))
 
-        sl_dist_pips = abs(entry - sig.sl_price) / self._pip_size("EURUSD")
-        lot_size     = self._calc_lots(sl_dist_pips, ev_scale=ev_scale)
+        # position_units: how many price-units of exposure we hold
+        # P&L = position_units × price_change × direction
+        # By construction: if price moves sl_dist against us -> loss = risk_usd  ✓
+        # if price moves sl_dist × rr in our favour -> profit = risk_usd × rr  ✓
+        risk_usd       = self.equity * self.cfg.risk_per_trade / 100 * ev_scale
+        position_units = risk_usd / sl_dist
 
         t = TradeRecord(
-            entry_ts    = ts,
-            exit_ts     = None,
-            direction   = sig.direction,
-            entry_price = entry,
-            sl_price    = sig.sl_price,
-            tp_price    = sig.tp_price,
-            lot_size    = lot_size,
-            ml_prob     = ml_prob,
+            entry_ts       = ts,
+            exit_ts        = None,
+            direction      = sig.direction,
+            entry_price    = entry,
+            sl_price       = sig.sl_price,
+            tp_price       = sig.tp_price,
+            position_units = position_units,
+            ml_prob        = ml_prob,
         )
         self._open_trade  = t
         self._day_trades += 1
         logger.debug(
             f"  OPEN {'+' if sig.direction==1 else '-'} @ {entry:.5f} | "
             f"SL={sig.sl_price:.5f} | TP={sig.tp_price:.5f} | "
-            f"lots={lot_size} | EV={ev:.3f}"
+            f"pos_units={position_units:.4f} | EV={ev:.3f}"
         )
 
     def _check_trade_exit(self, ts: pd.Timestamp, row) -> None:
@@ -186,14 +195,14 @@ class BacktestEngine:
 
     def _close_trade(self, ts: pd.Timestamp, exit_price: float, reason: str) -> None:
         t = self._open_trade
-        pip_size  = self._pip_size("EURUSD")
-        pnl_pips  = (exit_price - t.entry_price) * t.direction / pip_size
-        pnl_usd   = pnl_pips * self.cfg.pip_value * t.lot_size
+        # Direct price arithmetic — instrument agnostic
+        price_diff = (exit_price - t.entry_price) * t.direction
+        pnl_usd    = t.position_units * price_diff
 
         t.exit_ts      = ts
         t.exit_price   = exit_price
-        t.pnl_pips     = round(pnl_pips, 1)
-        t.pnl_usd      = round(pnl_usd,  2)
+        t.pnl_price    = round(price_diff, 5)
+        t.pnl_usd      = round(pnl_usd, 2)
         t.exit_reason  = reason
 
         self.equity     += pnl_usd
@@ -202,7 +211,7 @@ class BacktestEngine:
 
         self.trades.append(t)
         self._open_trade = None
-        logger.debug(f"  CLOSE {reason} @ {exit_price:.5f} | P&L={pnl_usd:+.2f}")
+        logger.debug(f"  CLOSE {reason} @ {exit_price:.5f} | P&L=${pnl_usd:+.2f}")
 
     def _force_close(self, ts: pd.Timestamp, price: float) -> None:
         self._close_trade(ts, price, reason="EOD")
@@ -210,10 +219,8 @@ class BacktestEngine:
     def _record_equity(self, ts: pd.Timestamp, price: float) -> None:
         mark = 0.0
         if self._open_trade is not None:
-            t        = self._open_trade
-            pip_size = self._pip_size("EURUSD")
-            pips     = (price - t.entry_price) * t.direction / pip_size
-            mark     = pips * self.cfg.pip_value * t.lot_size
+            t    = self._open_trade
+            mark = t.position_units * (price - t.entry_price) * t.direction
         self.equity_curve.append({"timestamp": ts, "equity": self.equity + mark})
 
     def _refresh_day(self, ts: pd.Timestamp) -> None:
@@ -224,18 +231,24 @@ class BacktestEngine:
             self._day_pnl     = 0.0
 
     def _calc_lots(self, sl_pips: float, ev_scale: float = 1.0) -> float:
+        """Kept for walk-forward compatibility; not used in main backtest."""
         cfg  = self.cfg
-        risk = self.equity * cfg.risk_per_trade / 100 * ev_scale   # [7.1] EV scaling
-        raw  = risk / max(sl_pips * cfg.pip_value, 1e-9)
+        risk = self.equity * cfg.risk_per_trade / 100 * ev_scale
+        raw  = risk / max(sl_pips * self._pip_size(cfg.symbol), 1e-9)
         lots = round(raw / cfg.lot_step) * cfg.lot_step
         return float(np.clip(lots, cfg.min_lot, cfg.max_lot))
 
     @staticmethod
     def _pip_size(symbol: str) -> float:
-        return 0.01 if "JPY" in symbol.upper() else 0.0001
-
-
-# ──────────────────────────────────────────────────────────────────────────────
+        """Smallest price increment for the symbol (used only for friction/spread)."""
+        sym = symbol.upper()
+        if "JPY" in sym:
+            return 0.01      # JPY pairs: 2 decimal places
+        if "XAU" in sym or "GOLD" in sym:
+            return 0.01      # Gold: priced to 2dp
+        if "XAG" in sym:
+            return 0.001     # Silver
+        return 0.0001        # Standard forex (4dp)
 # Results analysis
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -330,19 +343,19 @@ class BacktestResults:
         rows = []
         for t in self.trades:
             rows.append({
-                "entry_ts":    t.entry_ts,
-                "exit_ts":     t.exit_ts,
-                "direction":   t.direction,
-                "entry_price": t.entry_price,
-                "exit_price":  t.exit_price,
-                "sl_price":    t.sl_price,
-                "tp_price":    t.tp_price,
-                "lot_size":    t.lot_size,
-                "pnl_pips":    t.pnl_pips,
-                "pnl_usd":     t.pnl_usd,
-                "exit_reason": t.exit_reason,
-                "ml_prob":     t.ml_prob,
-                "equity_after": t.equity_after,
+                "entry_ts":      t.entry_ts,
+                "exit_ts":       t.exit_ts,
+                "direction":     t.direction,
+                "entry_price":   t.entry_price,
+                "exit_price":    t.exit_price,
+                "sl_price":      t.sl_price,
+                "tp_price":      t.tp_price,
+                "position_units": t.position_units,
+                "pnl_price":     t.pnl_price,
+                "pnl_usd":       t.pnl_usd,
+                "exit_reason":   t.exit_reason,
+                "ml_prob":       t.ml_prob,
+                "equity_after":  t.equity_after,
             })
         return pd.DataFrame(rows)
 

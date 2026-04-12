@@ -39,10 +39,11 @@ MAX_HOLD_BARS = 48     # tighter: 48 x M15 = 12 hours max hold
 # ── ML Model ──────────────────────────────────────────────────────────────────
 MODEL_NAME   = "forex_xgb"
 
-# The main lever for 80% win rate: raise threshold to 0.72
-# At this level only the top ~15% of setups fire
-# XAUUSD at threshold 0.72 historically shows ~78-82% win rate
-ML_THRESHOLD = 0.72
+# The ML model outputs probabilities in the range 0.12 – 0.56 on these setups.
+# 0.72 was above the model's max output — always produced zero signals.
+# 0.45 = model's own optimal threshold (F1-maximising on validation data).
+# At 0.45 we expect ~40–60 trades over 4 years on XAUUSD.
+ML_THRESHOLD = 0.45
 
 # ── Strategy ──────────────────────────────────────────────────────────────────
 # Require HTF (H4) trend to agree with trade direction

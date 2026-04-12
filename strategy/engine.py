@@ -33,15 +33,15 @@ class SignalResult:
 
 @dataclass
 class StrategyConfig:
-    ml_threshold:       float = 0.72    # high selectivity — ~80% win rate target
-    min_ev:             float = 0.20    # strong edge required
+    ml_threshold:       float = 0.45    # model's own F1-optimal threshold
+    min_ev:             float = 0.10    # minimum positive expected value
     sl_atr_mult:        float = 1.0
     sl_buffer_atr:      float = 0.8     # wider buffer on gold to avoid stop hunts
     rr_ratio:           float = 3.0     # 1:3 RR minimum
     require_htf_align:  bool  = True    # H4 trend must agree
-    max_sweep_bos_gap:  int   = 50      # wide window — catch delayed BOS
-    pullback_atr_min:   float = 0.2     # some pullback required
-    pullback_atr_max:   float = 4.0     # allow deep pullbacks into discount zone
+    max_sweep_bos_gap:  int   = 100     # bars from BOS for pullback window (raised from 50)
+    pullback_atr_min:   float = 0.1     # any pullback at all required
+    pullback_atr_max:   float = 5.0     # allow deep pullbacks into discount zone
 
 
 class StrategyEngine:
@@ -82,18 +82,24 @@ class StrategyEngine:
             if bear_sw[prev]:
                 last_bear_sweep_i    = prev
                 last_bear_sweep_high = high[prev]
-            if bos_arr[prev] == 1:  last_bull_bos_i = prev
-            if bos_arr[prev] == -1: last_bear_bos_i = prev
+            # Only record FIRST BOS after the sweep — prevents bos_close drifting upward
+            # while price continues trending (which makes pullbacks measure near-zero).
+            if bos_arr[prev] == 1  and last_bull_bos_i <= last_bull_sweep_i:
+                last_bull_bos_i = prev
+            if bos_arr[prev] == -1 and last_bear_bos_i <= last_bear_sweep_i:
+                last_bear_bos_i = prev
 
             bar_atr = max(float(atr[i]), 1e-9)
 
-            # ── LONG ─────────────────────────────────────────────
+            # Condition: BOS occurred after sweep AND pullback window (measured from BOS)
             if (
                 last_bull_sweep_i >= 0
                 and last_bull_bos_i > last_bull_sweep_i
-                and (i - last_bull_sweep_i) <= cfg.max_sweep_bos_gap
+                and (i - last_bull_bos_i) <= cfg.max_sweep_bos_gap
                 and (not cfg.require_htf_align or htf_tr[i] >= 0)
             ):
+                # Pullback is measured from the FIRST BOS close — how far has price
+                # retraced below that level since the BOS confirmed?
                 bos_close = close[last_bull_bos_i]
                 pb_dist   = (bos_close - close[i]) / bar_atr
 
@@ -127,11 +133,11 @@ class StrategyEngine:
                     last_bull_sweep_i = -1
                     last_bull_bos_i   = -1
 
-            # ── SHORT ────────────────────────────────────────────
+            # ── SHORT ─────────────────────────────────────────────
             if (
                 last_bear_sweep_i >= 0
                 and last_bear_bos_i > last_bear_sweep_i
-                and (i - last_bear_sweep_i) <= cfg.max_sweep_bos_gap
+                and (i - last_bear_bos_i) <= cfg.max_sweep_bos_gap
                 and (not cfg.require_htf_align or htf_tr[i] <= 0)
             ):
                 bos_close = close[last_bear_bos_i]

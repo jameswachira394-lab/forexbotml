@@ -15895,3 +15895,1003 @@ Training complete: 4 OK | 0 failed
 2026-04-12 21:48:45 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
 2026-04-12 21:49:26 | INFO     | strategy.engine | Strategy scan: 0 signals on 103,590 bars
 2026-04-12 21:49:26 | WARNING  | __main__ | No signals generated.
+2026-04-12 21:52:09 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 21:52:12 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-12 21:52:12 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-12 21:52:13 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 21:52:14 | INFO     | data.histdata_parser | Parsed 103,603 M15 bars | 2022-01-12 -> 2026-04-09
+2026-04-12 21:52:14 | INFO     | data.loader | Resampled to H4: 6,764 bars
+2026-04-12 21:52:14 | INFO     | __main__ | Bars: 103,603 [M15]
+2026-04-12 21:52:26 | INFO     | features.engineer | Feature engineering: 103603 -> 103590 rows after NaN drop
+2026-04-12 21:52:26 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 21:52:26 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-12 21:53:08 | INFO     | strategy.engine | Strategy scan: 0 signals on 103,590 bars
+2026-04-12 21:53:08 | WARNING  | __main__ | No signals generated.
+2026-04-12 22:02:21 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:02:24 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-12 22:02:24 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-12 22:02:24 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 22:02:25 | INFO     | data.histdata_parser | Parsed 103,603 M15 bars | 2022-01-12 -> 2026-04-09
+2026-04-12 22:02:25 | INFO     | data.loader | Resampled to H4: 6,764 bars
+2026-04-12 22:02:25 | INFO     | __main__ | Bars: 103,603 [M15]
+2026-04-12 22:02:32 | INFO     | features.engineer | Feature engineering: 103603 -> 103590 rows after NaN drop
+2026-04-12 22:02:32 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 22:02:32 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-12 22:03:19 | INFO     | strategy.engine | Strategy scan: 75 signals on 103,590 bars
+2026-04-12 22:03:19 | INFO     | backtest.engine | Starting backtest | 103,603 bars | 75 signals
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN + @ 1809.16020 | SL=1801.99070 | TP=1830.66791 | lots=0.01 | EV=0.851
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   CLOSE TP @ 1830.66791 | P&L=+21507.71
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN + @ 1858.33020 | SL=1852.31784 | TP=1876.36648 | lots=0.01 | EV=0.804
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   CLOSE TP @ 1876.36648 | P&L=+18036.28
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN + @ 1900.15020 | SL=1894.27683 | TP=1918.61625 | lots=0.01 | EV=1.087
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   CLOSE TP @ 1918.61625 | P&L=+18466.05
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN + @ 1991.75020 | SL=1971.11986 | TP=2053.64042 | lots=0.01 | EV=1.086
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   CLOSE SL @ 1971.11986 | P&L=-20630.34
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN - @ 1933.70980 | SL=1940.01419 | TP=1914.79742 | lots=0.01 | EV=1.002
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   CLOSE TP @ 1914.79742 | P&L=+18912.38
+2026-04-12 22:03:19 | DEBUG    | backtest.engine |   OPEN + @ 1925.38020 | SL=1919.21683 | TP=1943.86951 | lots=0.01 | EV=1.033
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1943.86951 | P&L=+18489.31
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1819.63980 | SL=1829.15423 | TP=1791.09732 | lots=0.01 | EV=1.188
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1791.09732 | P&L=+28542.48
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1823.85980 | SL=1831.46181 | TP=1801.05457 | lots=0.01 | EV=0.909
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1831.46181 | P&L=-7602.01
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1825.51980 | SL=1828.62845 | TP=1816.19464 | lots=0.01 | EV=1.005
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1816.19464 | P&L=+9325.16
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1825.10980 | SL=1828.59612 | TP=1813.56096 | lots=0.01 | EV=1.255
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.59612 | P&L=-3486.32
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1766.86020 | SL=1759.25556 | TP=1789.67333 | lots=0.01 | EV=0.854
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1789.67333 | P&L=+22813.13
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1787.22020 | SL=1784.03290 | TP=1796.78129 | lots=0.01 | EV=1.092
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1796.78129 | P&L=+9561.09
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1720.86980 | SL=1726.18262 | TP=1704.93213 | lots=0.01 | EV=0.952
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1704.93213 | P&L=+15937.67
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1721.39980 | SL=1730.09207 | TP=1695.32379 | lots=0.01 | EV=0.897
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1730.09207 | P&L=-8692.27
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1635.70980 | SL=1648.07468 | TP=1598.61597 | lots=0.01 | EV=0.888
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1648.07468 | P&L=-12364.88
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1702.00020 | SL=1695.70069 | TP=1720.89792 | lots=0.01 | EV=0.947
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1720.89792 | P&L=+18897.72
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1666.23980 | SL=1671.96500 | TP=1649.06501 | lots=0.01 | EV=0.961
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1649.06501 | P&L=+17174.79
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN - @ 1631.01980 | SL=1632.82347 | TP=1625.60960 | lots=0.01 | EV=0.858
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1632.82347 | P&L=-1803.67
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1658.38020 | SL=1649.87285 | TP=1683.90146 | lots=0.01 | EV=0.865
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE SL @ 1649.87285 | P&L=-8507.35
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1670.58020 | SL=1664.42036 | TP=1689.05891 | lots=0.01 | EV=1.097
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1689.05891 | P&L=+18478.71
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1732.86020 | SL=1701.09626 | TP=1828.15121 | lots=0.01 | EV=1.218
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1828.15121 | P&L=+95291.01
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   OPEN + @ 1838.19020 | SL=1830.47043 | TP=1861.34870 | lots=0.01 | EV=0.837
+2026-04-12 22:03:20 | DEBUG    | backtest.engine |   CLOSE TP @ 1861.34870 | P&L=+23158.50
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1837.66020 | SL=1828.57818 | TP=1864.90545 | lots=0.01 | EV=0.981
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.57818 | P&L=-9082.02
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1884.54020 | SL=1868.46483 | TP=1932.76552 | lots=0.01 | EV=1.104
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1932.76552 | P&L=+48225.32
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1966.36020 | SL=1956.02032 | TP=1997.37903 | lots=0.01 | EV=1.080
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1956.02032 | P&L=-10339.88
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1980.98020 | SL=1975.16874 | TP=1998.41379 | lots=0.01 | EV=0.843
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1998.41379 | P&L=+17433.59
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1993.68020 | SL=1986.62364 | TP=2014.84908 | lots=0.01 | EV=0.859
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 2014.84908 | P&L=+21168.88
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN - @ 1981.92980 | SL=1985.14819 | TP=1972.27542 | lots=0.01 | EV=0.978
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1972.27542 | P&L=+9654.38
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN - @ 1973.56980 | SL=1985.21525 | TP=1938.63426 | lots=0.01 | EV=0.897
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1938.63426 | P&L=+34935.54
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN - @ 1959.98980 | SL=1964.01596 | TP=1947.91211 | lots=0.01 | EV=0.863
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1964.01596 | P&L=-4026.16
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN - @ 1928.41980 | SL=1931.94046 | TP=1917.85863 | lots=0.01 | EV=0.893
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1917.85863 | P&L=+10561.17
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1937.70020 | SL=1934.44262 | TP=1947.47214 | lots=0.01 | EV=1.073
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1947.47214 | P&L=+9771.94
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1934.01020 | SL=1930.61631 | TP=1944.19108 | lots=0.01 | EV=0.822
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1930.61631 | P&L=-3393.89
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1862.50020 | SL=1857.78327 | TP=1876.65019 | lots=0.01 | EV=1.021
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE TP @ 1876.65019 | P&L=+14149.99
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1917.50020 | SL=1916.66026 | TP=1920.01922 | lots=0.02 | EV=0.926
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1916.66026 | P&L=-1679.88
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   OPEN + @ 1981.47020 | SL=1976.08472 | TP=1997.62585 | lots=0.01 | EV=1.225
+2026-04-12 22:03:21 | DEBUG    | backtest.engine |   CLOSE SL @ 1976.08472 | P&L=-5385.48
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2023.47020 | SL=2020.86222 | TP=2031.29335 | lots=0.01 | EV=0.962
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2031.29335 | P&L=+7823.15
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2162.68020 | SL=2156.80038 | TP=2180.31887 | lots=0.01 | EV=1.021
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE SL @ 2156.80038 | P&L=-5879.82
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2169.25020 | SL=2161.61512 | TP=2192.15465 | lots=0.01 | EV=1.143
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2192.15465 | P&L=+22904.45
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN - @ 2316.30980 | SL=2327.14796 | TP=2283.79612 | lots=0.01 | EV=0.826
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2283.79612 | P&L=+32513.68
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN - @ 2325.45980 | SL=2333.70306 | TP=2300.73081 | lots=0.01 | EV=1.134
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE SL @ 2333.70306 | P&L=-8243.26
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2317.83020 | SL=2316.86982 | TP=2320.71054 | lots=0.02 | EV=0.858
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2320.71054 | P&L=+5760.68
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2332.29020 | SL=2324.33962 | TP=2356.14113 | lots=0.01 | EV=1.025
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2356.14113 | P&L=+23850.93
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2441.34020 | SL=2430.38808 | TP=2474.19575 | lots=0.01 | EV=1.082
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE SL @ 2430.38808 | P&L=-10952.12
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2465.59020 | SL=2453.25640 | TP=2502.59079 | lots=0.01 | EV=1.007
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE SL @ 2453.25640 | P&L=-12333.80
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2464.62020 | SL=2451.62803 | TP=2503.59592 | lots=0.01 | EV=0.967
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2503.59592 | P&L=+38975.72
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN + @ 2718.43020 | SL=2714.62628 | TP=2729.84115 | lots=0.01 | EV=0.914
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2729.84115 | P&L=+11410.95
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   OPEN - @ 2701.60980 | SL=2713.10001 | TP=2667.13996 | lots=0.01 | EV=0.865
+2026-04-12 22:03:22 | DEBUG    | backtest.engine |   CLOSE TP @ 2667.13996 | P&L=+34469.84
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2635.65020 | SL=2628.41913 | TP=2657.34261 | lots=0.01 | EV=1.152
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2657.34261 | P&L=+21692.41
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2633.56020 | SL=2619.73246 | TP=2675.04263 | lots=0.01 | EV=0.860
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE SL @ 2619.73246 | P&L=-13827.74
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN - @ 2651.20980 | SL=2657.55032 | TP=2632.18903 | lots=0.01 | EV=0.940
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2632.18903 | P&L=+19020.77
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN - @ 2603.78980 | SL=2621.55024 | TP=2550.50927 | lots=0.01 | EV=0.967
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE SL @ 2621.55024 | P&L=-17760.44
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2674.43020 | SL=2670.25404 | TP=2686.95788 | lots=0.01 | EV=1.027
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2686.95788 | P&L=+12527.68
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2702.80020 | SL=2699.85537 | TP=2711.63390 | lots=0.01 | EV=0.833
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2711.63390 | P&L=+8833.70
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2743.00020 | SL=2735.29722 | TP=2766.10834 | lots=0.01 | EV=1.048
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2766.10834 | P&L=+23108.14
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 2845.20020 | SL=2838.51094 | TP=2865.26718 | lots=0.01 | EV=1.070
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 2865.26718 | P&L=+20066.98
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN - @ 2910.81980 | SL=2910.90518 | TP=2910.56446 | lots=0.35000000000000003 | EV=0.949
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE SL @ 2910.90518 | P&L=-2988.28
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 3001.32020 | SL=2997.88534 | TP=3011.62399 | lots=0.01 | EV=0.907
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 3011.62399 | P&L=+10303.79
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 3015.24020 | SL=3006.64128 | TP=3041.03616 | lots=0.01 | EV=1.090
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 3041.03616 | P&L=+25795.96
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN - @ 3298.36980 | SL=3320.93447 | TP=3230.67660 | lots=0.01 | EV=1.181
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE SL @ 3320.93447 | P&L=-22564.67
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 3986.54020 | SL=3951.39362 | TP=4091.97915 | lots=0.01 | EV=0.938
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   CLOSE TP @ 4091.97915 | P&L=+105438.95
+2026-04-12 22:03:23 | DEBUG    | backtest.engine |   OPEN + @ 4157.48020 | SL=4091.94910 | TP=4354.07269 | lots=0.01 | EV=1.070
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE TP @ 4354.07269 | P&L=+196592.49
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN + @ 4161.58020 | SL=4151.11034 | TP=4192.98898 | lots=0.01 | EV=1.097
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE TP @ 4192.98898 | P&L=+31408.78
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN + @ 4213.40020 | SL=4195.95296 | TP=4265.74111 | lots=0.01 | EV=1.015
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE SL @ 4195.95296 | P&L=-17447.24
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN + @ 4212.37020 | SL=4187.57528 | TP=4286.75417 | lots=0.01 | EV=1.167
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE SL @ 4187.57528 | P&L=-24794.92
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN - @ 4383.35980 | SL=4409.26973 | TP=4304.13855 | lots=0.01 | EV=1.289
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE SL @ 4409.26973 | P&L=-25909.93
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN - @ 4477.09980 | SL=4504.60007 | TP=4394.59980 | lots=0.01 | EV=1.024
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE SL @ 4504.60007 | P&L=-27500.27
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN - @ 4961.66980 | SL=5026.60412 | TP=4766.86763 | lots=0.01 | EV=1.108
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE TP @ 4766.86763 | P&L=+194802.17
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   OPEN + @ 5184.91020 | SL=5167.62854 | TP=5236.75439 | lots=0.01 | EV=0.885
+2026-04-12 22:03:24 | DEBUG    | backtest.engine |   CLOSE TP @ 5236.75439 | P&L=+51844.19
+2026-04-12 22:03:25 | INFO     | backtest.engine | Trade log saved -> logs/XAUUSD_backtest_trades.csv
+2026-04-12 22:03:26 | INFO     | backtest.engine | Equity curve saved -> logs/XAUUSD_equity_curve.csv
+2026-04-12 22:05:26 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:05:29 | INFO     | __main__ | === BACKTEST | GBPUSD | data/GBPUSD5.csv ===
+2026-04-12 22:05:29 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M15
+2026-04-12 22:05:29 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 22:05:29 | INFO     | data.histdata_parser | Parsed 100,784 M15 bars | 2022-03-30 -> 2026-04-09
+2026-04-12 22:05:29 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-12 22:05:29 | INFO     | __main__ | Bars: 100,784 [M15]
+2026-04-12 22:05:36 | INFO     | features.engineer | Feature engineering: 100784 -> 100771 rows after NaN drop
+2026-04-12 22:05:36 | INFO     | models.ml_model | Model loaded <- saved_models\GBPUSD_forex_xgb.joblib
+2026-04-12 22:05:36 | INFO     | __main__ | Loaded model: GBPUSD_forex_xgb
+2026-04-12 22:06:11 | INFO     | strategy.engine | Strategy scan: 40 signals on 100,771 bars
+2026-04-12 22:06:11 | INFO     | backtest.engine | Starting backtest | 100,784 bars | 40 signals
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.30624 | SL=1.30791 | TP=1.30203 | lots=0.01 | EV=0.905
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.30203 | P&L=+4.21
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.23358 | SL=1.23802 | TP=1.22064 | lots=0.01 | EV=1.156
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.23802 | P&L=-4.44
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.22590 | SL=1.22881 | TP=1.21798 | lots=0.01 | EV=0.968
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.21798 | P&L=+7.92
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.22448 | SL=1.22964 | TP=1.20980 | lots=0.01 | EV=1.200
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.20980 | P&L=+14.68
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.20110 | SL=1.20412 | TP=1.19285 | lots=0.01 | EV=1.400
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.19285 | P&L=+8.25
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.18290 | SL=1.18877 | TP=1.16608 | lots=0.01 | EV=1.019
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.18877 | P&L=-5.87
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.17871 | SL=1.18319 | TP=1.16607 | lots=0.01 | EV=0.895
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.18319 | P&L=-4.48
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.16474 | SL=1.16898 | TP=1.15282 | lots=0.01 | EV=1.090
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.15282 | P&L=+11.92
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.15200 | SL=1.15288 | TP=1.15017 | lots=0.01 | EV=1.168
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.15017 | P&L=+1.83
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN + @ 1.15181 | SL=1.14793 | TP=1.16265 | lots=0.01 | EV=0.914
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.14793 | P&L=-3.88
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN + @ 1.12454 | SL=1.11689 | TP=1.14668 | lots=0.01 | EV=1.011
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.11689 | P&L=-7.65
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN + @ 1.18146 | SL=1.17378 | TP=1.20370 | lots=0.01 | EV=0.982
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.20370 | P&L=+22.24
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN + @ 1.20972 | SL=1.20696 | TP=1.21721 | lots=0.01 | EV=1.266
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.20696 | P&L=-2.76
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.20995 | SL=1.21494 | TP=1.19577 | lots=0.01 | EV=0.828
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.19577 | P&L=+14.18
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN + @ 1.22253 | SL=1.21748 | TP=1.23687 | lots=0.01 | EV=1.094
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.21748 | P&L=-5.05
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.23880 | SL=1.24036 | TP=1.23484 | lots=0.01 | EV=1.000
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE TP @ 1.23484 | P&L=+3.96
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   OPEN - @ 1.19747 | SL=1.20341 | TP=1.18044 | lots=0.01 | EV=0.930
+2026-04-12 22:06:12 | DEBUG    | backtest.engine |   CLOSE SL @ 1.20341 | P&L=-5.94
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.23473 | SL=1.24028 | TP=1.21889 | lots=0.01 | EV=1.037
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.24028 | P&L=-5.55
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.25042 | SL=1.25495 | TP=1.23761 | lots=0.01 | EV=0.916
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.23761 | P&L=+12.81
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN + @ 1.24362 | SL=1.24074 | TP=1.25145 | lots=0.01 | EV=0.920
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.25145 | P&L=+7.83
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.29226 | SL=1.29493 | TP=1.28505 | lots=0.01 | EV=0.924
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.28505 | P&L=+7.21
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.27413 | SL=1.27609 | TP=1.26905 | lots=0.01 | EV=0.940
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.27609 | P&L=-1.96
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.25905 | SL=1.26240 | TP=1.24981 | lots=0.01 | EV=1.001
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.26240 | P&L=-3.35
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN + @ 1.26466 | SL=1.26118 | TP=1.27431 | lots=0.01 | EV=1.018
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.27431 | P&L=+9.65
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.24994 | SL=1.25370 | TP=1.23947 | lots=0.01 | EV=1.229
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.23947 | P&L=+10.47
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.23003 | SL=1.23315 | TP=1.22147 | lots=0.01 | EV=0.843
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE TP @ 1.22147 | P&L=+8.56
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.21241 | SL=1.21489 | TP=1.20576 | lots=0.01 | EV=0.847
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.21489 | P&L=-2.48
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.27445 | SL=1.27678 | TP=1.26826 | lots=0.01 | EV=0.861
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.27678 | P&L=-2.33
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.26974 | SL=1.27179 | TP=1.26440 | lots=0.01 | EV=1.045
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.27179 | P&L=-2.05
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   OPEN - @ 1.26075 | SL=1.26456 | TP=1.24999 | lots=0.01 | EV=1.023
+2026-04-12 22:06:13 | DEBUG    | backtest.engine |   CLOSE SL @ 1.26456 | P&L=-3.81
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.29219 | SL=1.29300 | TP=1.29055 | lots=0.01 | EV=0.979
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE TP @ 1.29055 | P&L=+1.64
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.27749 | SL=1.27868 | TP=1.27471 | lots=0.01 | EV=0.986
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE TP @ 1.27471 | P&L=+2.78
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN + @ 1.29407 | SL=1.29365 | TP=1.29455 | lots=0.02 | EV=1.072
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE SL @ 1.29365 | P&L=-0.84
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.26569 | SL=1.26956 | TP=1.25487 | lots=0.01 | EV=1.121
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE SL @ 1.26956 | P&L=-3.87
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.26452 | SL=1.26639 | TP=1.25971 | lots=0.01 | EV=0.813
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE TP @ 1.25971 | P&L=+4.81
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.21892 | SL=1.22323 | TP=1.20679 | lots=0.01 | EV=0.810
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE SL @ 1.22323 | P&L=-4.31
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   OPEN - @ 1.28745 | SL=1.29485 | TP=1.26605 | lots=0.01 | EV=0.915
+2026-04-12 22:06:14 | DEBUG    | backtest.engine |   CLOSE SL @ 1.29485 | P&L=-7.40
+2026-04-12 22:06:15 | DEBUG    | backtest.engine |   OPEN - @ 1.34710 | SL=1.34962 | TP=1.34035 | lots=0.01 | EV=0.862
+2026-04-12 22:06:15 | DEBUG    | backtest.engine |   CLOSE SL @ 1.34962 | P&L=-2.52
+2026-04-12 22:06:16 | INFO     | backtest.engine | Trade log saved -> logs/GBPUSD_backtest_trades.csv
+2026-04-12 22:06:16 | INFO     | backtest.engine | Equity curve saved -> logs/GBPUSD_equity_curve.csv
+2026-04-12 22:09:10 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:09:11 | INFO     | __main__ | === SYNC | XAUUSD | 400,000 bars | -> data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-12 22:09:22 | INFO     | __main__ | Connected | Account: 10401216 | Server: FBS-Demo
+2026-04-12 22:09:23 | INFO     | __main__ |   Batch       0 –  99,999 | 2024-11-05 -> 2026-04-10 | Total so far: 100,000
+2026-04-12 22:09:23 | INFO     | __main__ |   Batch 100,000 – 199,999 | 2023-06-07 -> 2024-11-05 | Total so far: 200,000
+2026-04-12 22:09:23 | INFO     | __main__ |   Batch 200,000 – 299,999 | 2022-01-05 -> 2023-06-07 | Total so far: 300,000
+2026-04-12 22:09:23 | INFO     | __main__ |   Batch 300,000 – 399,999 | 2020-08-05 -> 2022-01-05 | Total so far: 400,000
+2026-04-12 22:09:26 | INFO     | __main__ | Saved 400,000 M5 bars | 2020-08-05 -> 2026-04-10 | data/raw/XAUUSD_M5_mt5.csv
+2026-04-12 22:10:41 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:10:41 | INFO     | __main__ | === TRAINING MODE ===
+2026-04-12 22:10:41 | INFO     | __main__ | Single-symbol mode: XAUUSD ← data/raw/XAUUSD_M5_mt5.csv
+2026-04-12 22:10:41 | INFO     | models.trainer | 
+=======================================================
+2026-04-12 22:10:41 | INFO     | models.trainer |   Symbol 1/1: XAUUSD
+2026-04-12 22:10:41 | INFO     | models.trainer | =======================================================
+2026-04-12 22:10:44 | INFO     | models.trainer | [XAUUSD] ---- Training --------------------------------
+2026-04-12 22:10:44 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-12 22:10:44 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 22:10:45 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-12 22:10:45 | INFO     | models.trainer |   [+] XAUUSD_M5_mt5.csv: 400,000 M1 bars
+2026-04-12 22:10:45 | INFO     | models.trainer | [XAUUSD] Total M1 bars: 400,000 | 2020-08-05 -> 2026-04-10
+2026-04-12 22:10:46 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-12 22:10:46 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-12 22:10:46 | INFO     | models.trainer | [XAUUSD] M15: 134,050 bars | H4: 8,780 bars
+2026-04-12 22:10:46 | INFO     | models.trainer | [XAUUSD] Engineering features...
+2026-04-12 22:10:54 | INFO     | features.engineer | Feature engineering: 134050 -> 134037 rows after NaN drop
+2026-04-12 22:10:54 | INFO     | models.trainer | [XAUUSD] Labeling setups...
+2026-04-12 22:10:56 | INFO     | features.labeler | SMC Labeler: 4,126 setups | Win rate: 26.1% | Long: 2000 | Short: 2126
+2026-04-12 22:10:56 | INFO     | models.trainer | [XAUUSD] Setups: 4,126 | Win rate: 26.1%
+2026-04-12 22:10:56 | INFO     | models.ml_model | Train: 2,888 | Val: 619 | Test: 619
+2026-04-12 22:10:56 | INFO     | models.ml_model | Label balance (train) – 1: 26.6%
+2026-04-12 22:10:56 | INFO     | models.ml_model |   CV Fold 1/5 AUC: 0.5803
+2026-04-12 22:10:57 | INFO     | models.ml_model |   CV Fold 2/5 AUC: 0.5897
+2026-04-12 22:10:57 | INFO     | models.ml_model |   CV Fold 3/5 AUC: 0.7450
+2026-04-12 22:10:58 | INFO     | models.ml_model |   CV Fold 4/5 AUC: 0.8389
+2026-04-12 22:10:58 | INFO     | models.ml_model |   CV Fold 5/5 AUC: 0.7457
+2026-04-12 22:10:58 | INFO     | models.ml_model | CV AUC: 0.6999 ± 0.0999
+2026-04-12 22:10:59 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.80      0.94      0.87       453
+           1       0.69      0.38      0.49       166
+
+    accuracy                           0.79       619
+   macro avg       0.75      0.66      0.68       619
+weighted avg       0.77      0.79      0.77       619
+
+2026-04-12 22:10:59 | INFO     | models.ml_model | Test AUC: 0.8256 | Brier: 0.1481 | Threshold (from val): 0.48
+2026-04-12 22:10:59 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+ll                  0.112363
+candle_dir          0.052326
+dist_to_last_sh     0.050545
+upper_wick          0.047803
+dist_prev_50_low    0.046279
+impulse             0.045012
+ny_low_dist         0.041549
+body_ratio          0.041427
+lower_wick          0.041138
+ny_high_dist        0.039392
+2026-04-12 22:10:59 | INFO     | models.trainer | [XAUUSD] CV AUC=0.6999±0.0999 | Test AUC=0.8256 | Threshold=0.48
+2026-04-12 22:10:59 | INFO     | models.trainer | [XAUUSD] Top features: ll(0.112), candle_dir(0.052), dist_to_last_sh(0.051), upper_wick(0.048), dist_prev_50_low(0.046)
+2026-04-12 22:10:59 | INFO     | models.ml_model | Model saved -> saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 22:10:59 | INFO     | models.trainer | [XAUUSD] Model saved -> saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 22:10:59 | INFO     | models.trainer | 
+Training complete: 1 OK | 0 failed
+2026-04-12 22:11:10 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:11:12 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-12 22:11:12 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-12 22:11:12 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 22:11:13 | INFO     | data.histdata_parser | Parsed 134,050 M15 bars | 2020-08-05 -> 2026-04-10
+2026-04-12 22:11:14 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-12 22:11:14 | INFO     | __main__ | Bars: 134,050 [M15]
+2026-04-12 22:11:21 | INFO     | features.engineer | Feature engineering: 134050 -> 134037 rows after NaN drop
+2026-04-12 22:11:21 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 22:11:21 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-12 22:12:06 | INFO     | strategy.engine | Strategy scan: 191 signals on 134,037 bars
+2026-04-12 22:12:06 | INFO     | backtest.engine | Starting backtest | 134,050 bars | 191 signals
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 2041.07020 | SL=2032.93637 | TP=2065.47089 | lots=0.01 | EV=0.909
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 2065.47089 | P&L=+24400.69
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN - @ 1919.67980 | SL=1934.52367 | TP=1875.14900 | lots=0.01 | EV=1.351
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE SL @ 1934.52367 | P&L=-14843.87
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1946.57020 | SL=1941.00917 | TP=1963.48472 | lots=0.01 | EV=1.863
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1963.48472 | P&L=+16914.52
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN - @ 1903.27980 | SL=1911.92651 | TP=1877.34046 | lots=0.01 | EV=1.270
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1877.34046 | P&L=+25939.34
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1887.67020 | SL=1884.87978 | TP=1896.09104 | lots=0.01 | EV=1.589
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1896.09104 | P&L=+8420.84
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1914.26020 | SL=1904.82866 | TP=1942.55403 | lots=0.01 | EV=0.857
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE SL @ 1904.82866 | P&L=-9431.54
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1894.35020 | SL=1888.29660 | TP=1912.51020 | lots=0.01 | EV=1.115
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1912.51020 | P&L=+18160.00
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1906.62020 | SL=1901.00843 | TP=1923.45470 | lots=0.01 | EV=1.796
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE SL @ 1901.00843 | P&L=-5611.77
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN - @ 1869.82980 | SL=1877.43273 | TP=1847.02181 | lots=0.01 | EV=1.454
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1847.02181 | P&L=+22807.99
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1813.94020 | SL=1805.73947 | TP=1838.54160 | lots=0.01 | EV=1.533
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE TP @ 1838.54160 | P&L=+24601.40
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   OPEN + @ 1864.65020 | SL=1857.47320 | TP=1887.21731 | lots=0.01 | EV=1.834
+2026-04-12 22:12:06 | DEBUG    | backtest.engine |   CLOSE SL @ 1857.47320 | P&L=-7177.00
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1836.01020 | SL=1822.89204 | TP=1875.73358 | lots=0.01 | EV=0.975
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1822.89204 | P&L=-13118.16
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1880.75020 | SL=1873.92674 | TP=1901.21979 | lots=0.01 | EV=0.993
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1901.21979 | P&L=+20469.59
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1843.14980 | SL=1858.56098 | TP=1796.91705 | lots=0.01 | EV=0.802
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1858.56098 | P&L=-15411.18
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1856.77020 | SL=1855.23101 | TP=1861.38698 | lots=0.01 | EV=1.689
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1855.23101 | P&L=-1539.19
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1854.80020 | SL=1849.37798 | TP=1871.06605 | lots=0.01 | EV=1.796
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1849.37798 | P&L=-5422.22
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1841.23980 | SL=1854.90655 | TP=1800.24035 | lots=0.01 | EV=0.998
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1854.90655 | P&L=-13666.75
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1840.88980 | SL=1846.42432 | TP=1824.28703 | lots=0.01 | EV=1.610
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1824.28703 | P&L=+16602.77
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1817.43980 | SL=1826.56059 | TP=1790.07824 | lots=0.01 | EV=1.687
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1790.07824 | P&L=+27361.56
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1778.35980 | SL=1789.78559 | TP=1744.08322 | lots=0.01 | EV=1.331
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.78559 | P&L=-11425.79
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1742.78020 | SL=1722.92576 | TP=1802.34273 | lots=0.01 | EV=1.770
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1722.92576 | P&L=-19854.44
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1732.02020 | SL=1729.14258 | TP=1740.65227 | lots=0.01 | EV=1.323
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1740.65227 | P&L=+8632.07
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1726.79980 | SL=1734.17306 | TP=1704.68081 | lots=0.01 | EV=1.403
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1704.68081 | P&L=+22118.99
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1878.27020 | SL=1871.74380 | TP=1898.07414 | lots=0.01 | EV=1.120
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1871.74380 | P&L=-6526.40
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1902.15020 | SL=1896.19854 | TP=1920.00437 | lots=0.01 | EV=1.547
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1896.19854 | P&L=-5951.66
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1894.93020 | SL=1887.61634 | TP=1916.87099 | lots=0.01 | EV=1.105
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1887.61634 | P&L=-7313.86
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1893.89020 | SL=1882.46436 | TP=1928.16691 | lots=0.01 | EV=1.248
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1882.46436 | P&L=-11425.84
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN - @ 1781.83980 | SL=1792.35963 | TP=1750.28110 | lots=0.01 | EV=0.945
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1792.35963 | P&L=-10519.83
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1800.48020 | SL=1789.16381 | TP=1834.42858 | lots=0.01 | EV=0.936
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.16381 | P&L=-11316.39
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1803.82020 | SL=1799.30198 | TP=1817.99615 | lots=0.01 | EV=1.538
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1799.30198 | P&L=-4518.22
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1790.18020 | SL=1780.97717 | TP=1817.78849 | lots=0.01 | EV=1.274
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1817.78849 | P&L=+27608.29
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1810.31020 | SL=1808.96936 | TP=1814.33191 | lots=0.01 | EV=0.851
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1814.33191 | P&L=+4021.71
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1792.30020 | SL=1785.54029 | TP=1813.26867 | lots=0.01 | EV=1.733
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1785.54029 | P&L=-6759.91
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1793.64020 | SL=1789.22706 | TP=1806.87881 | lots=0.01 | EV=0.931
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.22706 | P&L=-4413.14
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1765.65020 | SL=1760.46237 | TP=1781.42577 | lots=0.01 | EV=1.767
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1781.42577 | P&L=+15775.57
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1771.09020 | SL=1766.11946 | TP=1786.00163 | lots=0.01 | EV=1.453
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1786.00163 | P&L=+14911.43
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1798.29020 | SL=1790.77369 | TP=1820.83892 | lots=0.01 | EV=0.848
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1790.77369 | P&L=-7516.51
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1817.69020 | SL=1811.27019 | TP=1836.94942 | lots=0.01 | EV=1.482
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1836.94942 | P&L=+19259.22
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1870.66020 | SL=1861.67462 | TP=1897.61615 | lots=0.01 | EV=0.971
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE SL @ 1861.67462 | P&L=-8985.58
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   OPEN + @ 1855.84020 | SL=1855.19299 | TP=1857.78103 | lots=0.01 | EV=1.259
+2026-04-12 22:12:07 | DEBUG    | backtest.engine |   CLOSE TP @ 1857.78103 | P&L=+1940.83
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1789.33980 | SL=1797.97856 | TP=1763.42431 | lots=0.01 | EV=1.477
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1797.97856 | P&L=-8638.76
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1792.58980 | SL=1798.84969 | TP=1773.81094 | lots=0.01 | EV=1.215
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1798.84969 | P&L=-6259.89
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1793.89020 | SL=1787.29949 | TP=1813.66154 | lots=0.01 | EV=0.917
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1787.29949 | P&L=-6590.71
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1788.99020 | SL=1786.43151 | TP=1796.66546 | lots=0.01 | EV=1.425
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1796.66546 | P&L=+7675.26
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1806.67980 | SL=1811.33938 | TP=1792.48639 | lots=0.01 | EV=0.912
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1792.48639 | P&L=+14193.41
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1809.16020 | SL=1801.91077 | TP=1830.90768 | lots=0.01 | EV=1.689
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1830.90768 | P&L=+21747.48
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1826.81020 | SL=1822.21279 | TP=1840.60162 | lots=0.01 | EV=1.369
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1840.60162 | P&L=+13791.42
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1858.33020 | SL=1852.31476 | TP=1876.37572 | lots=0.01 | EV=1.130
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1876.37572 | P&L=+18045.52
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1900.15020 | SL=1894.27480 | TP=1918.62021 | lots=0.01 | EV=1.630
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1918.62021 | P&L=+18470.01
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1991.75020 | SL=1971.10644 | TP=2053.68067 | lots=0.01 | EV=1.466
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1971.10644 | P&L=-20643.76
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1916.78020 | SL=1914.40471 | TP=1923.90586 | lots=0.01 | EV=1.768
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1923.90586 | P&L=+7125.66
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1927.23020 | SL=1915.26645 | TP=1963.12066 | lots=0.01 | EV=1.388
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1915.26645 | P&L=-11963.75
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1925.38020 | SL=1919.19580 | TP=1943.93260 | lots=0.01 | EV=1.683
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1943.93260 | P&L=+18552.40
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1955.53020 | SL=1946.97881 | TP=1982.04829 | lots=0.01 | EV=1.430
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1982.04829 | P&L=+26518.09
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1977.72020 | SL=1960.51812 | TP=2029.32563 | lots=0.01 | EV=0.899
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1960.51812 | P&L=-17202.08
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1819.63980 | SL=1829.15836 | TP=1791.08493 | lots=0.01 | EV=1.425
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1791.08493 | P&L=+28554.87
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1824.02980 | SL=1835.67951 | TP=1789.08147 | lots=0.01 | EV=1.596
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1835.67951 | P&L=-11649.71
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1844.33020 | SL=1838.33227 | TP=1862.32318 | lots=0.01 | EV=1.433
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1838.33227 | P&L=-5997.93
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1823.85980 | SL=1831.46606 | TP=1801.04182 | lots=0.01 | EV=1.195
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1831.46606 | P&L=-7606.26
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1825.10980 | SL=1828.59772 | TP=1813.55732 | lots=0.01 | EV=1.288
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.59772 | P&L=-3487.92
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1757.25020 | SL=1751.05151 | TP=1775.84546 | lots=0.01 | EV=0.828
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1775.84546 | P&L=+18595.26
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1775.33020 | SL=1767.61979 | TP=1798.46064 | lots=0.01 | EV=1.446
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1767.61979 | P&L=-7710.41
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1766.86020 | SL=1759.22917 | TP=1789.75250 | lots=0.01 | EV=1.456
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1789.75250 | P&L=+22892.30
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1787.22020 | SL=1784.02743 | TP=1796.79771 | lots=0.01 | EV=1.859
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1796.79771 | P&L=+9577.51
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1720.86980 | SL=1726.19175 | TP=1704.90475 | lots=0.01 | EV=1.459
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1704.90475 | P&L=+15965.05
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1716.08980 | SL=1725.42536 | TP=1688.08391 | lots=0.01 | EV=1.307
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1725.42536 | P&L=-9335.56
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1722.84980 | SL=1723.38325 | TP=1721.22222 | lots=0.03 | EV=1.380
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1723.38325 | P&L=-1600.35
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1635.70980 | SL=1648.08043 | TP=1598.59870 | lots=0.01 | EV=0.892
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1648.08043 | P&L=-12370.63
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1702.00020 | SL=1695.67465 | TP=1720.97604 | lots=0.01 | EV=1.361
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1720.97604 | P&L=+18975.84
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1666.23980 | SL=1671.98612 | TP=1649.00163 | lots=0.01 | EV=1.165
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE TP @ 1649.00163 | P&L=+17238.17
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN - @ 1631.01980 | SL=1632.82633 | TP=1625.60102 | lots=0.01 | EV=0.977
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   CLOSE SL @ 1632.82633 | P&L=-1806.53
+2026-04-12 22:12:08 | DEBUG    | backtest.engine |   OPEN + @ 1658.38020 | SL=1649.85545 | TP=1683.95365 | lots=0.01 | EV=1.714
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1649.85545 | P&L=-8524.75
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1670.58020 | SL=1664.41635 | TP=1689.07095 | lots=0.01 | EV=1.700
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1689.07095 | P&L=+18490.75
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1732.86020 | SL=1701.09448 | TP=1828.15657 | lots=0.01 | EV=1.249
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1828.15657 | P&L=+95296.37
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1941.56020 | SL=1917.34106 | TP=2014.21681 | lots=0.01 | EV=1.369
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1917.34106 | P&L=-24219.14
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1837.66020 | SL=1828.44774 | TP=1865.29677 | lots=0.01 | EV=1.284
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.44774 | P&L=-9212.46
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1918.30020 | SL=1912.09211 | TP=1936.92367 | lots=0.01 | EV=0.977
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1936.92367 | P&L=+18623.47
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1966.36020 | SL=1956.00840 | TP=1997.41481 | lots=0.01 | EV=1.052
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1956.00840 | P&L=-10351.80
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1980.98020 | SL=1975.15312 | TP=1998.46064 | lots=0.01 | EV=1.337
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1998.46064 | P&L=+17480.44
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1993.68020 | SL=1986.53173 | TP=2015.12482 | lots=0.01 | EV=1.305
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 2015.12482 | P&L=+21444.62
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 2007.23020 | SL=1988.08834 | TP=2064.65498 | lots=0.01 | EV=0.991
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1988.08834 | P&L=-19141.86
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1993.16980 | SL=1997.79402 | TP=1979.29793 | lots=0.01 | EV=0.862
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1997.79402 | P&L=-4624.22
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1981.92980 | SL=1985.18029 | TP=1972.17914 | lots=0.01 | EV=1.404
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1972.17914 | P&L=+9750.66
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1973.56980 | SL=1985.21742 | TP=1938.62774 | lots=0.01 | EV=1.685
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1938.62774 | P&L=+34942.06
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1959.98980 | SL=1964.01864 | TP=1947.90407 | lots=0.01 | EV=1.247
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1964.01864 | P&L=-4028.84
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1957.18020 | SL=1952.28266 | TP=1971.87201 | lots=0.01 | EV=1.111
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1971.87201 | P&L=+14691.81
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1946.58980 | SL=1955.19221 | TP=1920.78336 | lots=0.01 | EV=0.845
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1920.78336 | P&L=+25806.44
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1910.35980 | SL=1917.83676 | TP=1887.92972 | lots=0.01 | EV=1.601
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1887.92972 | P&L=+22430.08
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1903.70020 | SL=1900.10392 | TP=1914.94400 | lots=0.01 | EV=1.309
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1914.94400 | P&L=+11243.80
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN + @ 1937.70020 | SL=1934.43866 | TP=1947.48401 | lots=0.01 | EV=1.577
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE TP @ 1947.48401 | P&L=+9783.81
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   OPEN - @ 1924.48980 | SL=1928.08161 | TP=1913.71518 | lots=0.01 | EV=0.812
+2026-04-12 22:12:09 | DEBUG    | backtest.engine |   CLOSE SL @ 1928.08161 | P&L=-3591.81
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 1917.50020 | SL=1916.64778 | TP=1920.05666 | lots=0.04 | EV=1.453
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 1916.64778 | P&L=-3409.68
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 1983.46020 | SL=1961.39328 | TP=2049.66015 | lots=0.01 | EV=1.423
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 1961.39328 | P&L=-22066.92
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 1960.75020 | SL=1957.67120 | TP=1969.98640 | lots=0.01 | EV=0.979
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 1969.98640 | P&L=+9236.20
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 1994.92020 | SL=1990.82181 | TP=2007.21457 | lots=0.01 | EV=1.135
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2007.21457 | P&L=+12294.37
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2025.71020 | SL=2024.00743 | TP=2030.81772 | lots=0.02 | EV=1.420
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2024.00743 | P&L=-3405.55
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2025.54980 | SL=2034.68477 | TP=1998.06998 | lots=0.01 | EV=1.403
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2034.68477 | P&L=-9134.97
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2018.98980 | SL=2027.38871 | TP=1993.79388 | lots=0.01 | EV=0.967
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2027.38871 | P&L=-8398.91
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2037.42020 | SL=2026.72155 | TP=2069.51535 | lots=0.01 | EV=1.181
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2026.72155 | P&L=-10698.65
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2029.54980 | SL=2039.16984 | TP=2000.59007 | lots=0.01 | EV=1.674
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2000.59007 | P&L=+28959.73
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2011.61020 | SL=1995.53790 | TP=2059.82631 | lots=0.01 | EV=1.069
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2059.82631 | P&L=+48216.11
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2162.68020 | SL=2156.79441 | TP=2180.33678 | lots=0.01 | EV=1.176
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2156.79441 | P&L=-5885.79
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2156.35980 | SL=2157.93910 | TP=2151.62269 | lots=0.03 | EV=1.673
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2151.62269 | P&L=+14211.33
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2298.74020 | SL=2291.20421 | TP=2321.34737 | lots=0.01 | EV=0.927
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2291.20421 | P&L=-7535.99
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2366.11020 | SL=2340.45578 | TP=2443.07265 | lots=0.01 | EV=1.231
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2340.45578 | P&L=-25654.42
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2333.57020 | SL=2319.59186 | TP=2375.85679 | lots=0.01 | EV=0.820
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2319.59186 | P&L=-13978.34
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2316.30980 | SL=2327.20019 | TP=2283.63942 | lots=0.01 | EV=1.399
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2283.63942 | P&L=+32670.38
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2341.41980 | SL=2342.98664 | TP=2336.72009 | lots=0.02 | EV=1.002
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2342.98664 | P&L=-3133.67
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN - @ 2325.45980 | SL=2333.70637 | TP=2300.72089 | lots=0.01 | EV=1.527
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE SL @ 2333.70637 | P&L=-8246.57
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2326.87020 | SL=2315.29039 | TP=2361.60882 | lots=0.01 | EV=0.933
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2361.60882 | P&L=+34738.62
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   OPEN + @ 2408.20020 | SL=2396.49890 | TP=2443.30330 | lots=0.01 | EV=1.212
+2026-04-12 22:12:10 | DEBUG    | backtest.engine |   CLOSE TP @ 2443.30330 | P&L=+35103.10
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2413.92980 | SL=2417.11214 | TP=2404.38359 | lots=0.01 | EV=0.837
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2417.11214 | P&L=-3182.34
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2382.29980 | SL=2398.84040 | TP=2332.67880 | lots=0.01 | EV=1.636
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2398.84040 | P&L=-16540.60
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2450.69020 | SL=2433.19749 | TP=2503.16752 | lots=0.01 | EV=0.892
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2433.19749 | P&L=-17492.71
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2464.62020 | SL=2451.62519 | TP=2503.60444 | lots=0.01 | EV=1.409
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2503.60444 | P&L=+38984.24
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2514.12020 | SL=2491.23625 | TP=2582.77124 | lots=0.01 | EV=1.236
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2491.23625 | P&L=-22883.95
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2490.05980 | SL=2497.42392 | TP=2467.96824 | lots=0.01 | EV=0.820
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2497.42392 | P&L=-7364.12
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2516.02980 | SL=2520.92606 | TP=2501.00854 | lots=0.01 | EV=1.366
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2520.92606 | P&L=-4896.26
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2509.34980 | SL=2527.15232 | TP=2455.94305 | lots=0.01 | EV=0.854
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2527.15232 | P&L=-17802.52
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2718.43020 | SL=2714.47546 | TP=2730.29361 | lots=0.01 | EV=1.676
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2730.29361 | P&L=+11863.41
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2734.89020 | SL=2720.89216 | TP=2776.88353 | lots=0.01 | EV=0.961
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2776.88353 | P&L=+41993.33
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2788.54020 | SL=2769.10399 | TP=2846.84803 | lots=0.01 | EV=0.991
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2769.10399 | P&L=-19436.21
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2736.44020 | SL=2729.58633 | TP=2757.97294 | lots=0.01 | EV=1.525
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2729.58633 | P&L=-6853.87
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2635.65020 | SL=2628.41584 | TP=2657.35249 | lots=0.01 | EV=1.028
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2657.35249 | P&L=+21702.29
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2633.56020 | SL=2619.71478 | TP=2675.09565 | lots=0.01 | EV=1.011
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2619.71478 | P&L=-13845.42
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2692.59020 | SL=2671.81835 | TP=2756.08512 | lots=0.01 | EV=1.384
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2671.81835 | P&L=-20771.85
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2651.20980 | SL=2657.57425 | TP=2632.11726 | lots=0.01 | EV=0.948
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2632.11726 | P&L=+19092.54
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 2603.78980 | SL=2621.57062 | TP=2550.44814 | lots=0.01 | EV=0.912
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2621.57062 | P&L=-17780.82
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2654.86020 | SL=2646.93839 | TP=2678.62482 | lots=0.01 | EV=1.324
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2678.62482 | P&L=+23764.62
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2743.00020 | SL=2735.28624 | TP=2766.14128 | lots=0.01 | EV=0.921
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2766.14128 | P&L=+23141.08
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2798.68020 | SL=2779.39290 | TP=2856.54130 | lots=0.01 | EV=1.425
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2856.54130 | P&L=+57861.10
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2867.43020 | SL=2852.59357 | TP=2911.93928 | lots=0.01 | EV=1.219
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 2911.93928 | P&L=+44509.08
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2939.74020 | SL=2918.27675 | TP=3004.12974 | lots=0.01 | EV=1.096
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 2918.27675 | P&L=-21463.45
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 2994.93020 | SL=2978.18468 | TP=3045.16596 | lots=0.01 | EV=0.920
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 3045.16596 | P&L=+50235.76
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 3042.55020 | SL=3041.11349 | TP=3046.85954 | lots=0.02 | EV=0.912
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 3046.85954 | P&L=+8618.68
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN + @ 3015.24020 | SL=3006.61840 | TP=3041.10479 | lots=0.01 | EV=1.123
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE TP @ 3041.10479 | P&L=+25864.59
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   OPEN - @ 3015.33980 | SL=3045.12284 | TP=2925.99149 | lots=0.01 | EV=1.000
+2026-04-12 22:12:11 | DEBUG    | backtest.engine |   CLOSE SL @ 3045.12284 | P&L=-29783.04
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3308.95020 | SL=3308.49415 | TP=3310.31754 | lots=0.12 | EV=1.561
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3308.49415 | P&L=-5472.56
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3304.66020 | SL=3286.29436 | TP=3359.75692 | lots=0.01 | EV=0.887
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3286.29436 | P&L=-18365.84
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3237.23020 | SL=3209.79306 | TP=3319.54081 | lots=0.01 | EV=1.129
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3209.79306 | P&L=-27437.14
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN - @ 3298.36980 | SL=3320.88545 | TP=3230.82365 | lots=0.01 | EV=1.257
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3320.88545 | P&L=-22515.65
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3342.23020 | SL=3333.58928 | TP=3368.15215 | lots=0.01 | EV=0.930
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3333.58928 | P&L=-8640.92
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3352.15020 | SL=3348.90382 | TP=3361.88855 | lots=0.01 | EV=1.065
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE TP @ 3361.88855 | P&L=+9738.35
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3398.95020 | SL=3368.51678 | TP=3490.24965 | lots=0.01 | EV=1.287
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3368.51678 | P&L=-30433.42
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3545.76020 | SL=3519.99575 | TP=3623.05274 | lots=0.01 | EV=0.826
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE TP @ 3623.05274 | P&L=+77292.54
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3868.97020 | SL=3848.99512 | TP=3928.89465 | lots=0.01 | EV=1.008
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 3848.99512 | P&L=-19975.08
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 3964.88020 | SL=3947.09192 | TP=4018.24423 | lots=0.01 | EV=1.053
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE TP @ 4018.24423 | P&L=+53364.03
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 4152.38020 | SL=4098.05164 | TP=4315.36508 | lots=0.01 | EV=1.640
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE TP @ 4315.36508 | P&L=+162984.88
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN - @ 4108.83980 | SL=4143.94226 | TP=4003.53322 | lots=0.01 | EV=0.899
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE TP @ 4003.53322 | P&L=+105306.58
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 4213.40020 | SL=4198.34254 | TP=4258.57239 | lots=0.01 | EV=1.155
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 4198.34254 | P&L=-15057.66
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 4212.37020 | SL=4187.38268 | TP=4287.33195 | lots=0.01 | EV=1.422
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   CLOSE SL @ 4187.38268 | P&L=-24987.52
+2026-04-12 22:12:12 | DEBUG    | backtest.engine |   OPEN + @ 4302.45020 | SL=4250.94523 | TP=4456.96432 | lots=0.01 | EV=1.102
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE TP @ 4456.96432 | P&L=+154514.12
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4370.27980 | SL=4409.27231 | TP=4253.30307 | lots=0.01 | EV=1.008
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 4409.27231 | P&L=-38992.51
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4477.09980 | SL=4505.04955 | TP=4393.25134 | lots=0.01 | EV=0.889
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 4505.04955 | P&L=-27949.75
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN + @ 4601.06020 | SL=4567.89214 | TP=4700.56358 | lots=0.01 | EV=1.516
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 4567.89214 | P&L=-33168.06
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN + @ 4818.05020 | SL=4747.20457 | TP=5030.58629 | lots=0.01 | EV=0.931
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE TP @ 5030.58629 | P&L=+212536.09
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN + @ 5383.46020 | SL=5067.11569 | TP=6332.49294 | lots=0.01 | EV=1.958
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 5067.11569 | P&L=-316344.51
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4961.66980 | SL=5028.88061 | TP=4760.03818 | lots=0.01 | EV=1.732
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE TP @ 4760.03818 | P&L=+201631.62
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4991.84980 | SL=5010.47936 | TP=4935.96192 | lots=0.01 | EV=0.972
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 5010.47936 | P&L=-18629.56
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN + @ 5325.04020 | SL=5281.80079 | TP=5454.75762 | lots=0.01 | EV=0.927
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 5281.80079 | P&L=-43239.41
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4970.20980 | SL=5024.73059 | TP=4806.64824 | lots=0.01 | EV=1.253
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE TP @ 4806.64824 | P&L=+163561.56
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4404.44980 | SL=4478.14481 | TP=4183.36558 | lots=0.01 | EV=0.867
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 4478.14481 | P&L=-73695.01
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   OPEN - @ 4533.68980 | SL=4565.62657 | TP=4437.88030 | lots=0.01 | EV=1.031
+2026-04-12 22:12:13 | DEBUG    | backtest.engine |   CLOSE SL @ 4565.62657 | P&L=-31936.77
+2026-04-12 22:12:13 | INFO     | backtest.engine | Trade log saved -> logs/XAUUSD_backtest_trades.csv
+2026-04-12 22:12:15 | INFO     | backtest.engine | Equity curve saved -> logs/XAUUSD_equity_curve.csv
+2026-04-12 22:15:53 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-12 22:15:56 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-12 22:15:56 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-12 22:15:56 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-12 22:15:58 | INFO     | data.histdata_parser | Parsed 134,050 M15 bars | 2020-08-05 -> 2026-04-10
+2026-04-12 22:15:58 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-12 22:15:58 | INFO     | __main__ | Bars: 134,050 [M15]
+2026-04-12 22:16:06 | INFO     | features.engineer | Feature engineering: 134050 -> 134037 rows after NaN drop
+2026-04-12 22:16:06 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-12 22:16:06 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-12 22:16:55 | INFO     | strategy.engine | Strategy scan: 191 signals on 134,037 bars
+2026-04-12 22:16:55 | INFO     | backtest.engine | Starting backtest | 134,050 bars | 191 signals
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 2041.09000 | SL=2032.93637 | TP=2065.47089 | pos_units=0.0557 | EV=0.909
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 2065.47089 | P&L=$+1.36
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1919.66000 | SL=1934.52367 | TP=1875.14900 | pos_units=0.0461 | EV=1.351
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1934.52367 | P&L=$-0.68
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1946.59000 | SL=1941.00917 | TP=1963.48472 | pos_units=0.1646 | EV=1.863
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1963.48472 | P&L=$+2.78
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1903.26000 | SL=1911.92651 | TP=1877.34046 | pos_units=0.0758 | EV=1.270
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1877.34046 | P&L=$+1.96
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1887.69000 | SL=1884.87978 | TP=1896.09104 | pos_units=0.2953 | EV=1.589
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1896.09104 | P&L=$+2.48
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1914.28000 | SL=1904.82866 | TP=1942.55403 | pos_units=0.0489 | EV=0.857
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1904.82866 | P&L=$-0.46
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1894.37000 | SL=1888.29660 | TP=1912.51020 | pos_units=0.0986 | EV=1.115
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1912.51020 | P&L=$+1.79
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1906.64000 | SL=1901.00843 | TP=1923.45470 | pos_units=0.1741 | EV=1.796
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1901.00843 | P&L=$-0.98
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1869.81000 | SL=1877.43273 | TP=1847.02181 | pos_units=0.1032 | EV=1.454
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1847.02181 | P&L=$+2.35
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1813.96000 | SL=1805.73947 | TP=1838.54160 | pos_units=0.1031 | EV=1.533
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1838.54160 | P&L=$+2.53
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1864.67000 | SL=1857.47320 | TP=1887.21731 | pos_units=0.1344 | EV=1.834
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1857.47320 | P&L=$-0.97
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1836.03000 | SL=1822.89204 | TP=1875.73358 | pos_units=0.0410 | EV=0.975
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1822.89204 | P&L=$-0.54
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1880.77000 | SL=1873.92674 | TP=1901.21979 | pos_units=0.0810 | EV=0.993
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1901.21979 | P&L=$+1.66
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1843.13000 | SL=1858.56098 | TP=1796.91705 | pos_units=0.0294 | EV=0.802
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1858.56098 | P&L=$-0.45
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN + @ 1855.37000 | SL=1828.49767 | TP=1935.90698 | pos_units=0.0334 | EV=1.592
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.49767 | P&L=$-0.90
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1840.87000 | SL=1846.42432 | TP=1824.28703 | pos_units=0.1622 | EV=1.610
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1824.28703 | P&L=$+2.69
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1817.42000 | SL=1826.56059 | TP=1790.07824 | pos_units=0.1058 | EV=1.687
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE TP @ 1790.07824 | P&L=$+2.89
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   OPEN - @ 1778.34000 | SL=1789.78559 | TP=1744.08322 | pos_units=0.0683 | EV=1.331
+2026-04-12 22:16:55 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.78559 | P&L=$-0.78
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1742.80000 | SL=1722.92576 | TP=1802.34273 | pos_units=0.0520 | EV=1.770
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1722.92576 | P&L=$-1.03
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1732.04000 | SL=1729.14258 | TP=1740.65227 | pos_units=0.2640 | EV=1.323
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1740.65227 | P&L=$+2.27
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN - @ 1726.78000 | SL=1734.17306 | TP=1704.68081 | pos_units=0.1119 | EV=1.403
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1704.68081 | P&L=$+2.47
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1878.29000 | SL=1871.74380 | TP=1898.07414 | pos_units=0.1013 | EV=1.120
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1871.74380 | P&L=$-0.66
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1902.17000 | SL=1896.19854 | TP=1920.00437 | pos_units=0.1551 | EV=1.547
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1896.19854 | P&L=$-0.93
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1894.95000 | SL=1887.61634 | TP=1916.87099 | pos_units=0.0895 | EV=1.105
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1887.61634 | P&L=$-0.66
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1893.91000 | SL=1882.46436 | TP=1928.16691 | pos_units=0.0644 | EV=1.248
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1882.46436 | P&L=$-0.74
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN - @ 1781.82000 | SL=1792.35963 | TP=1750.28110 | pos_units=0.0526 | EV=0.945
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1792.35963 | P&L=$-0.55
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1800.50000 | SL=1789.16381 | TP=1834.42858 | pos_units=0.0482 | EV=0.936
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.16381 | P&L=$-0.55
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1803.84000 | SL=1799.30198 | TP=1817.99615 | pos_units=0.1845 | EV=1.538
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1799.30198 | P&L=$-0.84
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1790.20000 | SL=1780.97717 | TP=1817.78849 | pos_units=0.0798 | EV=1.274
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1817.78849 | P&L=$+2.20
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1810.33000 | SL=1808.96936 | TP=1814.33191 | pos_units=0.3683 | EV=0.851
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1814.33191 | P&L=$+1.47
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1792.32000 | SL=1785.54029 | TP=1813.26867 | pos_units=0.1450 | EV=1.733
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1785.54029 | P&L=$-0.98
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1793.66000 | SL=1789.22706 | TP=1806.87881 | pos_units=0.1241 | EV=0.931
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1789.22706 | P&L=$-0.55
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1765.67000 | SL=1760.46237 | TP=1781.42577 | pos_units=0.1956 | EV=1.767
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1781.42577 | P&L=$+3.08
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1771.11000 | SL=1766.11946 | TP=1786.00163 | pos_units=0.1758 | EV=1.453
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1786.00163 | P&L=$+2.62
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1798.31000 | SL=1790.77369 | TP=1820.83892 | pos_units=0.0694 | EV=0.848
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1790.77369 | P&L=$-0.52
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1817.71000 | SL=1811.27019 | TP=1836.94942 | pos_units=0.1413 | EV=1.482
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1836.94942 | P&L=$+2.72
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1870.68000 | SL=1861.67462 | TP=1897.61615 | pos_units=0.0677 | EV=0.971
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1861.67462 | P&L=$-0.61
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1855.86000 | SL=1855.19299 | TP=1857.78103 | pos_units=1.1791 | EV=1.259
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1857.78103 | P&L=$+2.27
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN - @ 1789.32000 | SL=1797.97856 | TP=1763.42431 | pos_units=0.1085 | EV=1.477
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1797.97856 | P&L=$-0.94
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN - @ 1792.57000 | SL=1798.84969 | TP=1773.81094 | pos_units=0.1222 | EV=1.215
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1798.84969 | P&L=$-0.77
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1793.91000 | SL=1787.29949 | TP=1813.66154 | pos_units=0.0871 | EV=0.917
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE SL @ 1787.29949 | P&L=$-0.58
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   OPEN + @ 1789.01000 | SL=1786.43151 | TP=1796.66546 | pos_units=0.3452 | EV=1.425
+2026-04-12 22:16:56 | DEBUG    | backtest.engine |   CLOSE TP @ 1796.66546 | P&L=$+2.64
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1806.66000 | SL=1811.33938 | TP=1792.48639 | pos_units=0.1216 | EV=0.912
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1792.48639 | P&L=$+1.72
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1809.18000 | SL=1801.91077 | TP=1830.90768 | pos_units=0.1502 | EV=1.689
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1830.90768 | P&L=$+3.26
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1826.83000 | SL=1822.21279 | TP=1840.60162 | pos_units=0.1965 | EV=1.369
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1840.60162 | P&L=$+2.71
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1858.35000 | SL=1852.31476 | TP=1876.37572 | pos_units=0.1266 | EV=1.130
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1876.37572 | P&L=$+2.28
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1900.17000 | SL=1894.27480 | TP=1918.62021 | pos_units=0.1774 | EV=1.630
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1918.62021 | P&L=$+3.27
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1991.77000 | SL=1971.10644 | TP=2053.68067 | pos_units=0.0500 | EV=1.466
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1971.10644 | P&L=$-1.03
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1916.80000 | SL=1914.40471 | TP=1923.90586 | pos_units=0.5160 | EV=1.768
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1923.90586 | P&L=$+3.67
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1927.25000 | SL=1915.26645 | TP=1963.12066 | pos_units=0.0831 | EV=1.388
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1915.26645 | P&L=$-1.00
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1925.40000 | SL=1919.19580 | TP=1943.93260 | pos_units=0.1932 | EV=1.683
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1943.93260 | P&L=$+3.58
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1955.55000 | SL=1946.97881 | TP=1982.04829 | pos_units=0.1160 | EV=1.430
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1982.04829 | P&L=$+3.07
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1977.74000 | SL=1960.51812 | TP=2029.32563 | pos_units=0.0389 | EV=0.899
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1960.51812 | P&L=$-0.67
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1819.62000 | SL=1829.15836 | TP=1791.08493 | pos_units=0.1109 | EV=1.425
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1791.08493 | P&L=$+3.16
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1824.01000 | SL=1835.67951 | TP=1789.08147 | pos_units=0.1036 | EV=1.596
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1835.67951 | P&L=$-1.21
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1844.35000 | SL=1838.33227 | TP=1862.32318 | pos_units=0.1790 | EV=1.433
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1838.33227 | P&L=$-1.08
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1823.84000 | SL=1831.46606 | TP=1801.04182 | pos_units=0.1170 | EV=1.195
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1831.46606 | P&L=$-0.89
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1825.09000 | SL=1828.59772 | TP=1813.55732 | pos_units=0.2358 | EV=1.288
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.59772 | P&L=$-0.83
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1757.27000 | SL=1751.05151 | TP=1775.84546 | pos_units=0.0983 | EV=0.828
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1775.84546 | P&L=$+1.83
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1775.35000 | SL=1767.61979 | TP=1798.46064 | pos_units=0.1398 | EV=1.446
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1767.61979 | P&L=$-1.08
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1766.88000 | SL=1759.22917 | TP=1789.75250 | pos_units=0.1412 | EV=1.456
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1789.75250 | P&L=$+3.23
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1787.24000 | SL=1784.02743 | TP=1796.79771 | pos_units=0.4385 | EV=1.859
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1796.79771 | P&L=$+4.19
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1720.85000 | SL=1726.19175 | TP=1704.90475 | pos_units=0.2127 | EV=1.459
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1704.90475 | P&L=$+3.39
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1716.07000 | SL=1725.42536 | TP=1688.08391 | pos_units=0.1112 | EV=1.307
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1725.42536 | P&L=$-1.04
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1722.83000 | SL=1723.38325 | TP=1721.22222 | pos_units=1.9220 | EV=1.380
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1723.38325 | P&L=$-1.06
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1635.69000 | SL=1648.08043 | TP=1598.59870 | pos_units=0.0565 | EV=0.892
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1648.08043 | P&L=$-0.70
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1702.02000 | SL=1695.67465 | TP=1720.97604 | pos_units=0.1677 | EV=1.361
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1720.97604 | P&L=$+3.18
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1666.22000 | SL=1671.98612 | TP=1649.00163 | pos_units=0.1611 | EV=1.165
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1649.00163 | P&L=$+2.77
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN - @ 1631.00000 | SL=1632.82633 | TP=1625.60102 | pos_units=0.4343 | EV=0.977
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1632.82633 | P&L=$-0.79
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1658.40000 | SL=1649.85545 | TP=1683.95365 | pos_units=0.1620 | EV=1.714
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE SL @ 1649.85545 | P&L=$-1.38
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1670.60000 | SL=1664.41635 | TP=1689.07095 | pos_units=0.2201 | EV=1.700
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   CLOSE TP @ 1689.07095 | P&L=$+4.06
+2026-04-12 22:16:57 | DEBUG    | backtest.engine |   OPEN + @ 1732.88000 | SL=1701.09448 | TP=1828.15657 | pos_units=0.0323 | EV=1.249
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1828.15657 | P&L=$+3.07
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1941.58000 | SL=1917.34106 | TP=2014.21681 | pos_units=0.0472 | EV=1.369
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1917.34106 | P&L=$-1.15
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1837.68000 | SL=1828.44774 | TP=1865.29677 | pos_units=0.1155 | EV=1.284
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1828.44774 | P&L=$-1.07
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1918.32000 | SL=1912.09211 | TP=1936.92367 | pos_units=0.1295 | EV=0.977
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1936.92367 | P&L=$+2.41
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1966.38000 | SL=1956.00840 | TP=1997.41481 | pos_units=0.0849 | EV=1.052
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1956.00840 | P&L=$-0.88
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1981.00000 | SL=1975.15312 | TP=1998.46064 | pos_units=0.1904 | EV=1.337
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1998.46064 | P&L=$+3.33
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1993.70000 | SL=1986.53173 | TP=2015.12482 | pos_units=0.1546 | EV=1.305
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 2015.12482 | P&L=$+3.31
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 2007.25000 | SL=1988.08834 | TP=2064.65498 | pos_units=0.0448 | EV=0.991
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1988.08834 | P&L=$-0.86
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1993.15000 | SL=1997.79402 | TP=1979.29793 | pos_units=0.1600 | EV=0.862
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1997.79402 | P&L=$-0.74
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1981.91000 | SL=1985.18029 | TP=1972.17914 | pos_units=0.3684 | EV=1.404
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1972.17914 | P&L=$+3.59
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1973.55000 | SL=1985.21742 | TP=1938.62774 | pos_units=0.1265 | EV=1.685
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1938.62774 | P&L=$+4.42
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1959.97000 | SL=1964.01864 | TP=1947.90407 | pos_units=0.2766 | EV=1.247
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1964.01864 | P&L=$-1.12
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1957.20000 | SL=1952.28266 | TP=1971.87201 | pos_units=0.2017 | EV=1.111
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1971.87201 | P&L=$+2.96
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1946.57000 | SL=1955.19221 | TP=1920.78336 | pos_units=0.0890 | EV=0.845
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1920.78336 | P&L=$+2.29
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1910.34000 | SL=1917.83676 | TP=1887.92972 | pos_units=0.1963 | EV=1.601
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1887.92972 | P&L=$+4.40
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1903.72000 | SL=1900.10392 | TP=1914.94400 | pos_units=0.3202 | EV=1.309
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1914.94400 | P&L=$+3.59
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1937.72000 | SL=1934.43866 | TP=1947.48401 | pos_units=0.4608 | EV=1.577
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE TP @ 1947.48401 | P&L=$+4.50
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN - @ 1924.47000 | SL=1928.08161 | TP=1913.71518 | pos_units=0.2206 | EV=0.812
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1928.08161 | P&L=$-0.80
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1917.52000 | SL=1916.64778 | TP=1920.05666 | pos_units=1.6279 | EV=1.453
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1916.64778 | P&L=$-1.42
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   OPEN + @ 1983.48000 | SL=1961.39328 | TP=2049.66015 | pos_units=0.0625 | EV=1.423
+2026-04-12 22:16:58 | DEBUG    | backtest.engine |   CLOSE SL @ 1961.39328 | P&L=$-1.38
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 1960.77000 | SL=1957.67120 | TP=1969.98640 | pos_units=0.3045 | EV=0.979
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 1969.98640 | P&L=$+2.81
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 1994.94000 | SL=1990.82181 | TP=2007.21457 | pos_units=0.2694 | EV=1.135
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2007.21457 | P&L=$+3.31
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2025.73000 | SL=2024.00743 | TP=2030.81772 | pos_units=0.8194 | EV=1.420
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2024.00743 | P&L=$-1.41
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2025.53000 | SL=2034.68477 | TP=1998.06998 | pos_units=0.1506 | EV=1.403
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2034.68477 | P&L=$-1.38
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2018.97000 | SL=2027.38871 | TP=1993.79388 | pos_units=0.1126 | EV=0.967
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2027.38871 | P&L=$-0.95
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2037.44000 | SL=2026.72155 | TP=2069.51535 | pos_units=0.1075 | EV=1.181
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2026.72155 | P&L=$-1.15
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2029.53000 | SL=2039.16984 | TP=2000.59007 | pos_units=0.1674 | EV=1.674
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2000.59007 | P&L=$+4.85
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2011.63000 | SL=1995.53790 | TP=2059.82631 | pos_units=0.0660 | EV=1.069
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2059.82631 | P&L=$+3.18
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2162.70000 | SL=2156.79441 | TP=2180.33678 | pos_units=0.2011 | EV=1.176
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2156.79441 | P&L=$-1.19
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2156.34000 | SL=2157.93910 | TP=2151.62269 | pos_units=1.0501 | EV=1.673
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2151.62269 | P&L=$+4.95
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2298.76000 | SL=2291.20421 | TP=2321.34737 | pos_units=0.1261 | EV=0.927
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2291.20421 | P&L=$-0.95
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2366.13000 | SL=2340.45578 | TP=2443.07265 | pos_units=0.0491 | EV=1.231
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2340.45578 | P&L=$-1.26
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2333.59000 | SL=2319.59186 | TP=2375.85679 | pos_units=0.0589 | EV=0.820
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2319.59186 | P&L=$-0.82
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2316.29000 | SL=2327.20019 | TP=2283.63942 | pos_units=0.1299 | EV=1.399
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2283.63942 | P&L=$+4.24
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2341.40000 | SL=2342.98664 | TP=2336.72009 | pos_units=0.6534 | EV=1.002
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2342.98664 | P&L=$-1.04
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2325.44000 | SL=2333.70637 | TP=2300.72089 | pos_units=0.1901 | EV=1.527
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2333.70637 | P&L=$-1.57
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2326.89000 | SL=2315.29039 | TP=2361.60882 | pos_units=0.0822 | EV=0.933
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2361.60882 | P&L=$+2.85
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2408.22000 | SL=2396.49890 | TP=2443.30330 | pos_units=0.1071 | EV=1.212
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2443.30330 | P&L=$+3.76
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2413.91000 | SL=2417.11214 | TP=2404.38359 | pos_units=0.2757 | EV=0.837
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2417.11214 | P&L=$-0.88
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2382.28000 | SL=2398.84040 | TP=2332.67880 | pos_units=0.1038 | EV=1.636
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2398.84040 | P&L=$-1.72
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2450.71000 | SL=2433.19749 | TP=2503.16752 | pos_units=0.0530 | EV=0.892
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2433.19749 | P&L=$-0.93
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2441.36000 | SL=2430.38808 | TP=2474.19577 | pos_units=0.1787 | EV=1.891
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2430.38808 | P&L=$-1.96
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2464.64000 | SL=2451.62519 | TP=2503.60444 | pos_units=0.1112 | EV=1.409
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE TP @ 2503.60444 | P&L=$+4.33
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN + @ 2514.14000 | SL=2491.23625 | TP=2582.77124 | pos_units=0.0566 | EV=1.236
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2491.23625 | P&L=$-1.30
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2490.04000 | SL=2497.42392 | TP=2467.96824 | pos_units=0.1158 | EV=0.820
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2497.42392 | P&L=$-0.85
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2516.01000 | SL=2520.92606 | TP=2501.00854 | pos_units=0.2789 | EV=1.366
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2520.92606 | P&L=$-1.37
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2509.33000 | SL=2527.15232 | TP=2455.94305 | pos_units=0.0494 | EV=0.854
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2527.15232 | P&L=$-0.88
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   OPEN - @ 2508.71000 | SL=2527.21106 | TP=2453.28681 | pos_units=0.0469 | EV=0.845
+2026-04-12 22:16:59 | DEBUG    | backtest.engine |   CLOSE SL @ 2527.21106 | P&L=$-0.87
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2718.45000 | SL=2714.47546 | TP=2730.29361 | pos_units=0.4311 | EV=1.676
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2730.29361 | P&L=$+5.11
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2734.91000 | SL=2720.89216 | TP=2776.88353 | pos_units=0.0718 | EV=0.961
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2776.88353 | P&L=$+3.01
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2788.56000 | SL=2769.10399 | TP=2846.84803 | pos_units=0.0542 | EV=0.991
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2769.10399 | P&L=$-1.05
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2736.46000 | SL=2729.58633 | TP=2757.97294 | pos_units=0.2191 | EV=1.525
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2729.58633 | P&L=$-1.51
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2635.67000 | SL=2628.41584 | TP=2657.35249 | pos_units=0.1488 | EV=1.028
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2657.35249 | P&L=$+3.23
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2633.58000 | SL=2619.71478 | TP=2675.09565 | pos_units=0.0777 | EV=1.011
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2619.71478 | P&L=$-1.08
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2692.61000 | SL=2671.81835 | TP=2756.08512 | pos_units=0.0687 | EV=1.384
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2671.81835 | P&L=$-1.43
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN - @ 2651.19000 | SL=2657.57425 | TP=2632.11726 | pos_units=0.1564 | EV=0.948
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2632.11726 | P&L=$+2.98
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN - @ 2603.77000 | SL=2621.57062 | TP=2550.44814 | pos_units=0.0547 | EV=0.912
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2621.57062 | P&L=$-0.97
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2654.88000 | SL=2646.93839 | TP=2678.62482 | pos_units=0.1773 | EV=1.324
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2678.62482 | P&L=$+4.21
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2743.02000 | SL=2735.28624 | TP=2766.14128 | pos_units=0.1292 | EV=0.921
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2766.14128 | P&L=$+2.99
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2798.70000 | SL=2779.39290 | TP=2856.54130 | pos_units=0.0811 | EV=1.425
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2856.54130 | P&L=$+4.69
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2867.45000 | SL=2852.59357 | TP=2911.93928 | pos_units=0.0922 | EV=1.219
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 2911.93928 | P&L=$+4.10
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2939.76000 | SL=2918.27675 | TP=3004.12974 | pos_units=0.0584 | EV=1.096
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 2918.27675 | P&L=$-1.25
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 2994.95000 | SL=2978.18468 | TP=3045.16596 | pos_units=0.0624 | EV=0.920
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 3045.16596 | P&L=$+3.14
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3042.57000 | SL=3041.11349 | TP=3046.85954 | pos_units=0.7219 | EV=0.912
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 3046.85954 | P&L=$+3.10
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3015.26000 | SL=3006.61840 | TP=3041.10479 | pos_units=0.1518 | EV=1.123
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 3041.10479 | P&L=$+3.92
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN - @ 3015.32000 | SL=3045.12284 | TP=2925.99149 | pos_units=0.0399 | EV=1.000
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3045.12284 | P&L=$-1.19
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3308.97000 | SL=3308.49415 | TP=3310.31754 | pos_units=3.8795 | EV=1.561
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3308.49415 | P&L=$-1.85
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3304.68000 | SL=3286.29436 | TP=3359.75692 | pos_units=0.0566 | EV=0.887
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3286.29436 | P&L=$-1.04
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3237.25000 | SL=3209.79306 | TP=3319.54081 | pos_units=0.0480 | EV=1.129
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3209.79306 | P&L=$-1.32
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN - @ 3298.35000 | SL=3320.88545 | TP=3230.82365 | pos_units=0.0648 | EV=1.257
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3320.88545 | P&L=$-1.46
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3342.25000 | SL=3333.58928 | TP=3368.15215 | pos_units=0.1239 | EV=0.930
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3333.58928 | P&L=$-1.07
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3352.17000 | SL=3348.90382 | TP=3361.88855 | pos_units=0.3745 | EV=1.065
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE TP @ 3361.88855 | P&L=$+3.64
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   OPEN + @ 3398.97000 | SL=3368.51678 | TP=3490.24965 | pos_units=0.0493 | EV=1.287
+2026-04-12 22:17:00 | DEBUG    | backtest.engine |   CLOSE SL @ 3368.51678 | P&L=$-1.50
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 3545.78000 | SL=3519.99575 | TP=3623.05274 | pos_units=0.0371 | EV=0.826
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 3623.05274 | P&L=$+2.87
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 3868.99000 | SL=3848.99512 | TP=3928.89465 | pos_units=0.0592 | EV=1.008
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 3848.99512 | P&L=$-1.18
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 3964.90000 | SL=3947.09192 | TP=4018.24423 | pos_units=0.0690 | EV=1.053
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4018.24423 | P&L=$+3.68
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4152.40000 | SL=4098.05164 | TP=4315.36508 | pos_units=0.0358 | EV=1.640
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4315.36508 | P&L=$+5.83
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4108.82000 | SL=4143.94226 | TP=4003.53322 | pos_units=0.0311 | EV=0.899
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4003.53322 | P&L=$+3.28
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4213.42000 | SL=4198.34254 | TP=4258.57239 | pos_units=0.0944 | EV=1.155
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4198.34254 | P&L=$-1.42
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4212.39000 | SL=4187.38268 | TP=4287.33195 | pos_units=0.0697 | EV=1.422
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4187.38268 | P&L=$-1.74
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4302.47000 | SL=4250.94523 | TP=4456.96432 | pos_units=0.0260 | EV=1.102
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4456.96432 | P&L=$+4.02
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4370.26000 | SL=4409.27231 | TP=4253.30307 | pos_units=0.0319 | EV=1.008
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4409.27231 | P&L=$-1.25
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4477.08000 | SL=4505.04955 | TP=4393.25134 | pos_units=0.0391 | EV=0.889
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4505.04955 | P&L=$-1.09
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4601.08000 | SL=4567.89214 | TP=4700.56358 | pos_units=0.0559 | EV=1.516
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4567.89214 | P&L=$-1.86
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 4818.07000 | SL=4747.20457 | TP=5030.58629 | pos_units=0.0160 | EV=0.931
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 5030.58629 | P&L=$+3.39
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 5383.48000 | SL=5067.11569 | TP=6332.49294 | pos_units=0.0076 | EV=1.958
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 5067.11569 | P&L=$-2.41
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4961.65000 | SL=5028.88061 | TP=4760.03818 | pos_units=0.0314 | EV=1.732
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4760.03818 | P&L=$+6.33
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4991.83000 | SL=5010.47936 | TP=4935.96192 | pos_units=0.0652 | EV=0.972
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 5010.47936 | P&L=$-1.22
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN + @ 5325.06000 | SL=5281.80079 | TP=5454.75762 | pos_units=0.0267 | EV=0.927
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 5281.80079 | P&L=$-1.15
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4970.19000 | SL=5024.73059 | TP=4806.64824 | pos_units=0.0285 | EV=1.253
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE TP @ 4806.64824 | P&L=$+4.66
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4404.43000 | SL=4478.14481 | TP=4183.36558 | pos_units=0.0148 | EV=0.867
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4478.14481 | P&L=$-1.09
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   OPEN - @ 4533.67000 | SL=4565.62657 | TP=4437.88030 | pos_units=0.0406 | EV=1.031
+2026-04-12 22:17:01 | DEBUG    | backtest.engine |   CLOSE SL @ 4565.62657 | P&L=$-1.30
+2026-04-12 22:17:01 | INFO     | backtest.engine | Trade log saved -> logs/XAUUSD_backtest_trades.csv
+2026-04-12 22:17:03 | INFO     | backtest.engine | Equity curve saved -> logs/XAUUSD_equity_curve.csv

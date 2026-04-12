@@ -163,8 +163,12 @@ def mode_backtest(args) -> None:
     s_cfg = StrategyConfig(
         ml_threshold      = cfg.ML_THRESHOLD,
         sl_atr_mult       = cfg.SL_ATR_MULT,
+        sl_buffer_atr     = cfg.SL_BUFFER_ATR,
         rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
         require_htf_align = cfg.REQUIRE_HTF_ALIGN,
+        min_ev            = cfg.MIN_EV,
+        pullback_atr_min  = cfg.PULLBACK_ATR_MIN,
+        pullback_atr_max  = cfg.PULLBACK_ATR_MAX,
     )
     engine  = StrategyEngine(s_cfg, model=model)
     signals = engine.scan_all(feat_df)
@@ -179,6 +183,7 @@ def mode_backtest(args) -> None:
         risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
         spread_pips          = cfg.SPREAD_PIPS,
         slippage_pips        = cfg.SLIPPAGE_PIPS,
+        symbol               = symbol,
         max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
         daily_loss_limit_pct = cfg.DAILY_LOSS_LIMIT_PCT,
     )
@@ -236,8 +241,12 @@ def mode_walkforward(args) -> None:
     s_cfg = StrategyConfig(
         ml_threshold      = cfg.ML_THRESHOLD,
         sl_atr_mult       = cfg.SL_ATR_MULT,
+        sl_buffer_atr     = cfg.SL_BUFFER_ATR,
         rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
         require_htf_align = cfg.REQUIRE_HTF_ALIGN,
+        min_ev            = cfg.MIN_EV,
+        pullback_atr_min  = cfg.PULLBACK_ATR_MIN,
+        pullback_atr_max  = cfg.PULLBACK_ATR_MAX,
     )
     b_cfg = BacktestConfig(
         initial_balance      = cfg.INITIAL_BALANCE,
@@ -317,6 +326,121 @@ def mode_live(args) -> None:
     trader.run()
 
 
+# ─────────────────────────────────────────────────────────────────────────────────
+# Mode: sync  (download historical bars from MT5 to CSV)
+# ─────────────────────────────────────────────────────────────────────────────────
+
+def mode_sync(args) -> None:
+    """
+    Download historical M5 bars from MT5 and save to CSV.
+
+    Usage:
+        python main.py --mode sync --symbol XAUUSD --bars 400000
+        python main.py --mode sync --symbol GBPUSD --bars 400000 --data data/raw/GBPUSD_M5.csv
+
+    Downloads in chunks of 100,000 bars to stay within MT5 buffer limits.
+    Output CSV columns: timestamp,open,high,low,close,volume
+    """
+    import os
+    import pandas as pd
+
+    symbol     = (args.symbol or cfg.SYMBOL).upper()
+    n_bars     = args.bars or 400_000
+    batch_size = 100_000          # MT5 copy_rates_from_pos limit per call
+    out_path   = args.data or f"data/raw/{symbol}_M5_mt5.csv"
+
+    logger.info(f"=== SYNC | {symbol} | {n_bars:,} bars | -> {out_path} ===")
+
+    # ── Try real MT5 first, fall back gracefully ──────────────────────────────
+    try:
+        import MetaTrader5 as mt5
+    except ImportError:
+        logger.error(
+            "MetaTrader5 library not installed.\n"
+            "  pip install MetaTrader5\n"
+            "  MT5 terminal must also be running on this machine."
+        )
+        return
+
+    # ── Connect ───────────────────────────────────────────────────────────────
+    if not mt5.initialize(
+        login    = cfg.MT5_LOGIN,
+        password = cfg.MT5_PASSWORD,
+        server   = cfg.MT5_SERVER,
+    ):
+        err = mt5.last_error()
+        logger.error(f"MT5 connection failed: {err}")
+        mt5.shutdown()
+        return
+
+    acc = mt5.account_info()
+    logger.info(f"Connected | Account: {acc.login} | Server: {acc.server}")
+
+    # ── Ensure symbol is active in MT5 ────────────────────────────────────────
+    if not mt5.symbol_select(symbol, True):
+        logger.error(f"Symbol {symbol} not found in MT5 market-watch.")
+        mt5.shutdown()
+        return
+
+    TF = mt5.TIMEFRAME_M5
+
+    # ── Download in batches (newest -> oldest) ────────────────────────────────
+    # copy_rates_from_pos(symbol, tf, start_pos, count):
+    #   start_pos=0 is the most recent CLOSED bar.
+    #   Each successive batch starts further back in time.
+    all_frames = []
+    downloaded = 0
+
+    while downloaded < n_bars:
+        want  = min(batch_size, n_bars - downloaded)
+        start = downloaded          # bars back from the most-recent closed bar
+
+        rates = mt5.copy_rates_from_pos(symbol, TF, start, want)
+        if rates is None or len(rates) == 0:
+            logger.warning(f"MT5 returned no data at offset {start}. Stopping.")
+            break
+
+        batch = pd.DataFrame(rates)
+        batch.rename(columns={"time": "timestamp", "tick_volume": "volume"}, inplace=True)
+        batch["timestamp"] = pd.to_datetime(batch["timestamp"], unit="s")
+        batch = batch[["timestamp", "open", "high", "low", "close", "volume"]]
+
+        all_frames.append(batch)
+        downloaded += len(batch)
+        logger.info(
+            f"  Batch {start:>7,} – {start+len(batch)-1:>7,} | "
+            f"{batch['timestamp'].iloc[0].date()} -> {batch['timestamp'].iloc[-1].date()} | "
+            f"Total so far: {downloaded:,}"
+        )
+
+        if len(batch) < want:
+            logger.info("Reached beginning of MT5 history.")
+            break
+
+    mt5.shutdown()
+
+    if not all_frames:
+        logger.error("No data downloaded.")
+        return
+
+    # ── Merge, sort chronologically, deduplicate, save ────────────────────────
+    df = pd.concat(all_frames, ignore_index=True)
+    df.sort_values("timestamp", inplace=True)
+    df.drop_duplicates(subset="timestamp", inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    df.to_csv(out_path, index=False)
+
+    span = f"{df['timestamp'].iloc[0].date()} -> {df['timestamp'].iloc[-1].date()}"
+    logger.info(
+        f"Saved {len(df):,} M5 bars | {span} | {out_path}"
+    )
+    print(f"\nDownloaded: {len(df):,} bars | {span}")
+    print(f"Saved to  : {out_path}")
+    print(f"\nNext step  : python main.py --mode train --symbol {symbol} --data {out_path}")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI
 # ─────────────────────────────────────────────────────────────────────────────
@@ -328,13 +452,14 @@ def parse_args():
     )
     p.add_argument(
         "--mode", required=True,
-        choices=["generate", "train", "backtest", "walkforward", "live"],
+        choices=["generate", "train", "backtest", "walkforward", "live", "sync"],
         help=(
             "generate    → synthetic data (testing)\n"
             "train       → train from real HistData/Dukascopy CSVs\n"
             "backtest    → single-symbol historical simulation\n"
             "walkforward → expanding walk-forward validation\n"
-            "live        → multi-symbol MT5 live trading"
+            "live        → multi-symbol MT5 live trading\n"
+            "sync        → download historical bars from MT5 to CSV"
         ),
     )
     p.add_argument("--symbol",  default=None,
@@ -364,6 +489,7 @@ def main():
         "backtest":    mode_backtest,
         "walkforward": mode_walkforward,
         "live":        mode_live,
+        "sync":        mode_sync,
     }
     dispatch[args.mode](args)
 
