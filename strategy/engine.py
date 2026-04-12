@@ -33,15 +33,15 @@ class SignalResult:
 
 @dataclass
 class StrategyConfig:
-    ml_threshold:       float = 0.52    # [5.2] loosened; ML is primary gate
-    min_ev:             float = 0.05    # [4.1] minimum expected value to trade
-    sl_atr_mult:        float = 1.5
-    sl_buffer_atr:      float = 0.5     # [5.3] buffer beyond sweep extreme
-    rr_ratio:           float = 2.0     # [5.4] base RR; adjusted by signal quality
-    require_htf_align:  bool  = False
-    max_sweep_bos_gap:  int   = 40      # [5.2] wider window, let ML filter
-    pullback_atr_min:   float = 0.05    # [5.2] much looser
-    pullback_atr_max:   float = 5.0
+    ml_threshold:       float = 0.72    # high selectivity — ~80% win rate target
+    min_ev:             float = 0.20    # strong edge required
+    sl_atr_mult:        float = 1.0
+    sl_buffer_atr:      float = 0.8     # wider buffer on gold to avoid stop hunts
+    rr_ratio:           float = 3.0     # 1:3 RR minimum
+    require_htf_align:  bool  = True    # H4 trend must agree
+    max_sweep_bos_gap:  int   = 50      # wide window — catch delayed BOS
+    pullback_atr_min:   float = 0.2     # some pullback required
+    pullback_atr_max:   float = 4.0     # allow deep pullbacks into discount zone
 
 
 class StrategyEngine:

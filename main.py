@@ -8,9 +8,14 @@ Modes
   backtest      Run historical simulation on a single symbol
   walkforward   Walk-forward out-of-sample validation
   live          Start multi-symbol live trading via MT5
-  sync          Download data from MT5 terminal
-  report        Generate HTML dashboard
-  verify        Parity check backtest vs live simulation
+
+Quick start
+-----------
+  # 1. Put your CSVs in data/raw/ and update SYMBOL_CSV_MAP in config.py
+  # 2. python main.py --mode train
+  # 3. python main.py --mode backtest --symbol EURUSD --data data/raw/EURUSD_2023.csv
+  # 4. Set MT5 credentials in config.py
+  # 5. python main.py --mode live
 """
 
 import argparse
@@ -38,31 +43,39 @@ def mode_generate(args) -> None:
     n_bars = args.bars or 157_000
     path   = args.data or cfg.DATA_PATH
 
-    logger.info(f"Generating {n_bars:,} synthetic bars -> {path}")
+    logger.info(f"Generating {n_bars:,} synthetic bars → {path}")
     df = generate_ohlcv(n_bars=n_bars, timeframe_min=cfg.BASE_TF_MINUTES, seed=42)
     df.to_csv(path, index=False)
     logger.info(f"Done. {len(df):,} rows | "
-                f"{df['timestamp'].iloc[0]} -> {df['timestamp'].iloc[-1]}")
+                f"{df['timestamp'].iloc[0]} → {df['timestamp'].iloc[-1]}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Mode: train
+# Mode: train  (real data, multi-symbol)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_train(args) -> None:
     from features.labeler   import LabelConfig
-    from models.trainer     import train_all_symbols
+    from models.trainer     import train_all_symbols, train_symbol
 
     logger.info("=== TRAINING MODE ===")
 
-    label_cfg = LabelConfig()
+    label_cfg = LabelConfig(
+        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
+        sl_atr_mult       = cfg.SL_ATR_MULT,
+        max_bars_to_bos   = getattr(cfg, 'MAX_BARS_TO_BOS', 20),
+        max_bars_to_entry = getattr(cfg, 'MAX_BARS_TO_ENTRY', 25),
+    )
 
+    # Build the CSV map: CLI overrides config
     sym_csv_map = dict(cfg.SYMBOL_CSV_MAP)
 
     if args.symbol and args.data:
+        # Single-symbol override from CLI
         sym_csv_map = {args.symbol.upper(): [args.data]}
-        logger.info(f"Single-symbol mode: {args.symbol} <- {args.data}")
+        logger.info(f"Single-symbol mode: {args.symbol} ← {args.data}")
 
+    # Filter to symbols that have at least one CSV file
     runnable = {s: paths for s, paths in sym_csv_map.items() if paths}
     skipped  = [s for s, paths in sym_csv_map.items() if not paths]
 
@@ -75,8 +88,8 @@ def mode_train(args) -> None:
     if not runnable:
         logger.error(
             "No symbols with CSV data found.\n"
-            "  -> Add your HistData/Dukascopy CSV paths to SYMBOL_CSV_MAP in config.py\n"
-            "  -> Or run: python main.py --mode train --symbol EURUSD --data path/to/file.csv"
+            "  → Add your HistData/Dukascopy CSV paths to SYMBOL_CSV_MAP in config.py\n"
+            "  → Or run: python main.py --mode train --symbol EURUSD --data path/to/file.csv"
         )
         return
 
@@ -85,7 +98,6 @@ def mode_train(args) -> None:
         base_tf        = cfg.BASE_TF,
         htf            = cfg.HTF_FOR_TREND,
         model_name     = cfg.MODEL_NAME,
-        source         = args.source,
         force_retrain  = args.force or cfg.FORCE_RETRAIN,
         max_age_days   = cfg.MAX_MODEL_AGE_DAYS,
         label_config   = label_cfg,
@@ -109,45 +121,49 @@ def mode_backtest(args) -> None:
 
     logger.info(f"=== BACKTEST | {symbol} | {data_path} ===")
 
+    # ── Load data ─────────────────────────────────────────────────
     path = Path(data_path)
     if not path.exists():
         logger.error(f"Data file not found: {data_path}")
         return
 
+    # Auto-detect format: HistData/Dukascopy vs native loader
     try:
         base_df = parse_histdata(data_path, symbol=symbol, target_tf=cfg.BASE_TF)
         loader  = OHLCVLoader.__new__(OHLCVLoader)
         loader.timeframe = "M1"
         htf_df  = loader.resample(base_df, cfg.HTF_FOR_TREND)
     except Exception:
+        # Fallback to native loader (already-resampled CSV)
         tfs     = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
         base_df = tfs[cfg.BASE_TF]
         htf_df  = tfs.get(cfg.HTF_FOR_TREND)
 
     logger.info(f"Bars: {len(base_df):,} [{cfg.BASE_TF}]")
 
+    # ── Features ──────────────────────────────────────────────────
     feat_df = engineer_features(base_df, htf_df=htf_df)
 
+    # ── Load model ────────────────────────────────────────────────
     model = ForexMLModel(model_name=f"{symbol}_{cfg.MODEL_NAME}")
     try:
         model.load()
         logger.info(f"Loaded model: {symbol}_{cfg.MODEL_NAME}")
     except FileNotFoundError:
+        # Try generic model
         try:
             model = ForexMLModel(model_name=cfg.MODEL_NAME)
             model.load()
             logger.warning("Using generic model (no symbol-specific model found).")
         except FileNotFoundError:
-            logger.warning("No model found - running without ML filter.")
+            logger.warning("No model found – running without ML filter.")
             model = None
 
-    # [5.2][5.3][5.4] Use updated StrategyConfig fields
+    # ── Strategy ──────────────────────────────────────────────────
     s_cfg = StrategyConfig(
         ml_threshold      = cfg.ML_THRESHOLD,
-        min_ev            = getattr(cfg, 'MIN_EV', 0.05),          # [4.1] new field
-        sl_atr_mult       = getattr(cfg, 'SL_ATR_MULT', 1.5),
-        sl_buffer_atr     = getattr(cfg, 'SL_BUFFER_ATR', 0.5),    # [5.3] new field
-        rr_ratio          = getattr(cfg, 'RR_MIN', 2.0),
+        sl_atr_mult       = cfg.SL_ATR_MULT,
+        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
         require_htf_align = cfg.REQUIRE_HTF_ALIGN,
     )
     engine  = StrategyEngine(s_cfg, model=model)
@@ -157,6 +173,7 @@ def mode_backtest(args) -> None:
         logger.warning("No signals generated.")
         return
 
+    # ── Backtest ──────────────────────────────────────────────────
     b_cfg = BacktestConfig(
         initial_balance      = cfg.INITIAL_BALANCE,
         risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
@@ -179,7 +196,7 @@ def mode_backtest(args) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_walkforward(args) -> None:
-    import numpy as np
+    import copy, numpy as np
     from data.histdata_parser   import parse_histdata
     from data.loader            import load_multi_timeframe, OHLCVLoader
     from features.engineer      import engineer_features
@@ -210,35 +227,39 @@ def mode_walkforward(args) -> None:
 
     feat_df = engineer_features(base_df, htf_df=htf_df)
 
-    label_cfg = LabelConfig()
-
-    # [5.2][5.3][5.4] Updated StrategyConfig fields
+    label_cfg = LabelConfig(
+        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
+        sl_atr_mult       = cfg.SL_ATR_MULT,
+        max_bars_to_bos   = getattr(cfg, 'MAX_BARS_TO_BOS', 20),
+        max_bars_to_entry = getattr(cfg, 'MAX_BARS_TO_ENTRY', 25),
+    )
     s_cfg = StrategyConfig(
         ml_threshold      = cfg.ML_THRESHOLD,
-        min_ev            = getattr(cfg, 'MIN_EV', 0.05),
-        sl_atr_mult       = getattr(cfg, 'SL_ATR_MULT', 1.5),
-        sl_buffer_atr     = getattr(cfg, 'SL_BUFFER_ATR', 0.5),
-        rr_ratio          = getattr(cfg, 'RR_MIN', 2.0),
+        sl_atr_mult       = cfg.SL_ATR_MULT,
+        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
         require_htf_align = cfg.REQUIRE_HTF_ALIGN,
     )
+    b_cfg = BacktestConfig(
+        initial_balance      = cfg.INITIAL_BALANCE,
+        risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
+        spread_pips          = cfg.SPREAD_PIPS,
+        slippage_pips        = cfg.SLIPPAGE_PIPS,
+    )
 
-    validator = WalkForwardValidator(n_splits=args.folds)
-    results = validator.run(
+    wf = WalkForwardValidator(n_splits=args.folds or 4, oos_fraction=getattr(cfg, 'WF_OOS_FRACTION', 0.20))
+    results = wf.run(
         feature_df      = feat_df,
         raw_df          = base_df,
         label_config    = label_cfg,
         strategy_config = s_cfg,
-        backtest_config = BacktestConfig(
-            initial_balance      = cfg.INITIAL_BALANCE,
-            risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
-            max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
-        ),
+        backtest_config = b_cfg,
         model_class     = ForexMLModel,
+        model_kwargs    = {"model_name": f"{symbol}_{cfg.MODEL_NAME}_wf"},
     )
 
-    print(f"\n{'='*50}")
+    print(f"\n{'═'*50}")
     print(f"  WALK-FORWARD: {symbol}")
-    print(f"{'='*50}")
+    print(f"{'═'*50}")
     for r in results:
         print(
             f"  Fold {r['fold']:<2} | "
@@ -252,134 +273,18 @@ def mode_walkforward(args) -> None:
         wrs = [r.get("win_rate", 0) for r in results if r.get("total_trades", 0) > 0]
         pfs = [r.get("profit_factor", 0) for r in results if r.get("total_trades", 0) > 0]
         if wrs:
-            print(f"{'-'*50}")
+            print(f"{'─'*50}")
             print(f"  Avg WR: {np.mean(wrs):.1%}  |  Avg PF: {np.mean(pfs):.2f}")
-    print(f"{'='*50}\n")
+    print(f"{'═'*50}\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Mode: verify
-# ─────────────────────────────────────────────────────────────────────────────
-
-def mode_verify(args) -> None:
-    import pandas as pd
-    from data.loader import load_multi_timeframe
-    from features.engineer import engineer_features
-    from strategy.engine import StrategyEngine, StrategyConfig
-    from backtest.engine import BacktestEngine, BacktestConfig
-    from models.ml_model import ForexMLModel
-    from execution.multi_symbol_trader import MultiSymbolTrader, SymbolState
-    from execution.mt5_broker import MT5Broker
-    from risk.manager import RiskConfig
-
-    symbol    = (args.symbol or cfg.SYMBOL).upper()
-    data_path = args.data or cfg.DATA_PATH
-    logger.info(f"=== VERIFY MODE | {symbol} ===")
-
-    tfs     = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
-    base_df = tfs[cfg.BASE_TF]
-    htf_df  = tfs.get(cfg.HTF_FOR_TREND)
-
-    logger.info("Pre-calculating features for verification...")
-    feat_df = engineer_features(base_df, htf_df=htf_df)
-
-    model = ForexMLModel(model_name=f"{symbol}_{cfg.MODEL_NAME}")
-    try:
-        model.load()
-    except Exception:
-        logger.warning("Using generic model for verify.")
-        model = ForexMLModel(model_name=cfg.MODEL_NAME)
-        model.load()
-
-    # [5.2][5.3][5.4] Updated StrategyConfig
-    s_cfg = StrategyConfig(
-        ml_threshold      = cfg.ML_THRESHOLD,
-        min_ev            = getattr(cfg, 'MIN_EV', 0.05),
-        sl_atr_mult       = getattr(cfg, 'SL_ATR_MULT', 1.5),
-        sl_buffer_atr     = getattr(cfg, 'SL_BUFFER_ATR', 0.5),
-        rr_ratio          = getattr(cfg, 'RR_MIN', 2.0),
-        require_htf_align = cfg.REQUIRE_HTF_ALIGN,
-    )
-
-    # 1. Backtest
-    b_cfg = BacktestConfig(
-        initial_balance      = cfg.INITIAL_BALANCE,
-        risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
-        max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
-        pip_value            = cfg.PIP_VALUE,
-    )
-    bt_engine = BacktestEngine(b_cfg)
-    strat     = StrategyEngine(s_cfg, model=model)
-    signals   = strat.scan_all(feat_df)
-    bt_res    = bt_engine.run(base_df, signals, symbol=symbol)
-    bt_trades = bt_res.trades
-
-    # 2. Live simulation
-    live_log_path = Path("logs/live_trades.csv")
-    if live_log_path.exists():
-        live_log_path.unlink()
-
-    broker = MT5Broker()
-    # [7.1][7.3] Updated RiskConfig with new fields
-    r_cfg = RiskConfig(
-        account_balance      = cfg.INITIAL_BALANCE,
-        max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
-        risk_per_trade_pct   = cfg.RISK_PER_TRADE_PCT,
-        pip_value            = cfg.PIP_VALUE,
-        dd_reduce_threshold  = getattr(cfg, 'DD_REDUCE_THRESHOLD', 0.05),
-        dd_halt_threshold    = getattr(cfg, 'DD_HALT_THRESHOLD', 0.10),
-    )
-    trader = MultiSymbolTrader(
-        symbols         = [symbol],
-        model           = model,
-        broker          = broker,
-        strategy_config = s_cfg,
-        risk_config     = r_cfg,
-        poll_secs       = 0,
-    )
-
-    logger.info("Running parallel live simulation...")
-    common_idx = feat_df.index.intersection(base_df.index)
-
-    for ts in common_idx:
-        row = base_df.loc[ts]
-        trader.broker.update_sim_price(symbol, bid=row["close"], ask=row["close"])
-        trader._on_new_bar(
-            symbol  = symbol,
-            df      = base_df.loc[:ts].tail(300),
-            feat_df = feat_df.loc[:ts].tail(50),
-        )
-
-    # 3. Compare
-    if live_log_path.exists():
-        live_df           = pd.read_csv(live_log_path)
-        live_df           = live_df[live_df['symbol'] == symbol]
-        live_trades_count = len(live_df[live_df['exit_reason'] != 'OPEN'])
-    else:
-        live_trades_count = 0
-
-    logger.info("\n" + "="*40)
-    logger.info("  VERIFICATION RESULTS")
-    logger.info("="*40)
-    logger.info(f"  Backtest Trades: {len(bt_trades)}")
-    logger.info(f"  Live Sim Trades: {live_trades_count}")
-    if len(bt_trades) == live_trades_count:
-        logger.info("  [SUCCESS] Trade counts match perfectly.")
-    else:
-        logger.warning(
-            f"  [DIVERGENCE] Difference: {abs(len(bt_trades) - live_trades_count)} trades."
-        )
-        logger.warning("  Check logs/live_trades.csv for comparison.")
-    logger.info("="*40 + "\n")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Mode: live
+# Mode: live  (multi-symbol)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_live(args) -> None:
-    from models.trainer                import load_all_models
-    from execution.multi_symbol_trader import MultiSymbolTrader, SymbolState
+    from models.trainer             import load_all_models
+    from execution.multi_symbol_trader import MultiSymbolTrader
 
     logger.info("=== LIVE TRADING MODE (Multi-Symbol) ===")
 
@@ -389,72 +294,27 @@ def mode_live(args) -> None:
 
     if not cfg.MT5_LOGIN:
         logger.warning(
-            "MT5_LOGIN is 0 - running in SIMULATION mode.\n"
+            "MT5_LOGIN is 0 – running in SIMULATION mode.\n"
             "Set MT5_LOGIN / MT5_PASSWORD / MT5_SERVER in config.py or env vars."
         )
 
+    # Load per-symbol models; fall back to generic model if symbol-specific missing
     models = load_all_models(symbols, model_name=cfg.MODEL_NAME)
     if not models:
         logger.warning("No trained models found. Running without ML filter.")
 
+    # MultiSymbolTrader uses the first available model for all symbols
+    # (extend to per-symbol routing if desired)
     first_model = next(iter(models.values()), None) if models else None
 
-    trader         = MultiSymbolTrader.from_config(model=first_model)
+    trader = MultiSymbolTrader.from_config(model=first_model)
+    # Override symbols from CLI if provided
     trader.symbols = symbols
-    trader._states = {s: SymbolState(s) for s in symbols}
+    trader._states = {s: trader._states.get(s, __import__(
+        'execution.multi_symbol_trader', fromlist=['SymbolState']
+    ).SymbolState(s)) for s in symbols}
 
     trader.run()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Mode: report
-# ─────────────────────────────────────────────────────────────────────────────
-
-def mode_report(args) -> None:
-    from reporting.dashboard_generator import DashboardGenerator
-    symbol = (args.symbol or cfg.SYMBOL).upper()
-
-    logger.info(f"=== REPORT MODE | {symbol} ===")
-
-    try:
-        gen          = DashboardGenerator(symbol=symbol)
-        output_path  = gen.generate()
-        print(f"\n{'='*55}")
-        print(f"  DASHBOARD GENERATED SUCCESSFULLY")
-        print(f"  Symbol: {symbol}")
-        print(f"  Path:   {output_path}")
-        print(f"  (Open this file in your browser to view results)")
-        print(f"{'='*55}\n")
-    except Exception as e:
-        logger.error(f"Failed to generate dashboard: {e}")
-        if "template" in str(e).lower():
-            logger.error("Ensure reporting/template.html exists.")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Mode: sync
-# ─────────────────────────────────────────────────────────────────────────────
-
-def mode_sync(args) -> None:
-    from data.loader import MT5SyncLoader
-
-    symbol    = (args.symbol or cfg.SYMBOL).upper()
-    timeframe = args.timeframe or cfg.BASE_TF
-    n_bars    = args.bars or 100_000
-    save_path = args.data or f"data/raw/{symbol}_{timeframe}_mt5.csv"
-
-    logger.info(f"=== SYNC MODE | {symbol} [{timeframe}] ===")
-
-    MT5SyncLoader.sync_symbol(
-        symbol    = symbol,
-        timeframe = timeframe,
-        n_bars    = n_bars,
-        save_path = save_path,
-        login     = cfg.MT5_LOGIN,
-        password  = cfg.MT5_PASSWORD,
-        server    = cfg.MT5_SERVER,
-    )
-    logger.info("Sync complete.")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -468,35 +328,27 @@ def parse_args():
     )
     p.add_argument(
         "--mode", required=True,
-        choices=["generate", "train", "backtest", "walkforward",
-                 "live", "sync", "report", "verify"],
+        choices=["generate", "train", "backtest", "walkforward", "live"],
         help=(
-            "generate    -> synthetic data (testing)\n"
-            "train       -> train from real HistData/Dukascopy CSVs\n"
-            "backtest    -> single-symbol historical simulation\n"
-            "walkforward -> expanding walk-forward validation\n"
-            "live        -> multi-symbol MT5 live trading\n"
-            "sync        -> download data from MT5 terminal\n"
-            "report      -> generate HTML dashboard\n"
-            "verify      -> parity check backtest vs live"
+            "generate    → synthetic data (testing)\n"
+            "train       → train from real HistData/Dukascopy CSVs\n"
+            "backtest    → single-symbol historical simulation\n"
+            "walkforward → expanding walk-forward validation\n"
+            "live        → multi-symbol MT5 live trading"
         ),
     )
-    p.add_argument("--symbol",    default=None,
+    p.add_argument("--symbol",  default=None,
                    help="Symbol override, e.g. EURUSD")
-    p.add_argument("--symbols",   default=None,
+    p.add_argument("--symbols", default=None,
                    help="[live] Comma-separated list, e.g. EURUSD,GBPUSD,USDJPY")
-    p.add_argument("--data",      default=None,
-                   help="Path to CSV file")
-    p.add_argument("--bars",      type=int, default=None,
-                   help="[generate/sync] Number of bars")
-    p.add_argument("--folds",     type=int, default=4,
+    p.add_argument("--data",    default=None,
+                   help="Path to CSV file (overrides config DATA_PATH / SYMBOL_CSV_MAP)")
+    p.add_argument("--bars",    type=int, default=None,
+                   help="[generate] Number of bars to produce")
+    p.add_argument("--folds",   type=int, default=4,
                    help="[walkforward] Number of OOS folds")
-    p.add_argument("--force",     action="store_true",
+    p.add_argument("--force",   action="store_true",
                    help="[train] Force retrain even if model is recent")
-    p.add_argument("--source",    default="csv", choices=["csv", "mt5"],
-                   help="[train] Data source: 'csv' or 'mt5'")
-    p.add_argument("--timeframe", default=None,
-                   help="[sync] Timeframe override, e.g. M1, M5, H1")
     p.add_argument("--log-level", dest="log_level", default="INFO",
                    choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     return p.parse_args()
@@ -512,9 +364,6 @@ def main():
         "backtest":    mode_backtest,
         "walkforward": mode_walkforward,
         "live":        mode_live,
-        "sync":        mode_sync,
-        "report":      mode_report,
-        "verify":      mode_verify,
     }
     dispatch[args.mode](args)
 

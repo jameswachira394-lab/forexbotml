@@ -201,6 +201,9 @@ class ForexMLModel:
             self.threshold = self._find_optimal_threshold(y_val, proba_val)
         else:
             self.threshold = 0.55
+        # Floor: never use a threshold below 0.45 regardless of what val optimises to.
+        # A very low threshold on a weak model passes too many bad trades.
+        self.threshold = max(self.threshold, 0.45)
 
         # ── Test-set evaluation (never touched during training) ───
         proba_test = self.pipeline.predict_proba(X_test)[:, 1]
@@ -213,7 +216,7 @@ class ForexMLModel:
         y_pred = (proba_test >= self.threshold).astype(int)
         try:
             report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)
-            logger.info(f"\n{classification_report(y_test, y_pred)}")
+            logger.info(f"\n{classification_report(y_test, y_pred, zero_division=0)}")
         except Exception:
             report = {}
 
@@ -312,7 +315,10 @@ class ForexMLModel:
     def _find_optimal_threshold(y_true, y_prob) -> float:
         """Maximise F1 — called on VALIDATION set only."""
         prec, rec, thresholds = precision_recall_curve(y_true, y_prob)
-        f1 = np.where((prec + rec) > 0, 2 * prec * rec / (prec + rec), 0)
+        denom = prec + rec
+        # Suppress divide-by-zero RuntimeWarning when both prec and rec are 0
+        with np.errstate(invalid="ignore"):
+            f1 = np.where(denom > 0, 2 * prec * rec / np.where(denom > 0, denom, 1), 0)
         best = np.argmax(f1)
         return float(thresholds[best]) if best < len(thresholds) else 0.55
 

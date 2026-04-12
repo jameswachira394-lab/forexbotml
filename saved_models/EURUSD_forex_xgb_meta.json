@@ -33,12 +33,12 @@
     "impulse",
     "htf_trend"
   ],
-  "threshold": 0.348688044192313,
-  "rr_ratio": 2.0,
-  "cv_auc_mean": 0.7511111111111111,
-  "cv_auc_std": 0.20995002344767436,
-  "test_auc": 0.48,
-  "test_brier": 0.2183194697901468,
+  "threshold": 0.45,
+  "rr_ratio": 3.0,
+  "cv_auc_mean": 0.6666666666666667,
+  "cv_auc_std": 0.2041241452319315,
+  "test_auc": 0.26,
+  "test_brier": 0.2889998385300812,
   "n_train": 67,
   "n_val": 15,
   "n_test": 15

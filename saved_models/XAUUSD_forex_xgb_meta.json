@@ -33,13 +33,13 @@
     "impulse",
     "htf_trend"
   ],
-  "threshold": 0.4870275386322001,
-  "rr_ratio": 2.0,
-  "cv_auc_mean": 0.7117673272402374,
-  "cv_auc_std": 0.07645233581500607,
-  "test_auc": 0.7405487004463114,
-  "test_brier": 0.19642741507050232,
-  "n_train": 2093,
+  "threshold": 0.45,
+  "rr_ratio": 3.0,
+  "cv_auc_mean": 0.6775925869894901,
+  "cv_auc_std": 0.1082554482139941,
+  "test_auc": 0.7439867492438426,
+  "test_brier": 0.17829123820366333,
+  "n_train": 2095,
   "n_val": 449,
   "n_test": 449
 }
