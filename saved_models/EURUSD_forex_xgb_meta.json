@@ -12,16 +12,16 @@
     "fvg_size",
     "hour"
   ],
-  "threshold": "0.49866354",
+  "threshold": 0.22796854582250878,
   "rr_ratio": 3.0,
   "meta": {
     "cv_auc_mean": 0.5490948676261247,
     "cv_auc_std": 0.07082241404687471,
     "test_auc": 0.5930977077730823,
-    "test_brier": 0.24870581924915314,
-    "threshold": "0.49866354",
-    "is_calibrated": false,
-    "calibration_method": "none"
+    "test_brier": 0.19099234037916607,
+    "threshold": 0.22796854582250878,
+    "is_calibrated": true,
+    "calibration_method": "platt"
   },
-  "has_calibrator": false
+  "has_calibrator": true
 }

@@ -17812,3 +17812,213 @@ TypeError: NDFrame.fillna() got an unexpected keyword argument 'method'
 2026-04-13 13:12:30 | INFO     | features.engineer_fixed | Feature engineering: 16727 -> 16727 rows after NaN drop
 2026-04-13 13:12:30 | INFO     | __main__ |     → 16,727 rows engineered
 2026-04-13 13:12:30 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:12:40 | INFO     | features.labeler | SMC Labeler: 11,299 setups | Win rate: 24.2% | Long: 6012 | Short: 5287
+2026-04-13 13:12:40 | INFO     | __main__ |     → 11,299 labeled (win rate: 24.2%)
+2026-04-13 13:12:40 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:12:40 | INFO     | models.ml_integration_fixed | Train: 7,909 | Val: 1,695 | Test: 1,695
+2026-04-13 13:12:40 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 24.8%
+2026-04-13 13:12:40 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.4589
+2026-04-13 13:12:40 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5797
+2026-04-13 13:12:41 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5087
+2026-04-13 13:12:43 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.4944
+2026-04-13 13:12:43 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5342
+2026-04-13 13:12:44 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:12:44 | WARNING  | models.ml_integration_fixed | Calibration failed: The 'cv' parameter of CalibratedClassifierCV must be an int in the range [2, inf), an object implementing 'split' and 'get_n_splits', an iterable or None. Got 'precomputed' instead. – using uncalibrated model
+2026-04-13 13:12:44 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:12:44 | WARNING  | models.ml_integration_fixed | Calibration bucket 0.50-0.60: expected 55.00%, got 21.55%
+2026-04-13 13:12:44 | INFO     | models.ml_integration_fixed | Test AUC=0.4765 | Brier=0.2486 | Threshold=0.491 | Calibrated=False
+2026-04-13 13:12:44 | INFO     | models.ml_integration_fixed | Model saved: saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:12:44 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:12:44 | INFO     | __main__ |     • AUC (train):      0.5151 ± 0.0404
+2026-04-13 13:12:44 | INFO     | __main__ |     • AUC (test):       0.4765
+2026-04-13 13:12:44 | INFO     | __main__ |     • Brier score:      0.2486
+2026-04-13 13:12:44 | INFO     | __main__ |     • Threshold:        0.491
+2026-04-13 13:12:44 | INFO     | __main__ |     • Is calibrated:    False
+2026-04-13 13:12:44 | INFO     | __main__ |     • Model path:       saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:12:44 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:12:44 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:12:44 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:12:44 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:12:44 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:12:44 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:12:46 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:12:46 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:12:46 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:12:46 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:12:46 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:12:46 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:19:09 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:19:09 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:19:09 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:19:09 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:19:09 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:19:09 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:19:09 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:19:10 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:19:10 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:19:10 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:19:10 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:19:10 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:19:10 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:19:17 | INFO     | features.engineer_fixed | Feature engineering: 5000 -> 5000 rows after NaN drop
+2026-04-13 13:19:17 | INFO     | __main__ |     → 5,000 rows engineered
+2026-04-13 13:19:17 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:19:18 | INFO     | features.labeler | SMC Labeler: 3,568 setups | Win rate: 25.9% | Long: 1731 | Short: 1837
+2026-04-13 13:19:18 | INFO     | __main__ |     → 3,568 labeled (win rate: 25.9%)
+2026-04-13 13:19:18 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:19:18 | INFO     | models.ml_integration_fixed | Train: 2,497 | Val: 535 | Test: 536
+2026-04-13 13:19:18 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 26.6%
+2026-04-13 13:19:18 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5280
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5094
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5440
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.6842
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.4799
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed | Test AUC=0.5931 | Brier=0.1910 | Threshold=0.228 | Calibrated=True
+2026-04-13 13:19:19 | INFO     | models.ml_integration_fixed | Model saved: saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:19:19 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:19:19 | INFO     | __main__ |     • AUC (train):      0.5491 ± 0.0708
+2026-04-13 13:19:19 | INFO     | __main__ |     • AUC (test):       0.5931
+2026-04-13 13:19:19 | INFO     | __main__ |     • Brier score:      0.1910
+2026-04-13 13:19:19 | INFO     | __main__ |     • Threshold:        0.228
+2026-04-13 13:19:19 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:19:19 | INFO     | __main__ |     • Model path:       saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:19:19 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:19:19 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:19:19 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:19:19 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:19:19 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:19:19 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:19:19 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:19:19 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:19:19 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:19:19 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:19:19 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:19:19 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:21:57 | INFO     | features.engineer_fixed | Feature engineering: 100784 -> 100784 rows after NaN drop
+2026-04-13 13:21:57 | INFO     | __main__ |     → 100,784 rows engineered
+2026-04-13 13:21:57 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:22:17 | INFO     | features.labeler | SMC Labeler: 67,820 setups | Win rate: 20.0% | Long: 34362 | Short: 33458
+2026-04-13 13:22:17 | INFO     | __main__ |     → 67,820 labeled (win rate: 20.0%)
+2026-04-13 13:22:17 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:22:17 | INFO     | models.ml_integration_fixed | Train: 47,474 | Val: 10,173 | Test: 10,173
+2026-04-13 13:22:17 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 19.9%
+2026-04-13 13:22:17 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5301
+2026-04-13 13:22:18 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5476
+2026-04-13 13:22:18 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5132
+2026-04-13 13:22:18 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5389
+2026-04-13 13:22:18 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5304
+2026-04-13 13:22:19 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:22:19 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:22:19 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:22:19 | INFO     | models.ml_integration_fixed | Test AUC=0.5125 | Brier=0.1524 | Threshold=0.216 | Calibrated=True
+2026-04-13 13:22:19 | INFO     | models.ml_integration_fixed | Model saved: saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:22:19 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:22:19 | INFO     | __main__ |     • AUC (train):      0.5321 ± 0.0114
+2026-04-13 13:22:19 | INFO     | __main__ |     • AUC (test):       0.5125
+2026-04-13 13:22:19 | INFO     | __main__ |     • Brier score:      0.1524
+2026-04-13 13:22:19 | INFO     | __main__ |     • Threshold:        0.216
+2026-04-13 13:22:19 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:22:19 | INFO     | __main__ |     • Model path:       saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:22:19 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:22:19 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:22:19 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:22:19 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:22:19 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:22:19 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:22:19 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:22:19 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:22:19 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:22:19 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:22:19 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:22:19 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:22:47 | INFO     | features.engineer_fixed | Feature engineering: 16727 -> 16727 rows after NaN drop
+2026-04-13 13:22:47 | INFO     | __main__ |     → 16,727 rows engineered
+2026-04-13 13:22:47 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:22:51 | INFO     | features.labeler | SMC Labeler: 11,299 setups | Win rate: 24.2% | Long: 6012 | Short: 5287
+2026-04-13 13:22:51 | INFO     | __main__ |     → 11,299 labeled (win rate: 24.2%)
+2026-04-13 13:22:51 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Train: 7,909 | Val: 1,695 | Test: 1,695
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 24.8%
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.4589
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5797
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5087
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.4944
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5342
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Test AUC=0.4765 | Brier=0.1762 | Threshold=0.226 | Calibrated=True
+2026-04-13 13:22:52 | INFO     | models.ml_integration_fixed | Model saved: saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:22:52 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:22:52 | INFO     | __main__ |     • AUC (train):      0.5151 ± 0.0404
+2026-04-13 13:22:52 | INFO     | __main__ |     • AUC (test):       0.4765
+2026-04-13 13:22:52 | INFO     | __main__ |     • Brier score:      0.1762
+2026-04-13 13:22:52 | INFO     | __main__ |     • Threshold:        0.226
+2026-04-13 13:22:52 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:22:52 | INFO     | __main__ |     • Model path:       saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:22:52 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:22:52 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:22:52 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:22:52 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:22:52 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:22:53 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:22:54 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:22:54 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:22:54 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:22:54 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:22:54 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:22:54 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:27:48 | INFO     | features.engineer_fixed | Feature engineering: 134050 -> 134050 rows after NaN drop
+2026-04-13 13:27:48 | INFO     | __main__ |     → 134,050 rows engineered
+2026-04-13 13:27:48 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:28:38 | INFO     | features.labeler | SMC Labeler: 89,585 setups | Win rate: 24.9% | Long: 46875 | Short: 42710
+2026-04-13 13:28:38 | INFO     | __main__ |     → 89,585 labeled (win rate: 24.9%)
+2026-04-13 13:28:38 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:28:38 | INFO     | models.ml_integration_fixed | Train: 62,709 | Val: 13,438 | Test: 13,438
+2026-04-13 13:28:38 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 24.5%
+2026-04-13 13:28:38 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5246
+2026-04-13 13:28:39 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5164
+2026-04-13 13:28:39 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5237
+2026-04-13 13:28:40 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5474
+2026-04-13 13:28:40 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.4806
+2026-04-13 13:28:41 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:28:41 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:28:41 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:28:41 | INFO     | models.ml_integration_fixed | Test AUC=0.4813 | Brier=0.1896 | Threshold=0.263 | Calibrated=True
+2026-04-13 13:28:41 | INFO     | models.ml_integration_fixed | Model saved: saved_models\XAUUSD_forex_xgb.joblib
+2026-04-13 13:28:41 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:28:41 | INFO     | __main__ |     • AUC (train):      0.5185 ± 0.0216
+2026-04-13 13:28:41 | INFO     | __main__ |     • AUC (test):       0.4813
+2026-04-13 13:28:41 | INFO     | __main__ |     • Brier score:      0.1896
+2026-04-13 13:28:41 | INFO     | __main__ |     • Threshold:        0.263
+2026-04-13 13:28:41 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:28:41 | INFO     | __main__ |     • Model path:       saved_models\XAUUSD_forex_xgb.joblib
+2026-04-13 13:28:41 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:28:41 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 13:28:41 | INFO     | __main__ | ================================================================================
+2026-04-13 13:28:41 | INFO     | __main__ | ✓ EURUSD     | AUC=0.5931 | Cal=True
+2026-04-13 13:28:41 | INFO     | __main__ | ✓ GBPUSD     | AUC=0.5125 | Cal=True
+2026-04-13 13:28:41 | INFO     | __main__ | ✓ USDJPY     | AUC=0.4765 | Cal=True
+2026-04-13 13:28:41 | INFO     | __main__ | ✓ XAUUSD     | AUC=0.4813 | Cal=True
+2026-04-13 13:28:41 | INFO     | __main__ | ================================================================================
+

@@ -40,6 +40,7 @@ from sklearn.metrics import (
     classification_report, precision_recall_curve,
 )
 from sklearn.calibration import CalibratedClassifierCV
+from sklearn.linear_model import LogisticRegression
 
 try:
     import xgboost as xgb
@@ -203,12 +204,14 @@ class ForexMLModelFixed:
 
         # ── Calibration: Platt scaling on validation set ──────────────────────
         logger.info("Fitting Platt scaling calibrator on validation set...")
-        self.calibrator = CalibratedClassifierCV(
-            estimator, method="sigmoid", cv="precomputed"
-        )
-        # Fit calibrator on validation set only (no leakage)
         try:
-            self.calibrator.fit(X_val, y_val)
+            # Get predictions on validation set from trained estimator
+            val_probs_raw = estimator.predict_proba(X_val)[:, 1]
+            
+            # Fit logistic regression as Platt scaling calibrator
+            # This maps raw probabilities to calibrated probabilities
+            self.calibrator = LogisticRegression(max_iter=1000, random_state=42)
+            self.calibrator.fit(val_probs_raw.reshape(-1, 1), y_val)
             logger.info("Platt scaling calibrator fitted successfully")
         except Exception as e:
             logger.warning(f"Calibration failed: {e} – using uncalibrated model")
@@ -259,16 +262,18 @@ class ForexMLModelFixed:
     # ─────────────────────────────────────────────────────────────────────────
 
     def _calibrate_proba(self, proba_raw: np.ndarray) -> np.ndarray:
-        """Apply Platt scaling if available."""
+        """Apply Platt scaling calibration if available."""
         if self.calibrator is None:
             return proba_raw
         
         try:
-            return self.calibrator.predict_proba(
-                pd.DataFrame(proba_raw)
-            )[:, 1]
+            # Ensure 1D input, reshape to 2D for LogisticRegression
+            if proba_raw.ndim == 1:
+                proba_raw = proba_raw.reshape(-1, 1)
+            # Get calibrated probabilities from logistic regression
+            return self.calibrator.predict_proba(proba_raw)[:, 1]
         except Exception:
-            return proba_raw
+            return proba_raw.ravel() if proba_raw.ndim > 1 else proba_raw
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
         """
