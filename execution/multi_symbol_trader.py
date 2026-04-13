@@ -38,7 +38,6 @@ from features.engineer      import engineer_features
 from models.ml_model        import ForexMLModel
 from strategy.engine        import StrategyEngine, StrategyConfig, SignalResult
 from risk.manager           import RiskManager, RiskConfig
-from utils.trading          import calculate_profit, should_execute_trade
 import config as cfg
 
 logger = logging.getLogger(__name__)
@@ -54,18 +53,16 @@ class SymbolState:
         self.symbol          = symbol
         self.open_ticket:    Optional[int]         = None
         self.open_signal:    Optional[SignalResult] = None
-        self.lot_size:       float                 = 0.0
         self.bars_since_entry: int                 = 0
-        self.last_trade_time:  Optional[pd.Timestamp] = None
 
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Main class
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 
 class MultiSymbolTrader:
     """
-    Runs the full signal->risk->execution pipeline for multiple FX pairs.
+    Runs the full signal→risk→execution pipeline for multiple FX pairs.
     One MT5Streamer feeds bar events; this class handles them thread-safely.
     """
 
@@ -76,7 +73,7 @@ class MultiSymbolTrader:
         broker:          MT5Broker,
         strategy_config: StrategyConfig,
         risk_config:     RiskConfig,
-        timeframe:       str   = "M15",
+        timeframe:       str   = "M5",
         warm_bars:       int   = 300,
         poll_secs:       float = 15.0,
     ):
@@ -115,8 +112,8 @@ class MultiSymbolTrader:
         )
         s_cfg = StrategyConfig(
             ml_threshold      = cfg.ML_THRESHOLD,
-            sl_atr_mult       = cfg.SL_BUFFER_ATR,
-            rr_ratio          = cfg.RR_MIN,
+            sl_atr_mult       = cfg.SL_ATR_MULT,
+            rr_ratio          = cfg.RR_RATIO,
             require_htf_align = cfg.REQUIRE_HTF_ALIGN,
         )
         r_cfg = RiskConfig(
@@ -169,92 +166,88 @@ class MultiSymbolTrader:
 
     # ─── Bar callback (called from streamer thread) ───────────────────────────
 
-    def _on_new_bar(self, symbol: str, df: pd.DataFrame, feat_df: Optional[pd.DataFrame] = None) -> None:
+    def _on_new_bar(self, symbol: str, df: pd.DataFrame) -> None:
         """
         Called by MT5Streamer each time a new bar closes for *symbol*.
-        Wrapped in a try-except block for production resiliency.
+        df: rolling window of completed bars (warm_bars deep).
         """
-        try:
-            with self._lock:
-                state = self._states[symbol]
+        with self._lock:
+            state = self._states[symbol]
 
-                # Step 1: monitor any open position for this symbol
+            # Step 1: monitor any open position for this symbol
+            if state.open_ticket is not None:
+                self._monitor_position(state, df)
                 if state.open_ticket is not None:
-                    self._monitor_position(state, df)
-                    if state.open_ticket is not None:
-                        return   # still in trade; skip new entry check
+                    return   # still in trade; skip new entry check
 
-                # Step 2: feature engineering (Skip if provided - Task 7 optimization)
-                if feat_df is None:
-                    try:
-                        feat_df = engineer_features(df)
-                    except Exception as exc:
-                        logger.error(f"[{symbol}] Feature engineering failed: {exc}")
-                        return
+            # Step 2: feature engineering
+            try:
+                feat_df = engineer_features(df)
+            except Exception as exc:
+                logger.error(f"[{symbol}] Feature engineering failed: {exc}")
+                return
 
-                if len(feat_df) < 50:
-                    return  # not enough warm-up data yet
+            if len(feat_df) < 50:
+                return  # not enough warm-up data yet
 
-                # Step 3: strategy evaluation on the last bar
-                idx = len(feat_df) - 1
-                sig = self.engine.evaluate_bar(feat_df, idx)
-                if sig is None:
-                    return
+            # Step 3: strategy evaluation on the last bar
+            idx = len(feat_df) - 1
+            sig = self.engine.evaluate_bar(feat_df, idx)
+            if sig is None:
+                return
 
-                # Step 4: Cooldown gate
-                if state.last_trade_time is not None:
-                    time_diff = (df.index[idx] - state.last_trade_time).total_seconds()
-                    if time_diff < (getattr(cfg, "BASE_TF_MINUTES", 15) * 60):
-                        return
+            logger.info(
+                f"[{symbol}] Signal: {'LONG' if sig.direction==1 else 'SHORT'} "
+                f"| p={sig.ml_probability:.2f} | {sig.rule_reason}"
+            )
 
-                # Step 5: risk gate
-                if not self.risk.approve_trade(
-                    entry_price = sig.entry_price,
-                    sl_price    = sig.sl_price,
-                    direction   = sig.direction,
+            # Step 4: risk gate
+            if not self.risk.approve_trade(
+                entry_price = sig.entry_price,
+                sl_price    = sig.sl_price,
+                tp_price    = sig.tp_price,
+                direction   = sig.direction,
+                symbol      = symbol,
+            ):
+                return
+
+            lot_size = self.risk.calculate_lot_size(
+                entry_price = sig.entry_price,
+                sl_price    = sig.sl_price,
+                tp_price    = sig.tp_price,
+                symbol      = symbol,
+                ml_prob     = sig.ml_probability,
+                rr_ratio    = getattr(sig, 'rr_ratio', 3.0),
+            )
+
+            # Step 5: execute
+            result = self.broker.place_market_order(
+                symbol    = symbol,
+                direction = sig.direction,
+                volume    = lot_size,
+                sl        = sig.sl_price,
+                tp        = sig.tp_price,
+                comment   = f"MST p={sig.ml_probability:.2f}",
+            )
+
+            if result.success:
+                state.open_ticket = result.ticket
+                state.open_signal = sig
+                state.bars_since_entry = 0
+                self.risk.record_trade_open()
+
+                self.trade_log.log_open(
                     symbol      = symbol,
-                ):
-                    return
-
-                lot_size = self.risk.calculate_lot_size(
-                    entry_price = sig.entry_price, 
-                    sl_price    = sig.sl_price, 
-                    win_prob    = sig.ml_probability,
-                    symbol      = symbol
+                    direction   = sig.direction,
+                    entry_price = result.price,
+                    sl_price    = sig.sl_price,
+                    tp_price    = sig.tp_price,
+                    lot_size    = lot_size,
+                    ml_prob     = sig.ml_probability,
+                    rule_reason = sig.rule_reason,
                 )
-
-                # Step 5: execute
-                result = self.broker.place_market_order(
-                    symbol    = symbol,
-                    direction = sig.direction,
-                    volume    = lot_size,
-                    sl        = sig.sl_price,
-                    tp        = sig.tp_price,
-                    comment   = f"MST p={sig.ml_probability:.2f}",
-                )
-
-                if result.success:
-                    state.open_ticket = result.ticket
-                    state.open_signal = sig
-                    state.lot_size    = lot_size
-                    state.bars_since_entry = 0
-                    state.last_trade_time = df.index[idx]
-                    self.risk.record_trade_open()
-
-                    self.trade_log.log_open(
-                        symbol      = symbol,
-                        direction   = sig.direction,
-                        entry_price = result.price,
-                        sl_price    = sig.sl_price,
-                        tp_price    = sig.tp_price,
-                        lot_size    = lot_size,
-                        ml_prob     = sig.ml_probability,
-                        rule_reason = sig.rule_reason,
-                    )
-                else:
-                    logger.error(f"[{symbol}] Order failed: {result.error_msg}")
-        except Exception as e:
-            logger.exception(f"CRITICAL ERROR in _on_new_bar for {symbol}: {e}")
+            else:
+                logger.error(f"[{symbol}] Order failed: {result.error_msg}")
 
     # ─── Position monitor ─────────────────────────────────────────────────────
 
@@ -274,18 +267,13 @@ class MultiSymbolTrader:
             else:
                 exit_px = df.iloc[-1]["close"]
 
-            # Accurate profit calculation (Fix: use stored lot_size)
-            lot_size = state.lot_size
-            pnl_usd = calculate_profit(
-                symbol      = state.symbol,
-                open_price  = sig.entry_price,
-                exit_price  = exit_px,
-                direction   = sig.direction,
-                lot_size    = lot_size,
-                pip_value   = cfg.PIP_VALUE
+            pip_size = 0.01 if "JPY" in state.symbol else 0.0001
+            pnl_pips = (exit_px - sig.entry_price) * sig.direction / pip_size
+            pnl_usd  = pnl_pips * cfg.PIP_VALUE * self.risk.calculate_lot_size(
+                sig.entry_price, sig.sl_price, state.symbol
             )
-            
             won = pnl_usd > 0
+
             self.risk.record_trade_close(pnl_usd, won)
             self.trade_log.log_close(
                 symbol       = state.symbol,

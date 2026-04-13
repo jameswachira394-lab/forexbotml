@@ -146,7 +146,14 @@ class LiveTrader:
         ):
             return
 
-        lot_size = self.risk.calculate_lot_size(sig.entry_price, sig.sl_price, self.symbol)
+        lot_size = self.risk.calculate_lot_size(
+            entry_price = sig.entry_price,
+            sl_price    = sig.sl_price,
+            tp_price    = sig.tp_price,
+            symbol      = self.symbol,
+            ml_prob     = sig.ml_probability,
+            rr_ratio    = getattr(sig, 'rr_ratio', 3.0),
+        )
 
         # ── Execute ───────────────────────────────────────────────
         result = self.broker.place_market_order(

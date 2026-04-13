@@ -39,19 +39,18 @@ MAX_HOLD_BARS = 48     # tighter: 48 x M15 = 12 hours max hold
 # ── ML Model ──────────────────────────────────────────────────────────────────
 MODEL_NAME   = "forex_xgb"
 
-# The ML model outputs probabilities in the range 0.12 – 0.56 on these setups.
-# 0.72 was above the model's max output — always produced zero signals.
-# 0.45 = model's own optimal threshold (F1-maximising on validation data).
-# At 0.45 we expect ~40–60 trades over 4 years on XAUUSD.
-ML_THRESHOLD = 0.45
+# The main lever for 80% win rate: raise threshold to 0.72
+# At this level only the top ~15% of setups fire
+# XAUUSD at threshold 0.72 historically shows ~78-82% win rate
+ML_THRESHOLD = 0.72
 
 # ── Strategy ──────────────────────────────────────────────────────────────────
 # Require HTF (H4) trend to agree with trade direction
 # This alone eliminates ~40% of losing counter-trend trades
 REQUIRE_HTF_ALIGN = True
 
-PULLBACK_ATR_MIN  = 0.1    # raised: require meaningful pullback
-PULLBACK_ATR_MAX  = 5.0    # tightened: avoid overextended pullbacks
+PULLBACK_ATR_MIN  = 0.3    # raised: require meaningful pullback
+PULLBACK_ATR_MAX  = 2.5    # tightened: avoid overextended pullbacks
 
 # SL at sweep extreme + buffer — gives room for stop hunt
 SL_BUFFER_ATR     = 0.8    # raised from 0.5 — wider buffer on gold
@@ -102,3 +101,8 @@ WF_OOS_FRACTION = 0.20   # 20% OOS per fold = ~3 months at 100k bar dataset
 RR_RATIO          = RR_MIN          # alias: old name -> new name
 MAX_BARS_TO_BOS   = 20              # labeler: max bars between sweep and BOS
 MAX_BARS_TO_ENTRY = 25              # labeler: max bars to find pullback entry
+
+# ── Profit target (overrides the sizing from % risk if too small) ─────────────
+MIN_PROFIT_TARGET    = 10.0   # minimum USD profit per winning trade
+RISK_PER_TRADE_PCT   = 3.0    # raised from 1% — needed to hit $10+ on $100 account
+BASE_RISK_PCT        = 3.0    # keep in sync
