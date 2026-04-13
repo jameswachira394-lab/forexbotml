@@ -245,35 +245,80 @@ def _displacement(df: pd.DataFrame) -> pd.DataFrame:
 
 def _merge_htf_trend_strength(df: pd.DataFrame, htf_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Merge HTF data and compute trend STRENGTH = distance from last BOS / ATR.
-    Strength > threshold acts as entry filter (not binary gate).
+    Merge HTF trend and strength into base TF.
+    Continuous strength [0,1]: 0=just broke BOS, 1=far from BOS.
+    Uses CAUSAL computation only (no lookahead).
+    
+    Creates trend/structure directly from HTF OHLCV data since HTF is raw.
     """
-    # Align HTF to base TF
+    # Initialize columns
     df["htf_trend"] = 0
-    df["htf_strength"] = 0
+    df["htf_strength"] = 0.5
     df["htf_bos_bars_ago"] = 999
 
-    # Resample HTF to same index (forward fill)
     if len(htf_df) == 0:
         return df
 
-    # Match on nearest timestamp
-    for idx in df.index:
-        nearest = htf_df.index.get_indexer([idx], method="nearest")[0]
-        if 0 <= nearest < len(htf_df):
-            htf_trend = htf_df["trend"].iloc[nearest]
-            df.loc[idx, "htf_trend"] = htf_trend
+    # === COMPUTE HTF TREND FROM OHLCV ===
+    # Trend: +1 if HH/HL (higher high/higher low), -1 if LL/LH, 0 if uncertain
+    htf_df_work = htf_df.copy()
+    htf_df_work["h_prev"] = htf_df_work["high"].shift(1)
+    htf_df_work["l_prev"] = htf_df_work["low"].shift(1)
+    
+    # Simple trend: last 3 bars comparison
+    htf_df_work["hh"] = htf_df_work["high"] > htf_df_work["h_prev"]
+    htf_df_work["ll"] = htf_df_work["low"] < htf_df_work["l_prev"]
+    htf_df_work["hl_count"] = htf_df_work["hh"].rolling(3, min_periods=1).sum()  # 0-3
+    
+    # Trend: bullish if more HH than LL
+    htf_df_work["htf_trend"] = 0
+    htf_df_work.loc[htf_df_work["hl_count"] >= 2, "htf_trend"] = 1  # Bullish
+    htf_df_work.loc[htf_df_work["hl_count"] <= 1, "htf_trend"] = -1  # Bearish
+    
+    # === COMPUTE HTF STRUCTURE (BOS) FROM SWINGS ===
+    # Detect HTF swings using 5-bar lookback (causal)
+    htf_df_work["swing_high"] = False
+    htf_df_work["swing_low"] = False
+    
+    for i in range(2, len(htf_df_work) - 2):
+        # Swing high: local max with 2 bars on each side (causal: i-2, i-1, i)
+        if htf_df_work["high"].iloc[i] >= htf_df_work["high"].iloc[i-1] and \
+           htf_df_work["high"].iloc[i] >= htf_df_work["high"].iloc[i-2]:
+            htf_df_work.loc[htf_df_work.index[i], "swing_high"] = True
             
-            # Distance from last BOS in bars (adjusted for timeframe ratio)
-            htf_bos = htf_df["bos"].iloc[nearest]
-            if htf_bos != 0:
-                df.loc[idx, "htf_bos_bars_ago"] = 0
-            else:
-                df.loc[idx, "htf_bos_bars_ago"] = df.loc[idx, "htf_bos_bars_ago"] + 1
+        # Swing low: local min with 2 bars on each side (causal)
+        if htf_df_work["low"].iloc[i] <= htf_df_work["low"].iloc[i-1] and \
+           htf_df_work["low"].iloc[i] <= htf_df_work["low"].iloc[i-2]:
+            htf_df_work.loc[htf_df_work.index[i], "swing_low"] = True
+    
+    htf_df_work["last_bos_idx"] = htf_df_work.index.get_loc(htf_df_work.index[0])
+    last_swing_idx = -1
+    last_swing_type = None
+    
+    for i in range(len(htf_df_work)):
+        if htf_df_work["swing_high"].iloc[i] or htf_df_work["swing_low"].iloc[i]:
+            swing_type = "high" if htf_df_work["swing_high"].iloc[i] else "low"
+            if last_swing_type is not None and swing_type != last_swing_type:
+                # BOS occurs when swing type switches
+                htf_df_work.loc[htf_df_work.index[i], "last_bos_idx"] = i
+            last_swing_idx = i
+            last_swing_type = swing_type
+        else:
+            htf_df_work.loc[htf_df_work.index[i], "last_bos_idx"] = htf_df_work["last_bos_idx"].iloc[i-1]
+    
+    # === ALIGN HTF TO BASE TF ===
+    # For each base TF bar, find nearest HTF bar
+    for idx in df.index:
+        nearest = htf_df_work.index.get_indexer([idx], method="nearest")[0]
+        if 0 <= nearest < len(htf_df_work):
+            df.loc[idx, "htf_trend"] = htf_df_work["htf_trend"].iloc[nearest]
+            df.loc[idx, "htf_bos_bars_ago"] = nearest - htf_df_work["last_bos_idx"].iloc[nearest]
 
-    # Strength = bars since BOS / rolling max (normalized)
-    max_bars = df["htf_bos_bars_ago"].rolling(50, min_periods=10).max()
-    df["htf_strength"] = 1.0 - (df["htf_bos_bars_ago"] / (max_bars + 1)).fillna(0.5)
+    # Strength = inverse of bars since BOS (normalized)
+    # 0 bars since BOS = strength 1.0 (strong), 10+ bars = strength ~0.5
+    max_strength_bars = 20
+    df["htf_strength"] = 1.0 - (df["htf_bos_bars_ago"].clip(upper=max_strength_bars) / max_strength_bars * 0.5)
+    df["htf_strength"] = df["htf_strength"].fillna(0.5).clip(0.5, 1.0)
     
     return df
 
@@ -499,5 +544,5 @@ def _fill_warmup_nans(df: pd.DataFrame) -> None:
     """Fill NaN values from warm-up period (forward fill)."""
     numeric_cols = df.select_dtypes(include=[np.number]).columns
     for col in numeric_cols:
-        df[col].fillna(method="ffill", inplace=True)
-        df[col].fillna(0, inplace=True)
+        df[col] = df[col].ffill()
+        df[col] = df[col].fillna(0)

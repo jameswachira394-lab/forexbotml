@@ -23,6 +23,9 @@ import logging
 import sys
 from pathlib import Path
 
+import pandas as pd
+import numpy as np
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 from execution.logger import setup_logging
@@ -55,17 +58,14 @@ def mode_generate(args) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_train(args) -> None:
-    from features.labeler   import LabelConfig
-    from models.trainer     import train_all_symbols, train_symbol
+    """Train ML models using FIXED system (NO LEAKAGE, CALIBRATED)."""
+    from data.histdata_parser import parse_histdata
+    from data.loader import OHLCVLoader
+    from features.engineer_fixed import engineer_features
+    from features.labeler import SetupLabeler, LabelConfig, get_feature_columns
+    from models.ml_integration_fixed import ForexMLModelFixed, get_ml_feature_columns
 
-    logger.info("=== TRAINING MODE ===")
-
-    label_cfg = LabelConfig(
-        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
-        sl_atr_mult       = cfg.SL_ATR_MULT,
-        max_bars_to_bos   = getattr(cfg, 'MAX_BARS_TO_BOS', 20),
-        max_bars_to_entry = getattr(cfg, 'MAX_BARS_TO_ENTRY', 25),
-    )
+    logger.info("=== TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===\n")
 
     # Build the CSV map: CLI overrides config
     sym_csv_map = dict(cfg.SYMBOL_CSV_MAP)
@@ -73,35 +73,131 @@ def mode_train(args) -> None:
     if args.symbol and args.data:
         # Single-symbol override from CLI
         sym_csv_map = {args.symbol.upper(): [args.data]}
-        logger.info(f"Single-symbol mode: {args.symbol} ← {args.data}")
+        logger.info(f"Single-symbol: {args.symbol} ← {args.data}\n")
 
     # Filter to symbols that have at least one CSV file
     runnable = {s: paths for s, paths in sym_csv_map.items() if paths}
     skipped  = [s for s, paths in sym_csv_map.items() if not paths]
 
     if skipped:
-        logger.warning(
-            f"No CSV files configured for: {skipped}. "
-            "Add paths to SYMBOL_CSV_MAP in config.py."
-        )
+        logger.warning(f"Skipped (no CSV): {skipped}")
 
     if not runnable:
         logger.error(
             "No symbols with CSV data found.\n"
-            "  → Add your HistData/Dukascopy CSV paths to SYMBOL_CSV_MAP in config.py\n"
-            "  → Or run: python main.py --mode train --symbol EURUSD --data path/to/file.csv"
+            "  → Add HistData/Dukascopy CSVs to SYMBOL_CSV_MAP in config.py\n"
+            "  → Or: python main.py --mode train --symbol EURUSD --data path/to/file.csv"
         )
         return
 
-    train_all_symbols(
-        symbol_csv_map = runnable,
-        base_tf        = cfg.BASE_TF,
-        htf            = cfg.HTF_FOR_TREND,
-        model_name     = cfg.MODEL_NAME,
-        force_retrain  = args.force or cfg.FORCE_RETRAIN,
-        max_age_days   = cfg.MAX_MODEL_AGE_DAYS,
-        label_config   = label_cfg,
+    label_cfg = LabelConfig(
+        rr_ratio=cfg.TP_ATR_MULT / cfg.SL_ATR_MULT if hasattr(cfg, 'TP_ATR_MULT') else 2.0,
+        sl_atr_mult=cfg.SL_ATR_MULT,
+        max_bars_to_bos=20,
+        max_bars_to_entry=25,
     )
+
+    results = {}
+    for symbol, csv_paths in runnable.items():
+        try:
+            logger.info(f"\n{'='*80}")
+            logger.info(f"Training {symbol} (FIXED SYSTEM)")
+            logger.info(f"{'='*80}\n")
+            
+            # Load CSVs
+            frames = []
+            for csv_path in csv_paths:
+                if not Path(csv_path).exists():
+                    logger.warning(f"  ⚠ Not found: {csv_path}")
+                    continue
+                try:
+                    logger.info(f"  Loading {Path(csv_path).name}...")
+                    df = parse_histdata(csv_path, symbol=symbol, target_tf="M1")
+                    logger.info(f"    → {len(df):,} M1 bars")
+                    frames.append(df)
+                except Exception as e:
+                    logger.error(f"    Parse failed: {e}")
+            
+            if not frames:
+                logger.error(f"No valid CSVs for {symbol}")
+                results[symbol] = {"status": "FAILED", "reason": "No data"}
+                continue
+            
+            # Merge and resample
+            df_m1 = pd.concat(frames).sort_index()
+            df_m1 = df_m1[~df_m1.index.duplicated(keep='last')]
+            
+            loader = OHLCVLoader.__new__(OHLCVLoader)
+            loader.timeframe = "M1"
+            df_base = loader.resample(df_m1, cfg.BASE_TF)
+            df_htf = loader.resample(df_m1, cfg.HTF_FOR_TREND)
+            
+            logger.info(f"  Resampled: {len(df_base):,} {cfg.BASE_TF} bars")
+            
+            if len(df_base) < 500:
+                logger.error(f"Too few bars ({len(df_base)} < 500)")
+                results[symbol] = {"status": "FAILED", "reason": "Too few bars"}
+                continue
+            
+            # Features (FIXED - no leakage)
+            logger.info(f"  Engineering features (NO LEAKAGE)...")
+            df_feat = engineer_features(df_base, htf_df=df_htf)
+            logger.info(f"    → {len(df_feat):,} rows engineered")
+            
+            # Label
+            logger.info(f"  Labeling setups...")
+            labeler = SetupLabeler(label_cfg)
+            df_labeled = labeler.label(df_feat)
+            num_labeled = len(df_labeled)
+            win_rate = df_labeled["label"].mean() if len(df_labeled) > 0 else 0
+            logger.info(f"    → {num_labeled:,} labeled (win rate: {win_rate:.1%})")
+            
+            if num_labeled < 30:
+                logger.error(f"Too few setups ({num_labeled} < 30)")
+                results[symbol] = {"status": "FAILED", "reason": "Too few labeled setups"}
+                continue
+            
+            # ML features
+            feat_cols = get_ml_feature_columns(df_labeled)
+            X = df_labeled[feat_cols].fillna(0)
+            y = df_labeled["label"]
+            
+            logger.info(f"  Training ML (CALIBRATED)...")
+            model = ForexMLModelFixed(f"{symbol}_{cfg.MODEL_NAME}")
+            
+            metrics = model.train(
+                X=X, y=y,
+                test_size=0.15, val_size=0.15, n_cv_splits=5,
+                rr_ratio=cfg.TP_ATR_MULT / cfg.SL_ATR_MULT if hasattr(cfg, 'TP_ATR_MULT') else 2.0,
+            )
+            
+            model.save()
+            
+            logger.info(f"\n  Results:")
+            logger.info(f"    • AUC (train):      {metrics['cv_auc_mean']:.4f} ± {metrics['cv_auc_std']:.4f}")
+            logger.info(f"    • AUC (test):       {metrics['test_auc']:.4f}")
+            logger.info(f"    • Brier score:      {metrics['test_brier']:.4f}")
+            logger.info(f"    • Threshold:        {metrics['threshold']:.3f}")
+            logger.info(f"    • Is calibrated:    {metrics['is_calibrated']}")
+            logger.info(f"    • Model path:       {model.model_path}")
+            
+            results[symbol] = {"status": "SUCCESS", "metrics": metrics}
+            
+        except Exception as e:
+            logger.error(f"Training failed: {e}", exc_info=True)
+            results[symbol] = {"status": "FAILED", "reason": str(e)}
+    
+    # Summary
+    logger.info(f"\n{'='*80}")
+    logger.info("TRAINING SUMMARY")
+    logger.info(f"{'='*80}")
+    for symbol, result in results.items():
+        if result["status"] == "SUCCESS":
+            m = result["metrics"]
+            logger.info(f"✓ {symbol:10s} | AUC={m['test_auc']:.4f} | Cal={m['is_calibrated']}")
+        else:
+            logger.info(f"✗ {symbol:10s} | {result.get('reason', 'FAILED')}")
+    logger.info(f"{'='*80}\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -109,91 +205,181 @@ def mode_train(args) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_backtest(args) -> None:
-    from data.histdata_parser   import parse_histdata
-    from data.loader            import load_multi_timeframe, OHLCVLoader
-    from features.engineer      import engineer_features
-    from models.ml_model        import ForexMLModel
-    from strategy.engine        import StrategyEngine, StrategyConfig
-    from backtest.engine        import BacktestEngine, BacktestConfig
+    """Backtest using FIXED system (NO LEAKAGE, SEQUENTIAL)."""
+    from data.histdata_parser import parse_histdata
+    from data.loader import load_multi_timeframe, OHLCVLoader
+    from features.engineer_fixed import engineer_features
+    from models.ml_integration_fixed import ForexMLModelFixed
+    from strategy.engine_fixed import StrategyEngineFixed, StrategyConfigFixed
+    from risk.manager_fixed import RiskManager, RiskConfig, get_symbol_spec
+    from backtest.engine import BacktestEngine, BacktestConfig
 
-    symbol    = (args.symbol or cfg.SYMBOL).upper()
+    symbol = (args.symbol or cfg.SYMBOL).upper()
     data_path = args.data or cfg.DATA_PATH
 
-    logger.info(f"=== BACKTEST | {symbol} | {data_path} ===")
+    logger.info(f"\n{'='*80}")
+    logger.info(f"BACKTEST (FIXED SYSTEM - BAR-BY-BAR, NO LEAKAGE)")
+    logger.info(f"Symbol: {symbol} | Data: {data_path}")
+    logger.info(f"{'='*80}\n")
 
-    # ── Load data ─────────────────────────────────────────────────
     path = Path(data_path)
     if not path.exists():
         logger.error(f"Data file not found: {data_path}")
         return
 
-    # Auto-detect format: HistData/Dukascopy vs native loader
+    # Load data
     try:
+        logger.info(f"Loading data...")
         base_df = parse_histdata(data_path, symbol=symbol, target_tf=cfg.BASE_TF)
-        loader  = OHLCVLoader.__new__(OHLCVLoader)
+        loader = OHLCVLoader.__new__(OHLCVLoader)
         loader.timeframe = "M1"
-        htf_df  = loader.resample(base_df, cfg.HTF_FOR_TREND)
-    except Exception:
-        # Fallback to native loader (already-resampled CSV)
-        tfs     = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
-        base_df = tfs[cfg.BASE_TF]
-        htf_df  = tfs.get(cfg.HTF_FOR_TREND)
+        htf_df = loader.resample(base_df, cfg.HTF_FOR_TREND)
+        logger.info(f"  ✓ {len(base_df):,} {cfg.BASE_TF} bars loaded")
+    except Exception as e:
+        logger.warning(f"HistData parse failed: {e}, trying fallback loader...")
+        try:
+            tfs = load_multi_timeframe(data_path, cfg.BASE_TF, cfg.HIGHER_TFS)
+            base_df = tfs[cfg.BASE_TF]
+            htf_df = tfs.get(cfg.HTF_FOR_TREND)
+        except Exception as e2:
+            logger.error(f"Failed to load data: {e2}")
+            return
 
-    logger.info(f"Bars: {len(base_df):,} [{cfg.BASE_TF}]")
-
-    # ── Features ──────────────────────────────────────────────────
+    # Features (FIXED - no leakage)
+    logger.info(f"Engineering features...")
     feat_df = engineer_features(base_df, htf_df=htf_df)
+    logger.info(f"  ✓ {len(feat_df):,} feature rows")
 
-    # ── Load model ────────────────────────────────────────────────
-    model = ForexMLModel(model_name=f"{symbol}_{cfg.MODEL_NAME}")
+    # Load ML model
+    logger.info(f"Loading ML model...")
+    model = ForexMLModelFixed(f"{symbol}_{cfg.MODEL_NAME}")
     try:
         model.load()
-        logger.info(f"Loaded model: {symbol}_{cfg.MODEL_NAME}")
-    except FileNotFoundError:
-        # Try generic model
-        try:
-            model = ForexMLModel(model_name=cfg.MODEL_NAME)
-            model.load()
-            logger.warning("Using generic model (no symbol-specific model found).")
-        except FileNotFoundError:
-            logger.warning("No model found – running without ML filter.")
-            model = None
+        if not model.is_calibrated:
+            logger.warning(f"  ⚠ Model not calibrated (may have lower accuracy)")
+        else:
+            logger.info(f"  ✓ Model loaded and calibrated")
+    except Exception as e:
+        logger.warning(f"  ⚠ Model not found: {e}")
+        logger.info(f"    Will run with strategy rules only (no ML)")
+        model = None
 
-    # ── Strategy ──────────────────────────────────────────────────
-    s_cfg = StrategyConfig(
-        ml_threshold      = cfg.ML_THRESHOLD,
-        sl_atr_mult       = cfg.SL_ATR_MULT,
-        sl_buffer_atr     = cfg.SL_BUFFER_ATR,
-        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
-        require_htf_align = cfg.REQUIRE_HTF_ALIGN,
-        min_ev            = cfg.MIN_EV,
-        pullback_atr_min  = cfg.PULLBACK_ATR_MIN,
-        pullback_atr_max  = cfg.PULLBACK_ATR_MAX,
+    # Strategy config (FIXED)
+    s_cfg = StrategyConfigFixed(
+        require_htf_align=cfg.REQUIRE_HTF_ALIGN if hasattr(cfg, 'REQUIRE_HTF_ALIGN') else True,
+        htf_strength_min=0.3,
+        displacement_atr_min=1.5,
+        pullback_atr_min=cfg.PULLBACK_ATR_MIN if hasattr(cfg, 'PULLBACK_ATR_MIN') else 0.5,
+        pullback_atr_max=cfg.PULLBACK_ATR_MAX if hasattr(cfg, 'PULLBACK_ATR_MAX') else 2.5,
+        ml_threshold=cfg.ML_THRESHOLD if hasattr(cfg, 'ML_THRESHOLD') else 0.50,
+        min_ev=cfg.MIN_EV if hasattr(cfg, 'MIN_EV') else 0.15,
+        sl_buffer_atr=cfg.SL_BUFFER_ATR if hasattr(cfg, 'SL_BUFFER_ATR') else 0.8,
+        rr_ratio_base=cfg.RR_MIN if hasattr(cfg, 'RR_MIN') else 3.0,
+        trade_cooldown_bars=10,
     )
-    engine  = StrategyEngine(s_cfg, model=model)
-    signals = engine.scan_all(feat_df)
+
+    engine = StrategyEngineFixed(s_cfg, model=model)
+
+    # Process bar-by-bar (SEQUENTIAL - no lookahead)
+    logger.info(f"Processing bars (bar-by-bar execution)...")
+    signals = []
+    for i in range(100, len(feat_df)):  # Warm-up: first 100 bars
+        ts = feat_df.index[i]
+        row = feat_df.iloc[i]
+        
+        ohlc = {
+            "open": float(row["open"]),
+            "high": float(row["high"]),
+            "low": float(row["low"]),
+            "close": float(row["close"]),
+        }
+        
+        features = row.to_dict()
+        atr = float(row.get("atr", 0.05))
+        
+        signal = engine.process_bar(
+            bar_idx=i,
+            timestamp=ts,
+            ohlc=ohlc,
+            atr=atr,
+            features=features,
+        )
+        
+        if signal:
+            signals.append(signal)
+
+    logger.info(f"  ✓ {len(signals)} signals generated")
 
     if not signals:
-        logger.warning("No signals generated.")
+        logger.warning("No signals generated")
         return
 
-    # ── Backtest ──────────────────────────────────────────────────
-    b_cfg = BacktestConfig(
-        initial_balance      = cfg.INITIAL_BALANCE,
-        risk_per_trade       = cfg.RISK_PER_TRADE_PCT,
-        spread_pips          = cfg.SPREAD_PIPS,
-        slippage_pips        = cfg.SLIPPAGE_PIPS,
-        symbol               = symbol,
-        max_trades_per_day   = cfg.MAX_TRADES_PER_DAY,
-        daily_loss_limit_pct = cfg.DAILY_LOSS_LIMIT_PCT,
+    # Risk manager
+    logger.info(f"Risk-approval gating...")
+    approved_signals = []
+    risk_cfg = RiskConfig(
+        account_balance=cfg.INITIAL_BALANCE if hasattr(cfg, 'INITIAL_BALANCE') else 100.0,
+        risk_per_trade_pct=cfg.RISK_PER_TRADE_PCT if hasattr(cfg, 'RISK_PER_TRADE_PCT') else 2.0,
+        min_profit_target=10.0,
+        max_trades_per_day=cfg.MAX_TRADES_PER_DAY if hasattr(cfg, 'MAX_TRADES_PER_DAY') else 2,
+        daily_loss_limit_pct=cfg.DAILY_LOSS_LIMIT_PCT if hasattr(cfg, 'DAILY_LOSS_LIMIT_PCT') else 2.0,
+        min_ev_after_cost=0.15,
     )
-    bt  = BacktestEngine(b_cfg)
-    res = bt.run(base_df, signals)
+    risk_mgr = RiskManager(risk_cfg)
 
-    res.print_summary()
+    for sig in signals:
+        approved, reason = risk_mgr.approve_trade(
+            entry_price=sig.entry_price,
+            sl_price=sig.sl_price,
+            tp_price=sig.tp_price,
+            direction=sig.direction,
+            symbol=symbol,
+            ml_prob=sig.ml_probability,
+            rr_ratio=sig.rr_ratio,
+            spread_pips=cfg.SPREAD_PIPS if hasattr(cfg, 'SPREAD_PIPS') else 1.5,
+            slippage_pips=cfg.SLIPPAGE_PIPS if hasattr(cfg, 'SLIPPAGE_PIPS') else 0.5,
+            atr=base_df.iloc[sig.timestamp.searchsorted(base_df.index)].get("atr", 0.05) if hasattr(base_df.index, 'searchsorted') else 0.05,
+            atr_percentile=0.5,
+        )
+        if approved:
+            approved_signals.append(sig)
+
+    logger.info(f"  ✓ {len(approved_signals)} passed risk gate")
+
+    # Backtest
+    logger.info(f"Running backtest...")
+    b_cfg = BacktestConfig(
+        initial_balance=cfg.INITIAL_BALANCE if hasattr(cfg, 'INITIAL_BALANCE') else 10000.0,
+        risk_per_trade=cfg.RISK_PER_TRADE_PCT if hasattr(cfg, 'RISK_PER_TRADE_PCT') else 1.0,
+        spread_pips=cfg.SPREAD_PIPS if hasattr(cfg, 'SPREAD_PIPS') else 1.5,
+        slippage_pips=cfg.SLIPPAGE_PIPS if hasattr(cfg, 'SLIPPAGE_PIPS') else 0.5,
+        symbol=symbol,
+    )
+    bt = BacktestEngine(b_cfg)
+    results = bt.run(base_df, approved_signals)
+
+    # Export results
     Path("logs").mkdir(exist_ok=True)
-    res.save_trades(f"logs/{symbol}_backtest_trades.csv")
-    res.save_equity_curve(f"logs/{symbol}_equity_curve.csv")
+    trade_log = risk_mgr.get_trade_log()
+    if not trade_log.empty:
+        trade_log.to_csv(f"logs/{symbol}_backtest_trades.csv", index=False)
+        logger.info(f"  ✓ Trades exported: logs/{symbol}_backtest_trades.csv")
+
+    # Summary
+    logger.info(f"\n{'='*80}")
+    logger.info(f"BACKTEST RESULTS: {symbol}")
+    logger.info(f"{'='*80}")
+    logger.info(f"  Initial balance:     ${b_cfg.initial_balance:,.2f}")
+    logger.info(f"  Final equity:        ${bt.equity:,.2f}")
+    logger.info(f"  P&L:                 ${bt.equity - b_cfg.initial_balance:+,.2f}")
+    logger.info(f"  Total trades:        {len(bt.trades)}")
+    if len(bt.trades) > 0:
+        wins = sum(1 for t in bt.trades if t.pnl_usd > 0)
+        logger.info(f"  Wins:                {wins}/{len(bt.trades)} ({wins/len(bt.trades):.1%})")
+        avg_profit = sum(t.pnl_usd for t in bt.trades if t.pnl_usd > 0) / max(wins, 1) if wins > 0 else 0
+        avg_loss = abs(sum(t.pnl_usd for t in bt.trades if t.pnl_usd < 0)) / max(len(bt.trades) - wins, 1)
+        logger.info(f"  Avg profit/loss:     ${avg_profit:,.2f} / ${avg_loss:,.2f}")
+    logger.info(f"{'='*80}\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

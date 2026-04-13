@@ -17141,3 +17141,674 @@ ny_high_dist        0.039392
 2026-04-13 12:36:20 | INFO     | models.trainer | [XAUUSD] Model saved -> saved_models\XAUUSD_forex_xgb.joblib
 2026-04-13 12:36:20 | INFO     | models.trainer | 
 Training complete: 4 OK | 0 failed
+2026-04-13 13:01:14 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:01:14 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:14 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:01:14 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:14 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:01:14 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:01:14 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:01:14 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:01:14 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:01:14 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:01:14 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:01:14 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:01:14 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:01:15 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:01:15 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:15 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:01:15 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:15 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:01:15 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:01:15 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:01:15 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:01:15 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:01:15 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:01:15 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:01:15 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:01:15 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:01:17 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:01:17 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:17 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:01:17 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:17 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:01:17 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:01:17 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:01:17 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:01:17 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:01:17 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:01:17 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:01:17 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:01:17 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:01:17 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:01:17 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:17 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:01:17 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:17 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:01:17 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:01:18 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:01:19 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:01:19 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:01:19 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:01:19 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:01:19 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:01:19 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:01:21 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:01:21 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:21 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 13:01:21 | INFO     | __main__ | ================================================================================
+2026-04-13 13:01:21 | INFO     | __main__ | ✗ EURUSD     | 'trend'
+2026-04-13 13:01:21 | INFO     | __main__ | ✗ GBPUSD     | 'trend'
+2026-04-13 13:01:21 | INFO     | __main__ | ✗ USDJPY     | 'trend'
+2026-04-13 13:01:21 | INFO     | __main__ | ✗ XAUUSD     | 'trend'
+2026-04-13 13:01:21 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:24 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:01:24 | INFO     | __main__ | BACKTEST (FIXED SYSTEM - BAR-BY-BAR, NO LEAKAGE)
+2026-04-13 13:01:24 | INFO     | __main__ | Symbol: XAUUSD | Data: data/raw/XAUUSD_M5_mt5.csv
+2026-04-13 13:01:24 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:01:24 | INFO     | __main__ | Loading data...
+2026-04-13 13:01:24 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-13 13:01:25 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:01:26 | INFO     | data.histdata_parser | Parsed 134,050 M15 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:01:26 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:01:26 | INFO     | __main__ |   ✓ 134,050 M15 bars loaded
+2026-04-13 13:01:26 | INFO     | __main__ | Engineering features...
+2026-04-13 13:03:49 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:03:49 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:03:49 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:03:49 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:03:49 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:03:49 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:03:49 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:03:49 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:03:49 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:03:49 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:03:49 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:03:49 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:03:49 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:03:49 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:03:49 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:03:49 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:03:49 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:03:49 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:03:49 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:03:50 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:03:50 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:03:50 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:03:50 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:03:50 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:03:50 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:03:50 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:03:53 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:03:53 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:03:53 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:03:53 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:03:53 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:03:53 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:03:53 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:03:53 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:03:53 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:03:53 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:03:53 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:03:53 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:03:53 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:03:54 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:03:54 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:03:54 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:03:54 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:03:54 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:03:54 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:03:54 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:03:56 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:03:56 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:03:56 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:03:56 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:03:56 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:03:56 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:03:58 | ERROR    | __main__ | Training failed: 'trend'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'trend'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 264, in _merge_htf_trend_strength
+    htf_trend = htf_df["trend"].iloc[nearest]
+                ~~~~~~^^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'trend'
+2026-04-13 13:03:58 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:03:58 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 13:03:58 | INFO     | __main__ | ================================================================================
+2026-04-13 13:03:58 | INFO     | __main__ | ✗ EURUSD     | 'trend'
+2026-04-13 13:03:58 | INFO     | __main__ | ✗ GBPUSD     | 'trend'
+2026-04-13 13:03:58 | INFO     | __main__ | ✗ USDJPY     | 'trend'
+2026-04-13 13:03:58 | INFO     | __main__ | ✗ XAUUSD     | 'trend'
+2026-04-13 13:03:58 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:05:32 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:05:32 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:05:32 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:05:32 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:05:32 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:05:32 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:05:32 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:05:32 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:05:32 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:05:32 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:05:32 | ERROR    | __main__ | Training failed: 'High'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'High'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 265, in _merge_htf_trend_strength
+    htf_df_work["h_prev"] = htf_df_work["High"].shift(1)
+                            ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'High'
+2026-04-13 13:05:32 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:05:32 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:05:32 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:05:32 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:05:32 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:05:32 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:05:32 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:05:32 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:05:32 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:05:32 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:05:34 | ERROR    | __main__ | Training failed: 'High'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'High'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 265, in _merge_htf_trend_strength
+    htf_df_work["h_prev"] = htf_df_work["High"].shift(1)
+                            ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'High'
+2026-04-13 13:05:34 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:05:34 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:05:34 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:05:34 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:05:34 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:05:34 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:05:34 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:05:34 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:05:34 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:05:34 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:05:34 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:05:34 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:05:34 | ERROR    | __main__ | Training failed: 'High'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'High'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 265, in _merge_htf_trend_strength
+    htf_df_work["h_prev"] = htf_df_work["High"].shift(1)
+                            ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'High'
+2026-04-13 13:05:34 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:05:34 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:05:34 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:05:34 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:05:34 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:05:35 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:05:36 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:05:36 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:05:36 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:05:36 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:05:36 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:05:36 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:05:38 | ERROR    | __main__ | Training failed: 'High'
+Traceback (most recent call last):
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'High'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 66, in engineer_features
+    df = _merge_htf_trend_strength(df, htf_df)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 265, in _merge_htf_trend_strength
+    htf_df_work["h_prev"] = htf_df_work["High"].shift(1)
+                            ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\James\AppData\Roaming\Python\Python314\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'High'
+2026-04-13 13:05:38 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:05:38 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 13:05:38 | INFO     | __main__ | ================================================================================
+2026-04-13 13:05:38 | INFO     | __main__ | ✗ EURUSD     | 'High'
+2026-04-13 13:05:38 | INFO     | __main__ | ✗ GBPUSD     | 'High'
+2026-04-13 13:05:38 | INFO     | __main__ | ✗ USDJPY     | 'High'
+2026-04-13 13:05:38 | INFO     | __main__ | ✗ XAUUSD     | 'High'
+2026-04-13 13:05:38 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:06:17 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:06:17 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:06:17 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:06:17 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:06:17 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:06:17 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:06:17 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:06:17 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:06:17 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:06:17 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:06:17 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:06:17 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:06:17 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:06:28 | ERROR    | __main__ | Training failed: NDFrame.fillna() got an unexpected keyword argument 'method'
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 144, in mode_train
+    df_feat = engineer_features(df_base, htf_df=df_htf)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 74, in engineer_features
+    _fill_warmup_nans(df)
+    ~~~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\engineer_fixed.py", line 547, in _fill_warmup_nans
+    df[col].fillna(method="ffill", inplace=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: NDFrame.fillna() got an unexpected keyword argument 'method'
+2026-04-13 13:06:28 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:06:28 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:06:28 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:06:28 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:06:28 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:06:28 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:06:29 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:06:29 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:06:29 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:06:29 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:06:29 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:06:29 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:08:45 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:08:45 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:08:45 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:08:45 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:08:45 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:08:45 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:08:45 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:08:45 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:08:45 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:08:45 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:08:45 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:08:45 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:08:45 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:08:53 | INFO     | features.engineer_fixed | Feature engineering: 5000 -> 5000 rows after NaN drop
+2026-04-13 13:08:53 | INFO     | __main__ |     → 5,000 rows engineered
+2026-04-13 13:08:53 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:08:55 | INFO     | features.labeler | SMC Labeler: 3,568 setups | Win rate: 25.9% | Long: 1731 | Short: 1837
+2026-04-13 13:08:55 | INFO     | __main__ |     → 3,568 labeled (win rate: 25.9%)
+2026-04-13 13:08:55 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Train: 2,497 | Val: 535 | Test: 536
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 26.6%
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5280
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5094
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5440
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.6842
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.4799
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:08:55 | WARNING  | models.ml_integration_fixed | Calibration failed: The 'cv' parameter of CalibratedClassifierCV must be an int in the range [2, inf), an object implementing 'split' and 'get_n_splits', an iterable or None. Got 'precomputed' instead. – using uncalibrated model
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:08:55 | WARNING  | models.ml_integration_fixed | Calibration bucket 0.50-0.60: expected 55.00%, got 42.05%
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Test AUC=0.5931 | Brier=0.2487 | Threshold=0.499 | Calibrated=False
+2026-04-13 13:08:55 | INFO     | models.ml_integration_fixed | Model saved: saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:08:55 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:08:55 | INFO     | __main__ |     • AUC (train):      0.5491 ± 0.0708
+2026-04-13 13:08:55 | INFO     | __main__ |     • AUC (test):       0.5931
+2026-04-13 13:08:55 | INFO     | __main__ |     • Brier score:      0.2487
+2026-04-13 13:08:55 | INFO     | __main__ |     • Threshold:        0.499
+2026-04-13 13:08:55 | INFO     | __main__ |     • Is calibrated:    False
+2026-04-13 13:08:55 | INFO     | __main__ |     • Model path:       saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:08:55 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:08:55 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:08:55 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:08:55 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:08:55 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:08:56 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:08:56 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:08:56 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:08:56 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:08:56 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:08:56 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:08:56 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:11:26 | INFO     | features.engineer_fixed | Feature engineering: 100784 -> 100784 rows after NaN drop
+2026-04-13 13:11:26 | INFO     | __main__ |     → 100,784 rows engineered
+2026-04-13 13:11:26 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:11:52 | INFO     | features.labeler | SMC Labeler: 67,820 setups | Win rate: 20.0% | Long: 34362 | Short: 33458
+2026-04-13 13:11:53 | INFO     | __main__ |     → 67,820 labeled (win rate: 20.0%)
+2026-04-13 13:11:53 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:11:53 | INFO     | models.ml_integration_fixed | Train: 47,474 | Val: 10,173 | Test: 10,173
+2026-04-13 13:11:53 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 19.9%
+2026-04-13 13:11:54 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5301
+2026-04-13 13:11:54 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5476
+2026-04-13 13:11:54 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5132
+2026-04-13 13:11:54 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5389
+2026-04-13 13:11:55 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5304
+2026-04-13 13:11:56 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:11:56 | WARNING  | models.ml_integration_fixed | Calibration failed: The 'cv' parameter of CalibratedClassifierCV must be an int in the range [2, inf), an object implementing 'split' and 'get_n_splits', an iterable or None. Got 'precomputed' instead. – using uncalibrated model
+2026-04-13 13:11:56 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:11:56 | WARNING  | models.ml_integration_fixed | Calibration bucket 0.50-0.60: expected 55.00%, got 18.89%
+2026-04-13 13:11:56 | INFO     | models.ml_integration_fixed | Test AUC=0.5125 | Brier=0.2497 | Threshold=0.496 | Calibrated=False
+2026-04-13 13:11:56 | INFO     | models.ml_integration_fixed | Model saved: saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:11:56 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:11:56 | INFO     | __main__ |     • AUC (train):      0.5321 ± 0.0114
+2026-04-13 13:11:56 | INFO     | __main__ |     • AUC (test):       0.5125
+2026-04-13 13:11:56 | INFO     | __main__ |     • Brier score:      0.2497
+2026-04-13 13:11:56 | INFO     | __main__ |     • Threshold:        0.496
+2026-04-13 13:11:56 | INFO     | __main__ |     • Is calibrated:    False
+2026-04-13 13:11:56 | INFO     | __main__ |     • Model path:       saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:11:56 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:11:56 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:11:56 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:11:56 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:11:56 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:11:56 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:11:56 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:11:56 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:11:56 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:11:56 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:11:56 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:11:56 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:12:30 | INFO     | features.engineer_fixed | Feature engineering: 16727 -> 16727 rows after NaN drop
+2026-04-13 13:12:30 | INFO     | __main__ |     → 16,727 rows engineered
+2026-04-13 13:12:30 | INFO     | __main__ |   Labeling setups...
