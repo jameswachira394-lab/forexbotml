@@ -106,3 +106,15 @@ MAX_BARS_TO_ENTRY = 25              # labeler: max bars to find pullback entry
 MIN_PROFIT_TARGET    = 10.0   # minimum USD profit per winning trade
 RISK_PER_TRADE_PCT   = 3.0    # raised from 1% — needed to hit $10+ on $100 account
 BASE_RISK_PCT        = 3.0    # keep in sync
+
+# ── High Win Rate Strategy (EMA Pullback) ─────────────────────────────────────
+HWR_RR             = 1.5    # RR 1:1.5 — lower RR = higher win rate
+HWR_EMA_FAST       = 20
+HWR_EMA_SLOW       = 50
+HWR_EMA_TREND      = 200
+HWR_RSI_LONG_MIN   = 35.0
+HWR_RSI_LONG_MAX   = 58.0
+HWR_RSI_SHORT_MIN  = 42.0
+HWR_RSI_SHORT_MAX  = 65.0
+HWR_EMA_TOUCH_ATR  = 0.8    # how close price must be to EMA20
+ACTIVE_STRATEGY    = "hwr"  # "hwr" or "smc"

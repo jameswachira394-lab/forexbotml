@@ -114,6 +114,13 @@ class SetupLabeler:
         sl_dist   = cfg.sl_atr_mult * atr[entry_idx]
         tp_dist   = sl_dist * cfg.rr_ratio
 
+        # [BUGFIX] Filter out invalid setups where SL is too tight
+        # SL must be at least 2x spread distance to be tradeable
+        # Otherwise, slippage + spread consumes entire risk and trade loses immediately
+        min_valid_sl = 2.5 * spread
+        if sl_dist < min_valid_sl:
+            return None  # Skip setups with insufficient SL breathing room
+
         # [3.2] Apply spread: long buyer pays ask (entry higher), SL/TP adjusted
         if direction == 1:
             actual_entry = entry_price + spread          # fill at ask

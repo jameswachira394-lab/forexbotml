@@ -18022,3 +18022,281 @@ TypeError: NDFrame.fillna() got an unexpected keyword argument 'method'
 2026-04-13 13:28:41 | INFO     | __main__ | ✓ XAUUSD     | AUC=0.4813 | Cal=True
 2026-04-13 13:28:41 | INFO     | __main__ | ================================================================================
 
+2026-04-13 13:41:31 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 13:41:31 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:41:31 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 13:41:31 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:41:31 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 13:41:31 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 13:41:31 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:41:31 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 13:41:31 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 13:41:31 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 13:41:31 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 13:41:31 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 13:41:31 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:41:40 | INFO     | features.engineer_fixed | Feature engineering: 5000 -> 5000 rows after NaN drop
+2026-04-13 13:41:40 | INFO     | __main__ |     → 5,000 rows engineered
+2026-04-13 13:41:40 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:41:41 | INFO     | features.labeler | SMC Labeler: 3,562 setups | Win rate: 25.9% | Long: 1731 | Short: 1831
+2026-04-13 13:41:41 | INFO     | __main__ |     → 3,562 labeled (win rate: 25.9%)
+2026-04-13 13:41:41 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed | Train: 2,493 | Val: 534 | Test: 535
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 26.7%
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5214
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.4695
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5446
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5750
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.4991
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:41:41 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:41:42 | INFO     | models.ml_integration_fixed | Test AUC=0.5097 | Brier=0.1914 | Threshold=0.226 | Calibrated=True
+2026-04-13 13:41:42 | INFO     | models.ml_integration_fixed | Model saved: saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:41:42 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:41:42 | INFO     | __main__ |     • AUC (train):      0.5219 ± 0.0363
+2026-04-13 13:41:42 | INFO     | __main__ |     • AUC (test):       0.5097
+2026-04-13 13:41:42 | INFO     | __main__ |     • Brier score:      0.1914
+2026-04-13 13:41:42 | INFO     | __main__ |     • Threshold:        0.226
+2026-04-13 13:41:42 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:41:42 | INFO     | __main__ |     • Model path:       saved_models\EURUSD_forex_xgb.joblib
+2026-04-13 13:41:42 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:41:42 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 13:41:42 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:41:42 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 13:41:42 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 13:41:42 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:41:42 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 13:41:42 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 13:41:42 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 13:41:42 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 13:41:42 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 13:41:42 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:46:18 | INFO     | features.engineer_fixed | Feature engineering: 100784 -> 100784 rows after NaN drop
+2026-04-13 13:46:18 | INFO     | __main__ |     → 100,784 rows engineered
+2026-04-13 13:46:18 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:46:56 | INFO     | features.labeler | SMC Labeler: 65,918 setups | Win rate: 20.2% | Long: 33442 | Short: 32476
+2026-04-13 13:46:57 | INFO     | __main__ |     → 65,918 labeled (win rate: 20.2%)
+2026-04-13 13:46:57 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:46:57 | INFO     | models.ml_integration_fixed | Train: 46,142 | Val: 9,888 | Test: 9,888
+2026-04-13 13:46:57 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 20.2%
+2026-04-13 13:46:57 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5319
+2026-04-13 13:46:58 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5491
+2026-04-13 13:46:58 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5371
+2026-04-13 13:46:59 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5193
+2026-04-13 13:46:59 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5322
+2026-04-13 13:47:00 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:47:00 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:47:00 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:47:00 | INFO     | models.ml_integration_fixed | Test AUC=0.5138 | Brier=0.1530 | Threshold=0.208 | Calibrated=True
+2026-04-13 13:47:00 | INFO     | models.ml_integration_fixed | Model saved: saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:47:00 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:47:00 | INFO     | __main__ |     • AUC (train):      0.5339 ± 0.0096
+2026-04-13 13:47:00 | INFO     | __main__ |     • AUC (test):       0.5138
+2026-04-13 13:47:00 | INFO     | __main__ |     • Brier score:      0.1530
+2026-04-13 13:47:00 | INFO     | __main__ |     • Threshold:        0.208
+2026-04-13 13:47:00 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:47:00 | INFO     | __main__ |     • Model path:       saved_models\GBPUSD_forex_xgb.joblib
+2026-04-13 13:47:00 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:47:00 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 13:47:00 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:47:00 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 13:47:00 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 13:47:00 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:47:00 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 13:47:00 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 13:47:00 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 13:47:00 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 13:47:00 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 13:47:00 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:47:39 | INFO     | features.engineer_fixed | Feature engineering: 16727 -> 16727 rows after NaN drop
+2026-04-13 13:47:39 | INFO     | __main__ |     → 16,727 rows engineered
+2026-04-13 13:47:39 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:47:43 | INFO     | features.labeler | SMC Labeler: 11,299 setups | Win rate: 24.2% | Long: 6012 | Short: 5287
+2026-04-13 13:47:43 | INFO     | __main__ |     → 11,299 labeled (win rate: 24.2%)
+2026-04-13 13:47:43 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:47:43 | INFO     | models.ml_integration_fixed | Train: 7,909 | Val: 1,695 | Test: 1,695
+2026-04-13 13:47:43 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 24.8%
+2026-04-13 13:47:43 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.4589
+2026-04-13 13:47:43 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5797
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5087
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.4944
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.5342
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed | Test AUC=0.4765 | Brier=0.1762 | Threshold=0.226 | Calibrated=True
+2026-04-13 13:47:44 | INFO     | models.ml_integration_fixed | Model saved: saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:47:44 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:47:44 | INFO     | __main__ |     • AUC (train):      0.5151 ± 0.0404
+2026-04-13 13:47:44 | INFO     | __main__ |     • AUC (test):       0.4765
+2026-04-13 13:47:44 | INFO     | __main__ |     • Brier score:      0.1762
+2026-04-13 13:47:44 | INFO     | __main__ |     • Threshold:        0.226
+2026-04-13 13:47:44 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:47:44 | INFO     | __main__ |     • Model path:       saved_models\USDJPY_forex_xgb.joblib
+2026-04-13 13:47:44 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:47:44 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 13:47:44 | INFO     | __main__ | ================================================================================
+
+2026-04-13 13:47:44 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 13:47:44 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 13:47:44 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 13:47:45 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 13:47:45 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 13:47:46 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 13:47:46 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 13:47:46 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 13:47:46 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 13:52:06 | INFO     | features.engineer_fixed | Feature engineering: 134050 -> 134050 rows after NaN drop
+2026-04-13 13:52:06 | INFO     | __main__ |     → 134,050 rows engineered
+2026-04-13 13:52:06 | INFO     | __main__ |   Labeling setups...
+2026-04-13 13:52:52 | INFO     | features.labeler | SMC Labeler: 89,580 setups | Win rate: 24.9% | Long: 46870 | Short: 42710
+2026-04-13 13:52:53 | INFO     | __main__ |     → 89,580 labeled (win rate: 24.9%)
+2026-04-13 13:52:53 | INFO     | __main__ |   Training ML (CALIBRATED)...
+2026-04-13 13:52:53 | INFO     | models.ml_integration_fixed | Train: 62,705 | Val: 13,438 | Test: 13,437
+2026-04-13 13:52:53 | INFO     | models.ml_integration_fixed | Label balance (train) – 1: 24.5%
+2026-04-13 13:52:53 | INFO     | models.ml_integration_fixed |   CV Fold 1/5 AUC: 0.5200
+2026-04-13 13:52:54 | INFO     | models.ml_integration_fixed |   CV Fold 2/5 AUC: 0.5144
+2026-04-13 13:52:54 | INFO     | models.ml_integration_fixed |   CV Fold 3/5 AUC: 0.5126
+2026-04-13 13:52:55 | INFO     | models.ml_integration_fixed |   CV Fold 4/5 AUC: 0.5492
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed |   CV Fold 5/5 AUC: 0.4802
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed | Fitting Platt scaling calibrator on validation set...
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed | Platt scaling calibrator fitted successfully
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed | Validating calibration on test set...
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed | Test AUC=0.4878 | Brier=0.1897 | Threshold=0.262 | Calibrated=True
+2026-04-13 13:52:56 | INFO     | models.ml_integration_fixed | Model saved: saved_models\XAUUSD_forex_xgb.joblib
+2026-04-13 13:52:56 | INFO     | __main__ | 
+  Results:
+2026-04-13 13:52:56 | INFO     | __main__ |     • AUC (train):      0.5153 ± 0.0219
+2026-04-13 13:52:56 | INFO     | __main__ |     • AUC (test):       0.4878
+2026-04-13 13:52:56 | INFO     | __main__ |     • Brier score:      0.1897
+2026-04-13 13:52:56 | INFO     | __main__ |     • Threshold:        0.262
+2026-04-13 13:52:56 | INFO     | __main__ |     • Is calibrated:    True
+2026-04-13 13:52:56 | INFO     | __main__ |     • Model path:       saved_models\XAUUSD_forex_xgb.joblib
+2026-04-13 13:52:56 | INFO     | __main__ | 
+================================================================================
+2026-04-13 13:52:56 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 13:52:56 | INFO     | __main__ | ================================================================================
+2026-04-13 13:52:56 | INFO     | __main__ | ✓ EURUSD     | AUC=0.5097 | Cal=True
+2026-04-13 13:52:56 | INFO     | __main__ | ✓ GBPUSD     | AUC=0.5138 | Cal=True
+2026-04-13 13:52:56 | INFO     | __main__ | ✓ USDJPY     | AUC=0.4765 | Cal=True
+2026-04-13 13:52:56 | INFO     | __main__ | ✓ XAUUSD     | AUC=0.4878 | Cal=True
+2026-04-13 13:52:56 | INFO     | __main__ | ================================================================================
+
+2026-04-13 14:15:36 | INFO     | __main__ | === TRAINING MODE (FIXED SYSTEM - NO LEAKAGE) ===
+
+2026-04-13 14:15:36 | INFO     | __main__ | 
+================================================================================
+2026-04-13 14:15:36 | INFO     | __main__ | Training EURUSD (FIXED SYSTEM)
+2026-04-13 14:15:36 | INFO     | __main__ | ================================================================================
+
+2026-04-13 14:15:36 | INFO     | __main__ |   Loading EURUSD_M5_mt5.csv...
+2026-04-13 14:15:36 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-13 14:15:36 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 14:15:36 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-13 14:15:36 | INFO     | __main__ |     → 5,000 M1 bars
+2026-04-13 14:15:36 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-13 14:15:36 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-13 14:15:36 | INFO     | __main__ |   Resampled: 5,000 M15 bars
+2026-04-13 14:15:36 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 14:15:55 | INFO     | features.engineer_fixed | Feature engineering: 5000 -> 5000 rows after NaN drop
+2026-04-13 14:15:55 | INFO     | __main__ |     → 5,000 rows engineered
+2026-04-13 14:15:55 | INFO     | __main__ |   Labeling setups...
+2026-04-13 14:15:57 | INFO     | features.labeler_sniper | ☕ SNIPER LABELER: 2 setups | Win rate: 0.0% | Long: 0 | Short: 2 | ⚠️  LOW-FREQUENCY MODE
+2026-04-13 14:15:57 | INFO     | __main__ |     → 2 labeled (win rate: 0.0%)
+2026-04-13 14:15:57 | ERROR    | __main__ | Too few setups (2 < 30)
+2026-04-13 14:15:57 | INFO     | __main__ | 
+================================================================================
+2026-04-13 14:15:57 | INFO     | __main__ | Training GBPUSD (FIXED SYSTEM)
+2026-04-13 14:15:57 | INFO     | __main__ | ================================================================================
+
+2026-04-13 14:15:57 | INFO     | __main__ |   Loading GBPUSD5.csv...
+2026-04-13 14:15:57 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-13 14:15:57 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 14:15:58 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-13 14:15:58 | INFO     | __main__ |     → 100,784 M1 bars
+2026-04-13 14:15:58 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-13 14:15:58 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-13 14:15:58 | INFO     | __main__ |   Resampled: 100,784 M15 bars
+2026-04-13 14:15:58 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 14:26:13 | INFO     | features.engineer_fixed | Feature engineering: 100784 -> 100784 rows after NaN drop
+2026-04-13 14:26:13 | INFO     | __main__ |     → 100,784 rows engineered
+2026-04-13 14:26:13 | INFO     | __main__ |   Labeling setups...
+2026-04-13 14:26:38 | ERROR    | __main__ | Training failed: cannot unpack non-iterable NoneType object
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 157, in mode_train
+    df_labeled = labeler.label(df_feat)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\labeler_sniper.py", line 88, in label
+    r = self._resolve_setup(df, i, 1, high, low, close, open_, atr, size)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\labeler_sniper.py", line 166, in _resolve_setup
+    label, bars_to_outcome = self._simulate_outcome(
+    ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable NoneType object
+2026-04-13 14:26:38 | INFO     | __main__ | 
+================================================================================
+2026-04-13 14:26:38 | INFO     | __main__ | Training USDJPY (FIXED SYSTEM)
+2026-04-13 14:26:38 | INFO     | __main__ | ================================================================================
+
+2026-04-13 14:26:38 | INFO     | __main__ |   Loading USDJPY_M5_mt5.csv...
+2026-04-13 14:26:38 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-13 14:26:39 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 14:26:39 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-13 14:26:39 | INFO     | __main__ |     → 50,000 M1 bars
+2026-04-13 14:26:40 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-13 14:26:40 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-13 14:26:40 | INFO     | __main__ |   Resampled: 16,727 M15 bars
+2026-04-13 14:26:40 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 14:28:09 | INFO     | features.engineer_fixed | Feature engineering: 16727 -> 16727 rows after NaN drop
+2026-04-13 14:28:09 | INFO     | __main__ |     → 16,727 rows engineered
+2026-04-13 14:28:09 | INFO     | __main__ |   Labeling setups...
+2026-04-13 14:28:17 | INFO     | features.labeler_sniper | ☕ SNIPER LABELER: 16 setups | Win rate: 31.2% | Long: 6 | Short: 10 | ⚠️  LOW-FREQUENCY MODE
+2026-04-13 14:28:17 | INFO     | __main__ |     → 16 labeled (win rate: 31.2%)
+2026-04-13 14:28:17 | ERROR    | __main__ | Too few setups (16 < 30)
+2026-04-13 14:28:17 | INFO     | __main__ | 
+================================================================================
+2026-04-13 14:28:17 | INFO     | __main__ | Training XAUUSD (FIXED SYSTEM)
+2026-04-13 14:28:17 | INFO     | __main__ | ================================================================================
+
+2026-04-13 14:28:17 | INFO     | __main__ |   Loading XAUUSD_M5_mt5.csv...
+2026-04-13 14:28:17 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-13 14:28:18 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-13 14:28:20 | INFO     | data.histdata_parser | Parsed 400,000 M1 bars | 2020-08-05 -> 2026-04-10
+2026-04-13 14:28:20 | INFO     | __main__ |     → 400,000 M1 bars
+2026-04-13 14:28:21 | INFO     | data.loader | Resampled to M15: 134,050 bars
+2026-04-13 14:28:21 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-13 14:28:21 | INFO     | __main__ |   Resampled: 134,050 M15 bars
+2026-04-13 14:28:21 | INFO     | __main__ |   Engineering features (NO LEAKAGE)...
+2026-04-13 14:35:49 | INFO     | features.engineer_fixed | Feature engineering: 134050 -> 134050 rows after NaN drop
+2026-04-13 14:35:49 | INFO     | __main__ |     → 134,050 rows engineered
+2026-04-13 14:35:49 | INFO     | __main__ |   Labeling setups...
+2026-04-13 14:35:52 | ERROR    | __main__ | Training failed: cannot unpack non-iterable NoneType object
+Traceback (most recent call last):
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\main.py", line 157, in mode_train
+    df_labeled = labeler.label(df_feat)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\labeler_sniper.py", line 88, in label
+    r = self._resolve_setup(df, i, 1, high, low, close, open_, atr, size)
+  File "C:\Users\James\Downloads\forex_trading_system_v2\forex_bot\features\labeler_sniper.py", line 166, in _resolve_setup
+    label, bars_to_outcome = self._simulate_outcome(
+    ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable NoneType object
+2026-04-13 14:35:52 | INFO     | __main__ | 
+================================================================================
+2026-04-13 14:35:52 | INFO     | __main__ | TRAINING SUMMARY
+2026-04-13 14:35:52 | INFO     | __main__ | ================================================================================
+2026-04-13 14:35:52 | INFO     | __main__ | ✗ EURUSD     | Too few labeled setups
+2026-04-13 14:35:52 | INFO     | __main__ | ✗ GBPUSD     | cannot unpack non-iterable NoneType object
+2026-04-13 14:35:52 | INFO     | __main__ | ✗ USDJPY     | Too few labeled setups
+2026-04-13 14:35:52 | INFO     | __main__ | ✗ XAUUSD     | cannot unpack non-iterable NoneType object
+2026-04-13 14:35:52 | INFO     | __main__ | ================================================================================
+

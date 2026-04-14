@@ -12,14 +12,14 @@
     "fvg_size",
     "hour"
   ],
-  "threshold": 0.263058352086505,
+  "threshold": 0.26207427029292923,
   "rr_ratio": 3.0,
   "meta": {
-    "cv_auc_mean": 0.5185374389641246,
-    "cv_auc_std": 0.021642871610882353,
-    "test_auc": 0.4812759204342457,
-    "test_brier": 0.18964476691250942,
-    "threshold": 0.263058352086505,
+    "cv_auc_mean": 0.5152605947998122,
+    "cv_auc_std": 0.02194030231240575,
+    "test_auc": 0.48775122256657616,
+    "test_brier": 0.18965638050320535,
+    "threshold": 0.26207427029292923,
     "is_calibrated": true,
     "calibration_method": "platt"
   },
