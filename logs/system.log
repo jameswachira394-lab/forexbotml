@@ -18300,3 +18300,44 @@ TypeError: cannot unpack non-iterable NoneType object
 2026-04-13 14:35:52 | INFO     | __main__ | ✗ XAUUSD     | cannot unpack non-iterable NoneType object
 2026-04-13 14:35:52 | INFO     | __main__ | ================================================================================
 
+2026-04-14 12:14:09 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-14 12:14:31 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-14 12:14:31 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-14 12:14:32 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-14 12:14:35 | INFO     | data.histdata_parser | Parsed 134,050 M15 bars | 2020-08-05 -> 2026-04-10
+2026-04-14 12:14:35 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-14 12:14:35 | INFO     | __main__ | Bars: 134,050 [M15]
+2026-04-14 12:14:56 | INFO     | features.engineer | Feature engineering: 134050 -> 134037 rows after NaN drop
+2026-04-14 12:14:56 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-14 12:14:56 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-14 12:14:56 | INFO     | __main__ | Strategy: HWR
+2026-04-14 12:15:00 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-14 12:15:06 | INFO     | __main__ | === BACKTEST | XAUUSD | data/raw/XAUUSD_M5_mt5.csv ===
+2026-04-14 12:15:06 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M15
+2026-04-14 12:15:07 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-14 12:15:11 | INFO     | data.histdata_parser | Parsed 134,050 M15 bars | 2020-08-05 -> 2026-04-10
+2026-04-14 12:15:11 | INFO     | data.loader | Resampled to H4: 8,780 bars
+2026-04-14 12:15:11 | INFO     | __main__ | Bars: 134,050 [M15]
+2026-04-14 12:15:44 | INFO     | features.engineer | Feature engineering: 134050 -> 134037 rows after NaN drop
+2026-04-14 12:15:44 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-14 12:15:44 | INFO     | __main__ | Loaded model: XAUUSD_forex_xgb
+2026-04-14 12:15:44 | INFO     | __main__ | Strategy: SMC
+2026-04-14 12:16:04 | INFO     | strategy.engine | Strategy scan: 0 signals on 134,037 bars
+2026-04-14 12:16:04 | WARNING  | __main__ | No signals generated.
+2026-04-14 12:16:14 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-14 12:16:41 | INFO     | __main__ | === LIVE TRADING MODE (Multi-Symbol) ===
+2026-04-14 12:16:41 | INFO     | __main__ | Symbols: ['GBPUSD', 'XAUUSD']
+2026-04-14 12:16:42 | INFO     | models.ml_model | Model loaded <- saved_models\GBPUSD_forex_xgb.joblib
+2026-04-14 12:16:42 | INFO     | models.trainer | Loaded model: GBPUSD
+2026-04-14 12:16:42 | INFO     | models.ml_model | Model loaded <- saved_models\XAUUSD_forex_xgb.joblib
+2026-04-14 12:16:42 | INFO     | models.trainer | Loaded model: XAUUSD
+2026-04-14 12:16:42 | INFO     | execution.multi_symbol_trader | MultiSymbolTrader starting | symbols=['GBPUSD', 'XAUUSD'] | TF=M15
+2026-04-14 12:16:42 | WARNING  | execution.multi_symbol_trader | LIVE MODE – real orders will be placed if MT5 is connected.
+2026-04-14 12:16:57 | INFO     | execution.mt5_broker | MT5 connected | Account: 10401216 | Balance: 103.79 | Server: FBS-Demo
+2026-04-14 12:16:57 | INFO     | execution.mt5_streamer | MT5Streamer starting | symbols=['GBPUSD', 'XAUUSD'] | TF=M15 | warm=300 bars
+2026-04-14 12:16:57 | INFO     | execution.mt5_streamer | MT5 connected | Account 10401216 | Balance 103.79 USD | Server FBS-Demo
+2026-04-14 12:16:58 | INFO     | execution.mt5_streamer |   GBPUSD: loaded 302 warm-up bars (last: 2026-04-13 13:00:00+00:00)
+2026-04-14 12:16:58 | INFO     | execution.mt5_streamer |   XAUUSD: loaded 301 warm-up bars (last: 2026-04-14 12:00:00+00:00)
+2026-04-14 12:16:58 | INFO     | execution.mt5_streamer | Entering poll loop…
+2026-04-14 12:16:58 | INFO     | execution.mt5_streamer | New bar: GBPUSD @ 2026-04-14 12:00:00+00:00
+2026-04-14 12:16:58 | INFO     | features.engineer | Feature engineering: 300 -> 287 rows after NaN drop
