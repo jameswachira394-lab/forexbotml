@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class BacktestConfig:
-    initial_balance:  float = 10_000.0
-    risk_per_trade:   float = 1.0           # % of equity per trade
+    initial_balance:  float = 100.0
+    risk_per_trade:   float = 3.0           # % of equity per trade
     spread_pips:      float = 1.5           # spread in pips
     slippage_pips:    float = 0.5           # slippage in pips
     symbol:           str   = "EURUSD"      # used to derive pip_size for friction

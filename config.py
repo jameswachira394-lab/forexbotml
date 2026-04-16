@@ -63,10 +63,10 @@ RR_MIN            = TP_ATR_MULT / SL_ATR_MULT   # = 3.0
 
 # ── Risk management ───────────────────────────────────────────────────────────
 INITIAL_BALANCE      = 100.0
-BASE_RISK_PCT        = 1.0
+BASE_RISK_PCT        = 3.0
 RISK_PER_TRADE_PCT   = BASE_RISK_PCT
-MAX_TRADES_PER_DAY   = 2      # strict: only 2 signals per day maximum
-MAX_OPEN_POSITIONS   = 1      # one trade at a time — full focus
+MAX_TRADES_PER_DAY   = 5      # strict: only 2 signals per day maximum
+MAX_OPEN_POSITIONS   = 5      # one trade at a time — full focus
 DAILY_LOSS_LIMIT_PCT = 2.0    # tighter: stop after 2% daily loss
 MAX_DRAWDOWN_PCT     = 8.0    # tighter: reduce risk at 8% DD
 
