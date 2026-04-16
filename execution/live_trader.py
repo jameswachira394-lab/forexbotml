@@ -1,10 +1,5 @@
 """
-execution/live_trader.py
-------------------------
-Live trading loop.
 
-Polls MT5 for new bars, runs feature engineering on the latest window,
-evaluates strategy, and executes orders when signals fire.
 
 Design:
   - Stateless per bar (all state reconstructed from rolling window)

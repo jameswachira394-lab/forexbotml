@@ -4,26 +4,7 @@ strategy/high_winrate_engine.py
 High Win Rate Strategy — EMA Trend Pullback + Multi-Confirmation
 
 Logic:
-  LONG:
-    1. Price above EMA 20 AND EMA 20 above EMA 50 (uptrend)
-    2. RSI pulled back to 40-55 zone (not overbought)
-    3. Price within 0.5 ATR of EMA 20 (touching the trend)
-    4. Previous candle closed bullish (momentum returning)
-    5. Session filter: London or NY open only
-    6. ML probability >= threshold
-
-  SHORT: Mirror conditions
-
-Win rate target: 75-85%
-Trades per day: 3-6
-RR: 1:1.5 (lower RR = higher win rate)
-
-Why this works:
-  - Trend is already established (EMA filter)
-  - We enter ON the trend, not against it
-  - RSI pullback ensures we don't chase
-  - EMA touch gives tight SL (just below EMA)
-  - High frequency during active sessions
+High frequency during active sessions
 """
 
 import logging

@@ -4,14 +4,6 @@ features/labeler_sniper.py — HIGH-PRECISION EVENT-DRIVEN LABELING
 
 Path B: Sniper-like high-quality setups only
 
-7-STEP VALIDATION:
-  1. Sweep: ≥0.2 ATR, session context, wick rejection
-  2. Displacement: body ≥ 2.5 ATR in reversal direction
-  3. CHoCH/BOS: clear structure break
-  4. Deep Pullback: 0.3-1.5 ATR into FVG/OB (not shallow/deep)
-  5. Entry: only on FVG midpoint or OB boundary (not fallback)
-  6. SL/TP: RR ≥ 2.5, SL ≥ 0.5 ATR buffer from sweep
-  7. QC: reject if SL too tight, RR invalid, unresolved
 
 Result: Fewer trades, higher win rate (50-70%), better ML separability
 """
