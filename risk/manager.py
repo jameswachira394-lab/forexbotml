@@ -18,20 +18,7 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-# ── Per-symbol market specifications ─────────────────────────────────────────
-# pip_value  = USD profit per 1 pip move per 1 standard lot
-# pip_size   = price movement that equals 1 pip
-#
-# XAUUSD: 1 lot = 100 oz, price in USD/oz, pip = $0.01
-#   → pip_value = 100 oz × $0.01 = $1.00 per pip per lot
-#   → but brokers often quote gold in "points" where 1 point = $0.01
-#   → a 100-point ($1.00) move on 1 lot = $100 profit
-#
-# GBPUSD: standard FX, pip = 0.0001, 1 lot = 100,000 units
-#   → pip_value = $10 per pip per lot
-#
-# USDJPY: pip = 0.01 (JPY quoted), 1 lot = 100,000 units
-#   → pip_value ≈ $9.xx (fluctuates with JPY rate), use $9.00 conservatively
+
 
 SYMBOL_SPECS = {
     "XAUUSD": {"pip_size": 0.01,   "pip_value": 1.0},    # Gold: $1/pip/lot

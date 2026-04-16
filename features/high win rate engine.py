@@ -315,4 +315,4 @@ class HighWinRateEngine:
             row["direction"] = direction
             return float(self.model.predict_proba(row)[0])
         except Exception:
-            return 1.0  # no model = pass through, rules do the filtering
+            return 1.0 
