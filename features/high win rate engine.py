@@ -35,16 +35,16 @@ class HWRConfig:
     # EMA settings
     ema_fast:          int   = 20
     ema_slow:          int   = 50
-    ema_trend:         int   = 200   # macro trend filter
+    ema_trend:         int   = 200  
 
     # RSI settings
     rsi_period:        int   = 14
-    rsi_long_min:      float = 35.0  # RSI must be in this zone for long
+    rsi_long_min:      float = 35.0  
     rsi_long_max:      float = 58.0
-    rsi_short_min:     float = 42.0  # RSI must be in this zone for short
+    rsi_short_min:     float = 42.0  
     rsi_short_max:     float = 65.0
 
-    # Entry zone: how close price must be to EMA20 (in ATR units)
+    
     ema_touch_max_atr: float = 0.8   # within 0.8 ATR of EMA20
 
     # SL/TP
