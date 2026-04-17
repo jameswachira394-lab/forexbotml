@@ -99,16 +99,16 @@ WF_OOS_FRACTION = 0.20   # 20% OOS per fold = ~3 months at 100k bar dataset
 # ── Backward compatibility aliases ────────────────────────────────────────────
 # Keep old names so existing code that references them doesn't break
 RR_RATIO          = RR_MIN          # alias: old name -> new name
-MAX_BARS_TO_BOS   = 20              # labeler: max bars between sweep and BOS
-MAX_BARS_TO_ENTRY = 25              # labeler: max bars to find pullback entry
+MAX_BARS_TO_BOS   = 20              
+MAX_BARS_TO_ENTRY = 25         
 
 # ── Profit target (overrides the sizing from % risk if too small) ─────────────
-MIN_PROFIT_TARGET    = 10.0   # minimum USD profit per winning trade
-RISK_PER_TRADE_PCT   = 3.0    # raised from 1% — needed to hit $10+ on $100 account
-BASE_RISK_PCT        = 3.0    # keep in sync
+MIN_PROFIT_TARGET    = 10.0   
+RISK_PER_TRADE_PCT   = 3.0    
+BASE_RISK_PCT        = 3.0    
 
 # ── High Win Rate Strategy (EMA Pullback) ─────────────────────────────────────
-HWR_RR             = 1.5    # RR 1:1.5 — lower RR = higher win rate
+HWR_RR             = 1.5    
 HWR_EMA_FAST       = 20
 HWR_EMA_SLOW       = 50
 HWR_EMA_TREND      = 200
