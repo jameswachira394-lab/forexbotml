@@ -116,5 +116,5 @@ HWR_RSI_LONG_MIN   = 35.0
 HWR_RSI_LONG_MAX   = 58.0
 HWR_RSI_SHORT_MIN  = 42.0
 HWR_RSI_SHORT_MAX  = 65.0
-HWR_EMA_TOUCH_ATR  = 0.8    # how close price must be to EMA20
-ACTIVE_STRATEGY    = "hwr"  # "hwr" or "smc"
+HWR_EMA_TOUCH_ATR  = 0.8    
+ACTIVE_STRATEGY    = "hwr"  
