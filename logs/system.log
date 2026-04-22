@@ -19509,3 +19509,148 @@ Training complete: 0 OK | 1 failed
 2026-04-22 20:47:28 | INFO     | data.histdata_parser | Parsed 157,000 M15 bars | 2022-01-03 -> 2026-06-26
 2026-04-22 20:47:28 | INFO     | data.loader | Resampled to H4: 9,813 bars
 2026-04-22 20:47:28 | INFO     | __main__ | Bars: 157,000 [M15]
+2026-04-22 20:51:31 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-22 20:51:34 | INFO     | __main__ | === WALK-FORWARD | GBPUSD ===
+2026-04-22 20:51:34 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> GBPUSD M15
+2026-04-22 20:51:34 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-22 20:51:34 | INFO     | data.histdata_parser | Parsed 157,000 M15 bars | 2022-01-03 -> 2026-06-26
+2026-04-22 20:51:34 | INFO     | data.loader | Resampled to H4: 9,813 bars
+2026-04-22 20:51:43 | INFO     | features.engineer | Feature engineering: 157000 -> 156987 rows after NaN drop
+2026-04-22 20:51:43 | INFO     | backtest.engine | Fold 1/4 | Train: 31,399 | OOS: 31,397
+2026-04-22 20:51:43 | INFO     | features.labeler | SMC Labeler: 764 setups | Win rate: 30.1% | Long: 406 | Short: 358
+2026-04-22 20:51:43 | INFO     | models.ml_model | Train: 496 | Val: 115 | Test: 153
+2026-04-22 20:51:43 | INFO     | models.ml_model | Label balance (train) – 1: 34.9%
+2026-04-22 20:51:43 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 0.6633
+2026-04-22 20:51:43 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.7410
+2026-04-22 20:51:44 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.7024
+2026-04-22 20:51:44 | INFO     | models.ml_model | CV AUC: 0.7023 ± 0.0317
+2026-04-22 20:51:44 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.78      0.94      0.85       117
+           1       0.42      0.14      0.21        36
+
+    accuracy                           0.75       153
+   macro avg       0.60      0.54      0.53       153
+weighted avg       0.69      0.75      0.70       153
+
+2026-04-22 20:51:44 | INFO     | models.ml_model | Test AUC: 0.6241 | Brier: 0.1863 | Threshold (from val): 0.45
+2026-04-22 20:51:44 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+body_ratio          0.243119
+ny_high_dist        0.174212
+london_low_dist     0.173736
+dist_prev_50_low    0.170889
+bull_sweep          0.131755
+asia_low_dist       0.106289
+weekday             0.000000
+candle_dir          0.000000
+atr                 0.000000
+hh                  0.000000
+2026-04-22 20:51:48 | INFO     | strategy.engine | Scan complete: 0 signals from 31397 bars
+2026-04-22 20:51:48 | INFO     | backtest.engine |   Fold 1: no OOS signals generated.
+2026-04-22 20:51:48 | INFO     | backtest.engine | Fold 2/4 | Train: 62,796 | OOS: 31,397
+2026-04-22 20:51:48 | INFO     | features.labeler | SMC Labeler: 1,584 setups | Win rate: 27.6% | Long: 823 | Short: 761
+2026-04-22 20:51:48 | INFO     | models.ml_model | Train: 1,029 | Val: 238 | Test: 317
+2026-04-22 20:51:48 | INFO     | models.ml_model | Label balance (train) – 1: 29.6%
+2026-04-22 20:51:48 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 0.7509
+2026-04-22 20:51:48 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.5999
+2026-04-22 20:51:49 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.8623
+2026-04-22 20:51:49 | INFO     | models.ml_model | CV AUC: 0.7377 ± 0.1075
+2026-04-22 20:51:49 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.80      0.97      0.88       238
+           1       0.77      0.29      0.42        79
+
+    accuracy                           0.80       317
+   macro avg       0.79      0.63      0.65       317
+weighted avg       0.80      0.80      0.77       317
+
+2026-04-22 20:51:49 | INFO     | models.ml_model | Test AUC: 0.7841 | Brier: 0.1527 | Threshold (from val): 0.45
+2026-04-22 20:51:49 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+trend              0.105343
+hh                 0.066692
+atr                0.062882
+eq_high            0.059950
+dist_to_last_sh    0.058846
+ny_high_dist       0.054117
+body_ratio         0.052395
+htf_trend          0.051406
+asia_high_dist     0.049370
+dist_to_last_sl    0.048406
+2026-04-22 20:51:52 | INFO     | strategy.engine | Scan complete: 0 signals from 31397 bars
+2026-04-22 20:51:52 | INFO     | backtest.engine |   Fold 2: no OOS signals generated.
+2026-04-22 20:51:52 | INFO     | backtest.engine | Fold 3/4 | Train: 94,193 | OOS: 31,397
+2026-04-22 20:51:53 | INFO     | features.labeler | SMC Labeler: 2,338 setups | Win rate: 28.4% | Long: 1161 | Short: 1177
+2026-04-22 20:51:53 | INFO     | models.ml_model | Train: 1,519 | Val: 351 | Test: 468
+2026-04-22 20:51:53 | INFO     | models.ml_model | Label balance (train) – 1: 27.6%
+2026-04-22 20:51:54 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 0.6304
+2026-04-22 20:51:54 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.8473
+2026-04-22 20:51:54 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.6956
+2026-04-22 20:51:54 | INFO     | models.ml_model | CV AUC: 0.7244 ± 0.0908
+2026-04-22 20:51:55 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.78      0.98      0.87       350
+           1       0.79      0.19      0.30       118
+
+    accuracy                           0.78       468
+   macro avg       0.78      0.58      0.59       468
+weighted avg       0.78      0.78      0.73       468
+
+2026-04-22 20:51:55 | INFO     | models.ml_model | Test AUC: 0.7575 | Brier: 0.1600 | Threshold (from val): 0.45
+2026-04-22 20:51:55 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+hh                  0.066553
+dist_to_last_sh     0.052489
+bull_sweep          0.049956
+body_ratio          0.047256
+trend               0.046895
+atr                 0.043713
+candle_dir          0.041341
+dist_prev_50_low    0.041009
+upper_wick          0.040177
+impulse             0.038905
+2026-04-22 20:51:58 | INFO     | strategy.engine | Scan complete: 0 signals from 31397 bars
+2026-04-22 20:51:58 | INFO     | backtest.engine |   Fold 3: no OOS signals generated.
+2026-04-22 20:51:58 | INFO     | backtest.engine | Fold 4/4 | Train: 125,590 | OOS: 31,397
+2026-04-22 20:51:59 | INFO     | features.labeler | SMC Labeler: 3,096 setups | Win rate: 27.6% | Long: 1543 | Short: 1553
+2026-04-22 20:51:59 | INFO     | models.ml_model | Train: 2,012 | Val: 464 | Test: 620
+2026-04-22 20:51:59 | INFO     | models.ml_model | Label balance (train) – 1: 28.8%
+2026-04-22 20:52:00 | INFO     | models.ml_model |   CV Fold 1/3 AUC: 0.7123
+2026-04-22 20:52:00 | INFO     | models.ml_model |   CV Fold 2/3 AUC: 0.7231
+2026-04-22 20:52:00 | INFO     | models.ml_model |   CV Fold 3/3 AUC: 0.8010
+2026-04-22 20:52:00 | INFO     | models.ml_model | CV AUC: 0.7455 ± 0.0395
+2026-04-22 20:52:00 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.77      0.97      0.86       459
+           1       0.65      0.15      0.24       161
+
+    accuracy                           0.76       620
+   macro avg       0.71      0.56      0.55       620
+weighted avg       0.73      0.76      0.70       620
+
+2026-04-22 20:52:00 | INFO     | models.ml_model | Test AUC: 0.6899 | Brier: 0.1754 | Threshold (from val): 0.45
+2026-04-22 20:52:00 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+dist_to_last_sh      0.107995
+ny_low_dist          0.094187
+dist_prev_50_low     0.093978
+body_ratio           0.093412
+dist_to_last_sl      0.093011
+bull_sweep           0.090207
+dist_prev_50_high    0.073326
+lower_wick           0.065084
+candle_dir           0.064824
+ny_high_dist         0.061284
+2026-04-22 20:52:04 | INFO     | strategy.engine | Scan complete: 0 signals from 31397 bars
+2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 4: no OOS signals generated.
+2026-04-22 20:52:04 | INFO     | backtest.engine | 
+── Walk-Forward Summary ──
+2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 1: WR=0.0% PF=0.00 DD=0.0%
+2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 2: WR=0.0% PF=0.00 DD=0.0%
+2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 3: WR=0.0% PF=0.00 DD=0.0%
+2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 4: WR=0.0% PF=0.00 DD=0.0%

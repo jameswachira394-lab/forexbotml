@@ -109,12 +109,12 @@ def mode_train(args) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def mode_backtest(args) -> None:
-    from data.histdata_parser        import parse_histdata
-    from data.loader                 import load_multi_timeframe, OHLCVLoader
-    from features.engineer_fixed     import engineer_features
-    from models.ml_model             import ForexMLModel
-    from strategy.engine             import StrategyEngine, StrategyConfig
-    from backtest.engine             import BacktestEngine, BacktestConfig
+    from data.histdata_parser   import parse_histdata
+    from data.loader            import load_multi_timeframe, OHLCVLoader
+    from features.engineer      import engineer_features
+    from models.ml_model        import ForexMLModel
+    from strategy.engine        import StrategyEngine, StrategyConfig
+    from backtest.engine        import BacktestEngine, BacktestConfig
 
     symbol    = (args.symbol or cfg.SYMBOL).upper()
     data_path = args.data or cfg.DATA_PATH
@@ -257,9 +257,9 @@ def mode_walkforward(args) -> None:
         model_kwargs    = {"model_name": f"{symbol}_{cfg.MODEL_NAME}_wf"},
     )
 
-    print(f"\n{'═'*50}")
+    print(f"\n{'='*50}")
     print(f"  WALK-FORWARD: {symbol}")
-    print(f"{'═'*50}")
+    print(f"{'='*50}")
     for r in results:
         print(
             f"  Fold {r['fold']:<2} | "
