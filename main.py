@@ -159,28 +159,15 @@ def mode_backtest(args) -> None:
             logger.warning("No model found – running without ML filter.")
             model = None
 
-    # ── Strategy — select with --strategy flag ────────────────────
-    strategy = getattr(args, 'strategy', 'hwr')
-    logger.info(f"Strategy: {strategy.upper()}")
-
-    if strategy == 'hwr':
-        from strategy.high_winrate_engine import HighWinRateEngine, HWRConfig
-        hwr_cfg  = HWRConfig(
-            ml_threshold = cfg.ML_THRESHOLD,
-            rr_ratio     = getattr(cfg, 'HWR_RR', 1.5),
-        )
-        engine   = HighWinRateEngine(hwr_cfg, model=model)
-        feat_df  = engine.prepare(base_df)
-        signals  = engine.scan_all(feat_df)
-    else:
-        s_cfg = StrategyConfig(
-            ml_threshold      = cfg.ML_THRESHOLD,
-            sl_atr_mult       = cfg.SL_ATR_MULT,
-            rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
-            require_htf_align = cfg.REQUIRE_HTF_ALIGN,
-        )
-        engine  = StrategyEngine(s_cfg, model=model)
-        signals = engine.scan_all(feat_df)
+    # ── Strategy ──────────────────────────────────────────────────
+    s_cfg = StrategyConfig(
+        ml_threshold      = cfg.ML_THRESHOLD,
+        sl_atr_mult       = cfg.SL_ATR_MULT,
+        rr_ratio          = getattr(cfg, 'RR_MIN', getattr(cfg, 'RR_RATIO', 2.0)),
+        require_htf_align = cfg.REQUIRE_HTF_ALIGN,
+    )
+    engine  = StrategyEngine(s_cfg, model=model)
+    signals = engine.scan_all(feat_df)
 
     if not signals:
         logger.warning("No signals generated.")
@@ -362,8 +349,6 @@ def parse_args():
                    help="[walkforward] Number of OOS folds")
     p.add_argument("--force",   action="store_true",
                    help="[train] Force retrain even if model is recent")
-    p.add_argument("--strategy", default="hwr", choices=["smc", "hwr"],
-                   help="smc = Liquidity Sweep (original) | hwr = EMA Pullback (high win rate)")
     p.add_argument("--log-level", dest="log_level", default="INFO",
                    choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     return p.parse_args()

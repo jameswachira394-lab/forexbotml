@@ -62,7 +62,7 @@ class StrategyConfigFixed:
     sweep_wick_atr_min:  float = 0.5        # wick must be ≥ 0.5×ATR
     
     # Cooldown
-    trade_cooldown_bars: int = 10           # bars between trades in same structure
+    trade_cooldown_bars: int = 4           # bars between trades in same structure
     
     # Exit
     max_bars_to_bos:     int = 20           # bars to wait for BOS after sweep
