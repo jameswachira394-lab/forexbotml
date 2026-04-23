@@ -1,28 +1,3 @@
-"""
-execution/multi_symbol_trader.py
----------------------------------
-Multi-symbol live trading engine.
-
-Architecture
-------------
-1. MT5Streamer fires on_new_bar(symbol, df) in a background thread
-   each time a bar closes for any of the configured symbols.
-
-2. MultiSymbolTrader.on_new_bar():
-   a. Runs feature engineering on the rolling window
-   b. Evaluates the strategy engine for a signal
-   c. Passes through risk management (global + per-symbol limits)
-   d. Executes the trade via MT5Broker
-   e. Monitors open positions for TP/SL hits
-
-3. All state is protected by a threading.Lock so no race conditions
-   occur when multiple symbols fire callbacks simultaneously.
-
-Usage
------
-    trader = MultiSymbolTrader.from_config()   # reads config.py
-    trader.run()                               # blocks; Ctrl-C to stop
-"""
 
 import logging
 import threading
