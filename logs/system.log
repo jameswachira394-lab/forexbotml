@@ -19654,3 +19654,219 @@ ny_high_dist         0.061284
 2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 2: WR=0.0% PF=0.00 DD=0.0%
 2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 3: WR=0.0% PF=0.00 DD=0.0%
 2026-04-22 20:52:04 | INFO     | backtest.engine |   Fold 4: WR=0.0% PF=0.00 DD=0.0%
+2026-04-23 20:27:00 | INFO     | numexpr.utils | NumExpr defaulting to 4 threads.
+2026-04-23 20:27:00 | INFO     | __main__ | === TRAINING MODE ===
+2026-04-23 20:27:00 | INFO     | models.trainer | 
+=======================================================
+2026-04-23 20:27:00 | INFO     | models.trainer |   Symbol 1/4: EURUSD
+2026-04-23 20:27:00 | INFO     | models.trainer | =======================================================
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] ---- Training --------------------------------
+2026-04-23 20:27:11 | INFO     | data.histdata_parser | Parsing EURUSD_M5_mt5.csv -> EURUSD M1
+2026-04-23 20:27:11 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-23 20:27:11 | INFO     | data.histdata_parser | Parsed 5,000 M1 bars | 2022-01-03 -> 2022-02-24
+2026-04-23 20:27:11 | INFO     | models.trainer |   [+] EURUSD_M5_mt5.csv: 5,000 M1 bars
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] Total M1 bars: 5,000 | 2022-01-03 -> 2022-02-24
+2026-04-23 20:27:11 | INFO     | data.loader | Resampled to M15: 5,000 bars
+2026-04-23 20:27:11 | INFO     | data.loader | Resampled to H4: 313 bars
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] M15: 5,000 bars | H4: 313 bars
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] Engineering features...
+2026-04-23 20:27:11 | INFO     | features.engineer | Feature engineering: 5000 -> 4987 rows after NaN drop
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] Labeling setups...
+2026-04-23 20:27:11 | INFO     | features.labeler | SMC Labeler: 97 setups | Win rate: 26.8% | Long: 56 | Short: 41
+2026-04-23 20:27:11 | INFO     | models.trainer | [EURUSD] Setups: 97 | Win rate: 26.8%
+2026-04-23 20:27:11 | INFO     | models.ml_model | Train: 67 | Val: 15 | Test: 15
+2026-04-23 20:27:11 | INFO     | models.ml_model | Label balance (train) – 1: 26.9%
+2026-04-23 20:27:11 | INFO     | models.ml_model |   CV Fold 1/5 AUC: 0.5000
+2026-04-23 20:27:11 | INFO     | models.ml_model |   CV Fold 2/5 AUC: 0.5000
+2026-04-23 20:27:11 | INFO     | models.ml_model |   CV Fold 3: skipped (single class in validation)
+2026-04-23 20:27:12 | INFO     | models.ml_model |   CV Fold 4/5 AUC: 1.0000
+2026-04-23 20:27:12 | INFO     | models.ml_model |   CV Fold 5/5 AUC: 0.6667
+2026-04-23 20:27:12 | INFO     | models.ml_model | CV AUC: 0.6667 ± 0.2041
+2026-04-23 20:27:12 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.62      0.80      0.70        10
+           1       0.00      0.00      0.00         5
+
+    accuracy                           0.53        15
+   macro avg       0.31      0.40      0.35        15
+weighted avg       0.41      0.53      0.46        15
+
+2026-04-23 20:27:12 | INFO     | models.ml_model | Test AUC: 0.2600 | Brier: 0.2890 | Threshold (from val): 0.45
+2026-04-23 20:27:12 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+weekday            0.642632
+body_ratio         0.207120
+london_low_dist    0.150247
+session            0.000000
+body_pct           0.000000
+upper_wick         0.000000
+hour               0.000000
+candle_dir         0.000000
+atr                0.000000
+hh                 0.000000
+2026-04-23 20:27:12 | INFO     | models.trainer | [EURUSD] CV AUC=0.6667±0.2041 | Test AUC=0.2600 | Threshold=0.45
+2026-04-23 20:27:12 | INFO     | models.trainer | [EURUSD] Top features: weekday(0.643), body_ratio(0.207), london_low_dist(0.150), session(0.000), body_pct(0.000)
+2026-04-23 20:27:12 | INFO     | models.ml_model | Model saved -> saved_models\EURUSD_forex_xgb.joblib
+2026-04-23 20:27:12 | INFO     | models.trainer | [EURUSD] Model saved -> saved_models\EURUSD_forex_xgb.joblib
+2026-04-23 20:27:12 | INFO     | models.trainer | 
+=======================================================
+2026-04-23 20:27:12 | INFO     | models.trainer |   Symbol 2/4: GBPUSD
+2026-04-23 20:27:12 | INFO     | models.trainer | =======================================================
+2026-04-23 20:27:12 | INFO     | models.trainer | [GBPUSD] ---- Training --------------------------------
+2026-04-23 20:27:12 | INFO     | data.histdata_parser | Parsing GBPUSD5.csv -> GBPUSD M1
+2026-04-23 20:27:12 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-23 20:27:12 | INFO     | data.histdata_parser | Parsed 100,784 M1 bars | 2022-03-30 -> 2026-04-09
+2026-04-23 20:27:12 | INFO     | models.trainer |   [+] GBPUSD5.csv: 100,784 M1 bars
+2026-04-23 20:27:12 | INFO     | models.trainer | [GBPUSD] Total M1 bars: 100,784 | 2022-03-30 -> 2026-04-09
+2026-04-23 20:27:12 | INFO     | data.loader | Resampled to M15: 100,784 bars
+2026-04-23 20:27:12 | INFO     | data.loader | Resampled to H4: 6,466 bars
+2026-04-23 20:27:12 | INFO     | models.trainer | [GBPUSD] M15: 100,784 bars | H4: 6,466 bars
+2026-04-23 20:27:12 | INFO     | models.trainer | [GBPUSD] Engineering features...
+2026-04-23 20:27:18 | INFO     | features.engineer | Feature engineering: 100784 -> 100771 rows after NaN drop
+2026-04-23 20:27:18 | INFO     | models.trainer | [GBPUSD] Labeling setups...
+2026-04-23 20:27:19 | INFO     | features.labeler | SMC Labeler: 3,131 setups | Win rate: 22.7% | Long: 1518 | Short: 1613
+2026-04-23 20:27:19 | INFO     | models.trainer | [GBPUSD] Setups: 3,131 | Win rate: 22.7%
+2026-04-23 20:27:19 | INFO     | models.ml_model | Train: 2,191 | Val: 470 | Test: 470
+2026-04-23 20:27:19 | INFO     | models.ml_model | Label balance (train) – 1: 23.0%
+2026-04-23 20:27:19 | INFO     | models.ml_model |   CV Fold 1/5 AUC: 0.4767
+2026-04-23 20:27:19 | INFO     | models.ml_model |   CV Fold 2/5 AUC: 0.6825
+2026-04-23 20:27:19 | INFO     | models.ml_model |   CV Fold 3/5 AUC: 0.7025
+2026-04-23 20:27:20 | INFO     | models.ml_model |   CV Fold 4/5 AUC: 0.6219
+2026-04-23 20:27:20 | INFO     | models.ml_model |   CV Fold 5/5 AUC: 0.7075
+2026-04-23 20:27:20 | INFO     | models.ml_model | CV AUC: 0.6382 ± 0.0863
+2026-04-23 20:27:21 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.80      0.99      0.88       374
+           1       0.17      0.01      0.02        96
+
+    accuracy                           0.79       470
+   macro avg       0.48      0.50      0.45       470
+weighted avg       0.67      0.79      0.70       470
+
+2026-04-23 20:27:21 | INFO     | models.ml_model | Test AUC: 0.6762 | Brier: 0.1512 | Threshold (from val): 0.45
+2026-04-23 20:27:21 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+bull_sweep           0.073792
+eq_low               0.054670
+weekday              0.047691
+ny_high_dist         0.045038
+htf_trend            0.044869
+dist_to_last_sh      0.044101
+dist_to_last_sl      0.043854
+dist_prev_50_low     0.043422
+upper_wick           0.042725
+dist_prev_50_high    0.041980
+2026-04-23 20:27:21 | INFO     | models.trainer | [GBPUSD] CV AUC=0.6382±0.0863 | Test AUC=0.6762 | Threshold=0.45
+2026-04-23 20:27:21 | INFO     | models.trainer | [GBPUSD] Top features: bull_sweep(0.074), eq_low(0.055), weekday(0.048), ny_high_dist(0.045), htf_trend(0.045)
+2026-04-23 20:27:21 | INFO     | models.ml_model | Model saved -> saved_models\GBPUSD_forex_xgb.joblib
+2026-04-23 20:27:21 | INFO     | models.trainer | [GBPUSD] Model saved -> saved_models\GBPUSD_forex_xgb.joblib
+2026-04-23 20:27:21 | INFO     | models.trainer | 
+=======================================================
+2026-04-23 20:27:21 | INFO     | models.trainer |   Symbol 3/4: USDJPY
+2026-04-23 20:27:21 | INFO     | models.trainer | =======================================================
+2026-04-23 20:27:21 | INFO     | models.trainer | [USDJPY] ---- Training --------------------------------
+2026-04-23 20:27:21 | INFO     | data.histdata_parser | Parsing USDJPY_M5_mt5.csv -> USDJPY M1
+2026-04-23 20:27:21 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-23 20:27:21 | INFO     | data.histdata_parser | Parsed 50,000 M1 bars | 2025-07-11 -> 2026-03-16
+2026-04-23 20:27:21 | INFO     | models.trainer |   [+] USDJPY_M5_mt5.csv: 50,000 M1 bars
+2026-04-23 20:27:21 | INFO     | models.trainer | [USDJPY] Total M1 bars: 50,000 | 2025-07-11 -> 2026-03-16
+2026-04-23 20:27:21 | INFO     | data.loader | Resampled to M15: 16,727 bars
+2026-04-23 20:27:21 | INFO     | data.loader | Resampled to H4: 1,046 bars
+2026-04-23 20:27:21 | INFO     | models.trainer | [USDJPY] M15: 16,727 bars | H4: 1,046 bars
+2026-04-23 20:27:21 | INFO     | models.trainer | [USDJPY] Engineering features...
+2026-04-23 20:27:22 | INFO     | features.engineer | Feature engineering: 16727 -> 16714 rows after NaN drop
+2026-04-23 20:27:22 | INFO     | models.trainer | [USDJPY] Labeling setups...
+2026-04-23 20:27:22 | INFO     | features.labeler | SMC Labeler: 321 setups | Win rate: 28.0% | Long: 141 | Short: 180
+2026-04-23 20:27:22 | INFO     | models.trainer | [USDJPY] Setups: 321 | Win rate: 28.0%
+2026-04-23 20:27:22 | INFO     | models.ml_model | Train: 224 | Val: 48 | Test: 49
+2026-04-23 20:27:22 | INFO     | models.ml_model | Label balance (train) – 1: 33.0%
+2026-04-23 20:27:22 | INFO     | models.ml_model |   CV Fold 1/5 AUC: 0.8013
+2026-04-23 20:27:22 | INFO     | models.ml_model |   CV Fold 2: skipped (single class in validation)
+2026-04-23 20:27:22 | INFO     | models.ml_model |   CV Fold 3/5 AUC: 0.5223
+2026-04-23 20:27:22 | INFO     | models.ml_model |   CV Fold 4/5 AUC: 0.6298
+2026-04-23 20:27:22 | INFO     | models.ml_model |   CV Fold 5/5 AUC: 0.6971
+2026-04-23 20:27:22 | INFO     | models.ml_model | CV AUC: 0.6626 ± 0.1015
+2026-04-23 20:27:23 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.80      1.00      0.89        39
+           1       0.00      0.00      0.00        10
+
+    accuracy                           0.80        49
+   macro avg       0.40      0.50      0.44        49
+weighted avg       0.63      0.80      0.71        49
+
+2026-04-23 20:27:23 | INFO     | models.ml_model | Test AUC: 0.6487 | Brier: 0.1732 | Threshold (from val): 0.45
+2026-04-23 20:27:23 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+asia_high_dist       0.439378
+hour                 0.304912
+lower_wick           0.165860
+dist_prev_50_high    0.089850
+body_pct             0.000000
+session              0.000000
+weekday              0.000000
+candle_dir           0.000000
+atr                  0.000000
+hh                   0.000000
+2026-04-23 20:27:23 | INFO     | models.trainer | [USDJPY] CV AUC=0.6626±0.1015 | Test AUC=0.6487 | Threshold=0.45
+2026-04-23 20:27:23 | INFO     | models.trainer | [USDJPY] Top features: asia_high_dist(0.439), hour(0.305), lower_wick(0.166), dist_prev_50_high(0.090), body_pct(0.000)
+2026-04-23 20:27:23 | INFO     | models.ml_model | Model saved -> saved_models\USDJPY_forex_xgb.joblib
+2026-04-23 20:27:23 | INFO     | models.trainer | [USDJPY] Model saved -> saved_models\USDJPY_forex_xgb.joblib
+2026-04-23 20:27:23 | INFO     | models.trainer | 
+=======================================================
+2026-04-23 20:27:23 | INFO     | models.trainer |   Symbol 4/4: XAUUSD
+2026-04-23 20:27:23 | INFO     | models.trainer | =======================================================
+2026-04-23 20:27:23 | INFO     | models.trainer | [XAUUSD] ---- Training --------------------------------
+2026-04-23 20:27:23 | INFO     | data.histdata_parser | Parsing XAUUSD_M5_mt5.csv -> XAUUSD M1
+2026-04-23 20:27:23 | INFO     | data.histdata_parser | Detected format: generic_csv
+2026-04-23 20:27:24 | INFO     | data.histdata_parser | Parsed 157,000 M1 bars | 2022-01-03 -> 2026-06-26
+2026-04-23 20:27:24 | INFO     | models.trainer |   [+] XAUUSD_M5_mt5.csv: 157,000 M1 bars
+2026-04-23 20:27:24 | INFO     | models.trainer | [XAUUSD] Total M1 bars: 157,000 | 2022-01-03 -> 2026-06-26
+2026-04-23 20:27:24 | INFO     | data.loader | Resampled to M15: 157,000 bars
+2026-04-23 20:27:24 | INFO     | data.loader | Resampled to H4: 9,813 bars
+2026-04-23 20:27:24 | INFO     | models.trainer | [XAUUSD] M15: 157,000 bars | H4: 9,813 bars
+2026-04-23 20:27:24 | INFO     | models.trainer | [XAUUSD] Engineering features...
+2026-04-23 20:27:32 | INFO     | features.engineer | Feature engineering: 157000 -> 156987 rows after NaN drop
+2026-04-23 20:27:32 | INFO     | models.trainer | [XAUUSD] Labeling setups...
+2026-04-23 20:27:33 | INFO     | features.labeler | SMC Labeler: 3,901 setups | Win rate: 27.4% | Long: 1959 | Short: 1942
+2026-04-23 20:27:33 | INFO     | models.trainer | [XAUUSD] Setups: 3,901 | Win rate: 27.4%
+2026-04-23 20:27:33 | INFO     | models.ml_model | Train: 2,730 | Val: 585 | Test: 586
+2026-04-23 20:27:33 | INFO     | models.ml_model | Label balance (train) – 1: 28.5%
+2026-04-23 20:27:33 | INFO     | models.ml_model |   CV Fold 1/5 AUC: 0.6567
+2026-04-23 20:27:33 | INFO     | models.ml_model |   CV Fold 2/5 AUC: 0.7629
+2026-04-23 20:27:34 | INFO     | models.ml_model |   CV Fold 3/5 AUC: 0.7630
+2026-04-23 20:27:34 | INFO     | models.ml_model |   CV Fold 4/5 AUC: 0.7918
+2026-04-23 20:27:34 | INFO     | models.ml_model |   CV Fold 5/5 AUC: 0.7622
+2026-04-23 20:27:34 | INFO     | models.ml_model | CV AUC: 0.7473 ± 0.0467
+2026-04-23 20:27:35 | INFO     | models.ml_model | 
+              precision    recall  f1-score   support
+
+           0       0.80      0.91      0.85       438
+           1       0.54      0.33      0.41       148
+
+    accuracy                           0.76       586
+   macro avg       0.67      0.62      0.63       586
+weighted avg       0.74      0.76      0.74       586
+
+2026-04-23 20:27:35 | INFO     | models.ml_model | Test AUC: 0.7881 | Brier: 0.1527 | Threshold (from val): 0.45
+2026-04-23 20:27:35 | INFO     | models.ml_model | 
+Top-10 Feature Importances:
+trend               0.082685
+dist_to_last_sh     0.071676
+bear_sweep          0.067934
+ny_high_dist        0.060529
+ll                  0.057184
+lower_wick          0.055329
+dist_prev_50_low    0.054743
+atr                 0.053585
+ny_low_dist         0.052495
+dist_to_last_sl     0.046675
+2026-04-23 20:27:35 | INFO     | models.trainer | [XAUUSD] CV AUC=0.7473±0.0467 | Test AUC=0.7881 | Threshold=0.45
+2026-04-23 20:27:35 | INFO     | models.trainer | [XAUUSD] Top features: trend(0.083), dist_to_last_sh(0.072), bear_sweep(0.068), ny_high_dist(0.061), ll(0.057)
+2026-04-23 20:27:35 | INFO     | models.ml_model | Model saved -> saved_models\XAUUSD_forex_xgb.joblib
+2026-04-23 20:27:35 | INFO     | models.trainer | [XAUUSD] Model saved -> saved_models\XAUUSD_forex_xgb.joblib
+2026-04-23 20:27:35 | INFO     | models.trainer | 
+Training complete: 4 OK | 0 failed
