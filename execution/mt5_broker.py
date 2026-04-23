@@ -1,19 +1,4 @@
-"""
-execution/mt5_broker.py
------------------------
-MetaTrader 5 live execution layer.
 
-Wraps the MetaTrader5 Python API to provide:
-  - Connection management with auto-reconnect
-  - Market order placement with SL/TP
-  - Position monitoring and modification
-  - Symbol info (pip size, lot constraints)
-  - Error handling and retry logic
-
-NOTE: MetaTrader5 must be installed:  pip install MetaTrader5
-      This module gracefully degrades to a simulation stub if MT5 is unavailable
-      (useful for backtest / CI environments).
-"""
 
 import logging
 import time
