@@ -1,11 +1,4 @@
-"""
 
-
-Design:
-  - Stateless per bar (all state reconstructed from rolling window)
-  - Graceful shutdown on KeyboardInterrupt
-  - All decisions logged
-"""
 
 import logging
 import time

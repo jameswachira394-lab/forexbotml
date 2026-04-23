@@ -1,34 +1,4 @@
-"""
-execution/mt5_streamer.py
--------------------------
-Multi-symbol, multi-timeframe live bar streamer via the MetaTrader5 Python API.
 
-Design
-------
-- Polls MT5 for OHLCV bars at a configurable interval.
-- Fires a callback ONLY when a NEW completed bar is available (not on every tick).
-- Handles disconnections with exponential back-off reconnect.
-- Streams up to N symbols simultaneously in a single thread.
-- Maintains a rolling history window per symbol so the feature engine
-  always has enough warm-up bars without re-fetching everything.
-
-Usage (standalone)
-------------------
-    streamer = MT5Streamer(
-        symbols    = ["EURUSD", "GBPUSD", "USDJPY"],
-        timeframe  = "M5",
-        warm_bars  = 300,
-        on_new_bar = my_callback,   # fn(symbol, df) -> None
-    )
-    streamer.start()   # blocks; Ctrl-C to stop
-
-Callback signature
-------------------
-    def on_new_bar(symbol: str, df: pd.DataFrame) -> None:
-        # df: rolling window of the last `warm_bars` bars for this symbol
-        # The most recent bar (df.iloc[-1]) is the newly completed bar.
-        ...
-"""
 
 import logging
 import time
