@@ -1,4 +1,4 @@
-udhdhdhdhhdhehehrhhrhrhshehehhrhehehhehdsbdhhrbshsjdhbxhdhdhhdh# Forex Trading System - Configuration & Backtest Report
+hdhdhhdheueuudhdhdhdhhdhehehrhhrhrhshehehhrhehehhehdsbdhhrbshsjdhbxhdhdhhdh# Forex Trading System - Configuration & Backtest Report
 
 ## ✅ System Successfully Configured
 
