@@ -46,7 +46,7 @@ Initial Balance         = $100
 ```
 hhu
 ### Trade Setup Requirements
-A trade fires when **ALL** conditions met:
+A trade fires when **ALL** conditions met:ehdhhhdhth
 1. ✓ Previous bullish/bearish sweep detected
 2. ✓ Directional body ≥ 1.5× ATR (displacement)
 3. ✓ Break of structure (BOS) on new swing
