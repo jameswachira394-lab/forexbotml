@@ -44,7 +44,7 @@ Risk Per Trade          = 3% of equity
 Max Daily Loss          = 2%
 Initial Balance         = $100
 ```
-
+hhu
 ### Trade Setup Requirements
 A trade fires when **ALL** conditions met:
 1. ✓ Previous bullish/bearish sweep detected
