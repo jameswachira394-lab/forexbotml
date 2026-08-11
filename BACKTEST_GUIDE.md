@@ -58,7 +58,7 @@ A trade fires when **ALL** conditions met:
 
 ---
 
-## Backtest Results
+## Backtest Resultssss
 
 ### Walk-Forward Test (GBPUSD)
 - **Status**: ✅ Completed 4 folds
